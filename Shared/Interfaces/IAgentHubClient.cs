@@ -1,4 +1,4 @@
-﻿using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Enums;
 
 namespace CoreConnect.Shared.Interfaces;
 public interface IAgentHubClient
@@ -57,7 +57,8 @@ public interface IAgentHubClient
         string userConnectionId, 
         string requesterName, 
         string orgName, 
-        string orgId);
+        string orgId,
+        bool enableWindowsGpuAcceleration);
 
     Task RestartScreenCaster(
         string[] viewerIds, 
@@ -66,7 +67,8 @@ public interface IAgentHubClient
         string userConnectionId, 
         string requesterName, 
         string orgName, 
-        string orgId);
+        string orgId,
+        bool enableWindowsGpuAcceleration);
 
     Task RunScript(
         Guid savedScriptId, 

@@ -1,4 +1,4 @@
-﻿using CoreConnect.Server.Enums;
+using CoreConnect.Server.Enums;
 using CoreConnect.Server.Filters;
 using CoreConnect.Server.Models;
 using CoreConnect.Server.Services;
@@ -91,6 +91,8 @@ public class ViewerHub : Hub<IViewerHubClient>
             SessionInfo = SessionInfo.CreateNew();
             _desktopSessionCache.AddOrUpdate($"{SessionInfo.UnattendedSessionId}", SessionInfo);
 
+            var settings = await _dataService.GetSettings();
+
             await _agentHub.Clients
                 .Client(SessionInfo.AgentConnectionId)
                 .ChangeWindowsSession(
@@ -100,7 +102,7 @@ public class ViewerHub : Hub<IViewerHubClient>
                     SessionInfo.UserConnectionId,
                     SessionInfo.RequesterUserName,
                     SessionInfo.OrganizationName,
-                    SessionInfo.OrganizationId,
+                    $"{SessionInfo.OrganizationId}|{settings.EnableWindowsGpuAcceleration}",
                     targetWindowsSession);
 
             return Result.Ok();

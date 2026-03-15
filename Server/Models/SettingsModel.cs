@@ -1,4 +1,4 @@
-﻿using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Enums;
 
 namespace CoreConnect.Server.Models;
 
@@ -12,6 +12,7 @@ public class SettingsModel
     public string DbProvider { get; set; } = "SQLite";
     public bool EnableRemoteControlRecording { get; set; }
     public bool EnableWindowsEventLog { get; set; }
+    public bool EnableWindowsGpuAcceleration { get; set; } = true;
     public bool EnforceAttendedAccess { get; set; }
     public bool ForceClientHttps { get; set; }
     public List<string> KnownProxies { get; set; } = [];

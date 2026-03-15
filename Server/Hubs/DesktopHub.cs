@@ -1,4 +1,4 @@
-﻿using CoreConnect.Server.Enums;
+using CoreConnect.Server.Enums;
 using CoreConnect.Server.Models;
 using CoreConnect.Server.Services;
 using CoreConnect.Shared.Enums;
@@ -286,6 +286,8 @@ public class DesktopHub : Hub<IDesktopHubClient>
 
         SessionInfo.AgentConnectionId = agentConnectionId;
 
+        var settings = await _sessionCache.ServiceProvider.GetRequiredService<IDataService>().GetSettings();
+
         await _agentHub.Clients
                  .Client(SessionInfo.AgentConnectionId)
                  .RestartScreenCaster(
@@ -295,7 +297,8 @@ public class DesktopHub : Hub<IDesktopHubClient>
                         SessionInfo.UserConnectionId,
                         SessionInfo.RequesterName,
                         SessionInfo.OrganizationName,
-                        SessionInfo.OrganizationId);
+                        SessionInfo.OrganizationId,
+                        settings.EnableWindowsGpuAcceleration);
     }
     private async Task NotifySessionChangedImpl(SessionSwitchReasonEx reason, int currentSessionId)
     {
@@ -313,6 +316,8 @@ public class DesktopHub : Hub<IDesktopHubClient>
             currentSessionId,
             SessionInfo);
 
+        var settings = await _sessionCache.ServiceProvider.GetRequiredService<IDataService>().GetSettings();
+
         await _agentHub.Clients
             .Client(SessionInfo.AgentConnectionId)
             .RestartScreenCaster(
@@ -322,6 +327,7 @@ public class DesktopHub : Hub<IDesktopHubClient>
                 SessionInfo.UserConnectionId,
                 SessionInfo.RequesterUserName,
                 SessionInfo.OrganizationName,
-                SessionInfo.OrganizationId);
+                SessionInfo.OrganizationId,
+                settings.EnableWindowsGpuAcceleration);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 using CoreConnect.Agent.Interfaces;
 using CoreConnect.Shared.Models;
@@ -87,7 +87,7 @@ public class AppLauncherWin : IAppLauncher
         return -1;
     }
 
-    public async Task LaunchRemoteControl(int targetSessionId, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, HubConnection hubConnection)
+    public async Task LaunchRemoteControl(int targetSessionId, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, bool enableWindowsGpuAcceleration, HubConnection hubConnection)
     {
         try
         {
@@ -118,7 +118,8 @@ public class AppLauncherWin : IAppLauncher
                         $" --org-name \"{orgName}\"" +
                         $" --org-id \"{orgId}\"" +
                         $" --session-id \"{sessionId}\"" +
-                        $" --access-key \"{accessKey}\"",
+                        $" --access-key \"{accessKey}\"" +
+                        $" --enable-gpu {enableWindowsGpuAcceleration}",
                     targetSessionId: targetSessionId,
                     hiddenWindow: false,
                     out _);
@@ -140,7 +141,8 @@ public class AppLauncherWin : IAppLauncher
                         $" --org-name \"{orgName}\"" +
                         $" --org-id \"{orgId}\"" +
                         $" --session-id \"{sessionId}\"" +
-                        $" --access-key \"{accessKey}\"");
+                        $" --access-key \"{accessKey}\"" +
+                        $" --enable-gpu {enableWindowsGpuAcceleration}");
             }
         }
         catch (Exception ex)
@@ -153,7 +155,7 @@ public class AppLauncherWin : IAppLauncher
                 userConnectionId);
         }
     }
-    public async Task RestartScreenCaster(string[] viewerIds, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, HubConnection hubConnection, int targetSessionID = -1)
+    public async Task RestartScreenCaster(string[] viewerIds, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, bool enableWindowsGpuAcceleration, HubConnection hubConnection, int targetSessionID = -1)
     {
         try
         {
@@ -173,6 +175,7 @@ public class AppLauncherWin : IAppLauncher
                         $" --org-id \"{orgId}\"" +
                         $" --session-id \"{sessionId}\"" +
                         $" --access-key \"{accessKey}\"" +
+                        $" --enable-gpu {enableWindowsGpuAcceleration}" +
                         $" --viewers {string.Join(",", viewerIds)}",
 
                     targetSessionId: targetSessionID,
@@ -201,6 +204,7 @@ public class AppLauncherWin : IAppLauncher
                     $" --org-id \"{orgId}\"" +
                     $" --session-id \"{sessionId}\"" +
                     $" --access-key \"{accessKey}\"" +
+                    $" --enable-gpu {enableWindowsGpuAcceleration}" +
                     $" --viewers {string.Join(",", viewerIds)}");
             }
         }

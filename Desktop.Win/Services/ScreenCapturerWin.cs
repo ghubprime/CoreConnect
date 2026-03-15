@@ -1,4 +1,4 @@
-﻿// The DirectX capture code is based off examples from the
+// The DirectX capture code is based off examples from the
 // SharpDX Samples at https://github.com/sharpdx/SharpDX.
 
 // Copyright (c) 2010-2013 SharpDX - Alexandre Mutel
@@ -53,6 +53,7 @@ public class ScreenCapturerWin : IScreenCapturer
     private readonly IImageHelper _imageHelper;
     private readonly ILogger<ScreenCapturerWin> _logger;
     private readonly object _screenBoundsLock = new();
+    private readonly IAppState _appState;
     private SKBitmap? _currentFrame;
     private bool _needsInit;
     private SKBitmap? _previousFrame;
@@ -60,8 +61,10 @@ public class ScreenCapturerWin : IScreenCapturer
     public ScreenCapturerWin(
         IImageHelper imageHelper,
         IMessenger messenger,
+        IAppState appState,
         ILogger<ScreenCapturerWin> logger)
     {
+        _appState = appState;
         _imageHelper = imageHelper;
         _logger = logger;
 
@@ -154,7 +157,12 @@ public class ScreenCapturerWin : IScreenCapturer
                     Init();
                 }
 
-                var result = GetDirectXFrame();
+                DxCaptureResult result = DxCaptureResult.Fail("GPU Acceleration Disabled.");
+                
+                if (_appState.EnableWindowsGpuAcceleration)
+                {
+                    result = GetDirectXFrame();
+                }
 
                 if (result.IsSuccess && !result.HadChanges)
                 {
@@ -218,7 +226,11 @@ public class ScreenCapturerWin : IScreenCapturer
 
         CaptureFullscreen = true;
         InitDisplays();
-        InitDirectX();
+        
+        if (_appState.EnableWindowsGpuAcceleration)
+        {
+            InitDirectX();
+        }
 
         ScreenChanged?.Invoke(this, CurrentScreenBounds);
 

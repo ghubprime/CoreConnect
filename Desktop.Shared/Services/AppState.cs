@@ -1,4 +1,4 @@
-﻿using CoreConnect.Desktop.Shared.Enums;
+using CoreConnect.Desktop.Shared.Enums;
 using CoreConnect.Desktop.Shared.Messages;
 using CoreConnect.Shared.Models;
 using Microsoft.Extensions.Logging;
@@ -19,6 +19,7 @@ public interface IAppState
     string Host { get; set; }
     bool IsElevate { get; }
     bool IsRelaunch { get; }
+    bool EnableWindowsGpuAcceleration { get; set; }
     AppMode Mode { get; set; }
     string OrganizationId { get; set; }
     string OrganizationName { get; }
@@ -93,6 +94,7 @@ public class AppState : IAppState
 
     public bool IsElevate { get; private set; }
     public bool IsRelaunch { get; private set; }
+    public bool EnableWindowsGpuAcceleration { get; set; } = true;
     public AppMode Mode { get; set; }
     public string OrganizationId { get; set; } = string.Empty;
     public string OrganizationName { get; private set; } = string.Empty;
@@ -174,6 +176,12 @@ public class AppState : IAppState
                     }
 
                     key = key.Trim().TrimStart('-').TrimStart('-').ToLower();
+                    
+                    if (key == "enable-gpu")
+                    {
+                        EnableWindowsGpuAcceleration = bool.Parse(args[i + 1].Trim());
+                        continue;
+                    }
 
                     _argDict.Add(key, args[i + 1].Trim());
                 }

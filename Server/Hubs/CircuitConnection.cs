@@ -1,4 +1,4 @@
-﻿using CoreConnect.Server.Services;
+using CoreConnect.Server.Services;
 using CoreConnect.Shared.Helpers;
 using Bitbound.SimpleMessenger;
 using Microsoft.AspNetCore.Components.Server.Circuits;
@@ -285,7 +285,8 @@ public class CircuitConnection : CircuitHandler, ICircuitConnection
             ConnectionId,
             $"{User.UserOptions?.DisplayName}",
             orgResult.Value,
-            User.OrganizationID);
+            User.OrganizationID,
+            settings.EnableWindowsGpuAcceleration);
 
         return Result.Ok(session);
     }

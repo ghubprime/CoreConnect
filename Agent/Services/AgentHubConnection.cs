@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -88,13 +88,21 @@ public class AgentHubConnection : IAgentHubConnection, IDisposable
         {
             EnsureHubConnection();
 
+            var enableWindowsGpuAcceleration = true;
+            if (orgId.Contains('|'))
+            {
+                var parts = orgId.Split('|');
+                orgId = parts[0];
+                enableWindowsGpuAcceleration = bool.Parse(parts[1]);
+            }
+
             if (!_isServerVerified)
             {
                 _logger.LogWarning("Session change attempted before server was verified.");
                 return;
             }
 
-            await _appLauncher.RestartScreenCaster(new[] { viewerConnectionId }, sessionId, accessKey, userConnectionId, requesterName, orgName, orgId, _hubConnection, targetSessionId);
+            await _appLauncher.RestartScreenCaster(new[] { viewerConnectionId }, sessionId, accessKey, userConnectionId, requesterName, orgName, orgId, enableWindowsGpuAcceleration, _hubConnection, targetSessionId);
         }
         catch (Exception ex)
         {
@@ -347,7 +355,7 @@ public class AgentHubConnection : IAgentHubConnection, IDisposable
         }
     }
 
-    public async Task RemoteControl(Guid sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId)
+    public async Task RemoteControl(Guid sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, bool enableWindowsGpuAcceleration)
     {
         try
         {
@@ -358,7 +366,7 @@ public class AgentHubConnection : IAgentHubConnection, IDisposable
                 _logger.LogWarning("Remote control attempted before server was verified.");
                 return;
             }
-            await _appLauncher.LaunchRemoteControl(-1, $"{sessionId}", accessKey, userConnectionId, requesterName, orgName, orgId, _hubConnection);
+            await _appLauncher.LaunchRemoteControl(-1, $"{sessionId}", accessKey, userConnectionId, requesterName, orgName, orgId, enableWindowsGpuAcceleration, _hubConnection);
         }
         catch (Exception ex)
         {
@@ -366,7 +374,7 @@ public class AgentHubConnection : IAgentHubConnection, IDisposable
         }
     }
 
-    public async Task RestartScreenCaster(string[] viewerIds, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId)
+    public async Task RestartScreenCaster(string[] viewerIds, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, bool enableWindowsGpuAcceleration)
     {
         try
         {
@@ -385,6 +393,7 @@ public class AgentHubConnection : IAgentHubConnection, IDisposable
                 requesterName,
                 orgName,
                 orgId,
+                enableWindowsGpuAcceleration,
                 _hubConnection);
         }
         catch (Exception ex)
@@ -629,9 +638,9 @@ public class AgentHubConnection : IAgentHubConnection, IDisposable
 
         _hubConnection.On(nameof(UninstallAgent), UninstallAgent);
 
-        _hubConnection.On<Guid, string, string, string, string, string>(nameof(RemoteControl), RemoteControl);
+        _hubConnection.On<Guid, string, string, string, string, string, bool>(nameof(RemoteControl), RemoteControl);
 
-        _hubConnection.On<string[], string, string, string, string, string, string>(
+        _hubConnection.On<string[], string, string, string, string, string, string, bool>(
             nameof(RestartScreenCaster),
             RestartScreenCaster);
 

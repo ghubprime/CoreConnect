@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using CoreConnect.Agent.Interfaces;
 
@@ -13,13 +13,13 @@ public class AppLauncherMac : IAppLauncher
         return 0;
     }
 
-    public async Task LaunchRemoteControl(int targetSessionId, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, HubConnection hubConnection)
+    public Task LaunchRemoteControl(int targetSessionId, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, bool enableWindowsGpuAcceleration, HubConnection hubConnection)
     {
-        await hubConnection.SendAsync("DisplayMessage", "Feature under development.", "Currently unsupported", "bg-warning", userConnectionId);
+        return hubConnection.SendAsync("DisplayMessage", "Feature under development.", "Currently unsupported", "bg-warning", userConnectionId);
     }
 
-    public async Task RestartScreenCaster(string[] viewerIds, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, HubConnection hubConnection, int targetSessionID = -1)
+    public Task RestartScreenCaster(string[] viewerIds, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, bool enableWindowsGpuAcceleration, HubConnection hubConnection, int targetSessionID = -1)
     {
-        await hubConnection.SendAsync("DisplayMessage", "Feature under development.", "Currently unsupported", "bg-warning", userConnectionId);
+        return hubConnection.SendAsync("DisplayMessage", "Feature under development.", "Currently unsupported", "bg-warning", userConnectionId);
     }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 using CoreConnect.Agent.Interfaces;
 using CoreConnect.Shared.Extensions;
@@ -72,7 +72,7 @@ public class AppLauncherLinux : IAppLauncher
         return -1;
     }
 
-    public async Task LaunchRemoteControl(int targetSessionId, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, HubConnection hubConnection)
+    public async Task LaunchRemoteControl(int targetSessionId, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, bool enableWindowsGpuAcceleration, HubConnection hubConnection)
     {
         try
         {
@@ -107,7 +107,7 @@ public class AppLauncherLinux : IAppLauncher
         }
     }
 
-    public async Task RestartScreenCaster(string[] viewerIds, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, HubConnection hubConnection, int targetSessionID = -1)
+    public async Task RestartScreenCaster(string[] viewerIds, string sessionId, string accessKey, string userConnectionId, string requesterName, string orgName, string orgId, bool enableWindowsGpuAcceleration, HubConnection hubConnection, int targetSessionID = -1)
     {
         try
         {
