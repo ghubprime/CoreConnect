@@ -1,4 +1,4 @@
-	interface remotelyUserOptions {
+	interface CoreConnectUserOptions {
 		displayName: string;
 		commandModeShortcutPSCore: string;
 		commandModeShortcutWinPS: string;

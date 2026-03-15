@@ -1,4 +1,4 @@
-﻿# Issue #269: Android Client
+# Issue #269: Android Client
 
 **State:** open
 **Created At:** 2021-04-13T08:04:30Z
@@ -8,4 +8,4 @@
 
 ## Description
 
-Would love to see an Android-Client for Remote Help - "Just display" would be alredy a great help! 
+There currently isn't an Android client available for CoreConnect. I expect this will be the most highly-requested feature once everything else is in place.
