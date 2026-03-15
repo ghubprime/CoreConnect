@@ -86,4 +86,10 @@ public interface IAgentHubClient
     Task TriggerHeartbeat();
 
     Task WakeDevice(string macAddress);
+
+    /// <summary>
+    /// Called by the server to request the agent to stream script output chunks.
+    /// The agent invokes ReceiveScriptOutputChunk on the hub to relay stdout/stderr.
+    /// </summary>
+    Task ScriptOutputChunk(int scriptRunId, string chunk, bool isError);
 }

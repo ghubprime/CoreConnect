@@ -1,0 +1,157 @@
+@page "/script-console"
+@attribute [Authorize]
+@inherits AuthComponentBase
+@using CoreConnect.Server.Services
+@using CoreConnect.Shared.Entities
+@inject IScriptConsoleRelay ScriptConsoleRelay
+@inject IDataService DataService
+@implements IDisposable
+
+<PageTitle>Script Console - CoreConnect</PageTitle>
+
+<h3 id="script-console-header" class="mb-3">
+    <span class="oi oi-terminal me-2"></span>
+    Bulk Script Console
+</h3>
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <label for="device-group-select" class="form-label">Device Group</label>
+        <select id="device-group-select" class="form-select"
+                @bind="_selectedGroupId"
+                disabled="@_isRunning">
+            <option value="">-- Select a device group --</option>
+            @if (_deviceGroups is not null)
+            {
+                @foreach (var group in _deviceGroups)
+                {
+                    <option value="@group.ID">@group.Name</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-6 d-flex align-items-end">
+        <button id="btn-start-console"
+                class="btn btn-primary me-2"
+                disabled="@(string.IsNullOrEmpty(_selectedGroupId) || _isRunning)"
+                @onclick="StartConsole">
+            <span class="oi oi-media-play me-1"></span> Start
+        </button>
+        <button id="btn-stop-console"
+                class="btn btn-outline-danger"
+                disabled="@(!_isRunning)"
+                @onclick="StopConsole">
+            <span class="oi oi-media-stop me-1"></span> Stop
+        </button>
+    </div>
+</div>
+
+@if (_isRunning && _outputLines.Count > 0)
+{
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Live Output — Run #@_currentRunId</span>
+            <span class="badge bg-secondary">@_outputLines.Count lines</span>
+        </div>
+        <div class="card-body p-0" style="max-height: 500px; overflow-y: auto;">
+            <pre id="console-output" class="m-0 p-3"
+                 style="font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 0.85rem; background: #1e1e1e; color: #d4d4d4;">
+@foreach (var line in _outputLines)
+{
+    if (line.IsError)
+    {
+        <span style="color: #f44747;">[@line.DeviceId] @line.Chunk</span>
+    }
+    else
+    {
+        <span>[@line.DeviceId] @line.Chunk</span>
+    }
+}
+            </pre>
+        </div>
+    </div>
+}
+else if (_isRunning)
+{
+    <div class="text-muted">
+        <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+        Waiting for output from agents...
+    </div>
+}
+
+@code {
+    private List<DeviceGroup>? _deviceGroups;
+    private string? _selectedGroupId;
+    private bool _isRunning;
+    private int? _currentRunId;
+    private CancellationTokenSource? _cts;
+    private readonly List<ScriptOutputLine> _outputLines = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var user = await GetCurrentUser();
+        if (user is not null)
+        {
+            var groups = await DataService.GetDeviceGroups(user.UserName ?? string.Empty);
+            _deviceGroups = groups.ToList();
+        }
+    }
+
+    private async Task StartConsole()
+    {
+        if (string.IsNullOrEmpty(_selectedGroupId))
+            return;
+
+        _isRunning = true;
+        _outputLines.Clear();
+        _cts = new CancellationTokenSource();
+
+        // For demonstration purposes, we subscribe to a placeholder ScriptRunId.
+        // In a full implementation, the device group selection would fan-out a ScriptRun
+        // to N agents, returning a ScriptRunId. For now we use a hash of the group.
+        _currentRunId = _selectedGroupId.GetHashCode() & 0x7FFFFFFF;
+
+        var reader = ScriptConsoleRelay.Subscribe(_currentRunId.Value);
+
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                await foreach (var line in reader.ReadAllAsync(_cts.Token))
+                {
+                    _outputLines.Add(line);
+                    await InvokeAsync(StateHasChanged);
+                }
+            }
+            catch (OperationCanceledException) { }
+        }, _cts.Token);
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void StopConsole()
+    {
+        _cts?.Cancel();
+        if (_currentRunId.HasValue)
+        {
+            ScriptConsoleRelay.Unsubscribe(_currentRunId.Value);
+        }
+        _isRunning = false;
+        _currentRunId = null;
+    }
+
+    public void Dispose()
+    {
+        StopConsole();
+        _cts?.Dispose();
+    }
+
+    private async Task<CoreConnectUser?> GetCurrentUser()
+    {
+        if (User is not null)
+        {
+            return User;
+        }
+        return null;
+    }
+}

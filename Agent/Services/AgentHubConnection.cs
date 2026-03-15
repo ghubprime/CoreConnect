@@ -548,6 +548,28 @@ public class AgentHubConnection : IAgentHubConnection, IDisposable
         }
     }
 
+    public async Task ScriptOutputChunk(int scriptRunId, string chunk, bool isError)
+    {
+        try
+        {
+            EnsureHubConnection();
+
+            if (!_isServerVerified)
+            {
+                _logger.LogWarning("ScriptOutputChunk attempted before server was verified.");
+                return;
+            }
+
+            // Relay the chunk back to the server hub for the Blazor console.
+            await _hubConnection.SendAsync("ReceiveScriptOutputChunk", scriptRunId, chunk, isError)
+                .ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while sending script output chunk.");
+        }
+    }
+
     private async Task<bool> CheckForServerMigration()
     {
         if (_connectionInfo is null || _hubConnection is null)
@@ -653,6 +675,8 @@ public class AgentHubConnection : IAgentHubConnection, IDisposable
         _hubConnection.On(nameof(TriggerHeartbeat), TriggerHeartbeat);
 
         _hubConnection.On<string>(nameof(WakeDevice), WakeDevice);
+
+        _hubConnection.On<int, string, bool>(nameof(ScriptOutputChunk), ScriptOutputChunk);
     }
 
     private async Task<bool> VerifyServer()

@@ -114,6 +114,13 @@ public class AppDb : IdentityDbContext
             .IsRequired(false)
             .OnDelete(DeleteBehavior.ClientSetNull);
 
+        builder.Entity<Organization>()
+            .Property(x => x.AllowedIpRanges)
+            .HasConversion(
+                x => JsonSerializer.Serialize(x, jsonOptions),
+                x => DeserializeStringArray(x, jsonOptions),
+                valueComparer: _stringArrayComparer);
+
 
         builder.Entity<CoreConnectUser>()
             .HasMany(x => x.DeviceGroups)

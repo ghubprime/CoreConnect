@@ -24,6 +24,7 @@ public class AgentHub : Hub<IAgentHubClient>
     private readonly IAgentHubSessionCache _serviceSessionCache;
     private readonly IHubContext<ViewerHub> _viewerHubContext;
     private readonly IAlertRuleProcessor _alertProcessor;
+    private readonly IScriptConsoleRelay _scriptConsoleRelay;
 
     public AgentHub(
         IDataService dataService,
@@ -34,6 +35,7 @@ public class AgentHub : Hub<IAgentHubClient>
         IRemoteControlSessionCache remoteControlSessionCache,
         IMessenger messenger,
         IAlertRuleProcessor alertProcessor,
+        IScriptConsoleRelay scriptConsoleRelay,
         ILogger<AgentHub> logger)
     {
         _dataService = dataService;
@@ -44,6 +46,7 @@ public class AgentHub : Hub<IAgentHubClient>
         _remoteControlSessions = remoteControlSessionCache;
         _messenger = messenger;
         _alertProcessor = alertProcessor;
+        _scriptConsoleRelay = scriptConsoleRelay;
         _logger = logger;
     }
 
@@ -381,6 +384,19 @@ public class AgentHub : Hub<IAgentHubClient>
         }
         Device.ServerVerificationToken = verificationToken;
         _dataService.SetServerVerificationToken(Device.ID, verificationToken);
+    }
+
+    /// <summary>
+    /// Called by agents to relay live script output chunks to connected Blazor circuits.
+    /// </summary>
+    public void ReceiveScriptOutputChunk(int scriptRunId, string chunk, bool isError)
+    {
+        if (Device is null)
+        {
+            return;
+        }
+
+        _scriptConsoleRelay.WriteChunk(scriptRunId, Device.ID, chunk, isError);
     }
 
     public Task TransferCompleted(string transferId, string requesterId)

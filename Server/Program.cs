@@ -25,6 +25,8 @@ using Fido2NetLib;
 using System.Net;
 using RatePolicyNames = CoreConnect.Server.RateLimiting.PolicyNames;
 using CoreConnect.Server.Filters;
+using CoreConnect.Server.Middleware;
+using Microsoft.AspNetCore.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -259,6 +261,11 @@ services.AddSingleton<IAgentHubSessionCache, AgentHubSessionCache>();
 services.AddHostedService<RemoteControlSessionCleaner>();
 services.AddHostedService<RemoteControlSessionReconnector>();
 services.AddSingleton<IAlertRuleProcessor, AlertRuleProcessor>();
+services.AddSingleton<IScriptConsoleRelay, ScriptConsoleRelay>();
+services.AddSingleton<IBackpressureMetrics, BackpressureMetrics>();
+services.Configure<HubBackpressureOptions>(
+    configuration.GetSection(HubBackpressureOptions.SectionKey));
+services.AddSingleton<IHubFilter, HubBackpressureFilter>();
 
 // WebAuthn / FIDO2
 services.AddDistributedMemoryCache();
@@ -322,6 +329,8 @@ app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("TrustedOriginPolicy");
+
+app.UseMiddleware<IpAllowListMiddleware>();
 
 app.UseAntiforgery();
 
