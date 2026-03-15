@@ -113,9 +113,51 @@ In addition to the manual Alerts API (see below), CoreConnect supports automated
 
 Alert rules are managed from the Alert Rules page and are evaluated on each agent heartbeat.
 
+## Wake-on-LAN
+
+CoreConnect can send Wake-on-LAN magic packets to offline devices through online peer agents in the same device group or public IP subnet.
+
+- **Blazor UI**: Use the ⏻ button in the device grid toolbar to wake all offline devices in the selected group.
+- **REST API**: `POST /api/WakeOnLan/{deviceId}` — requires an API key with the `WakeOnLan` permission.
+
+The server resolves the target device's stored MAC addresses and relays the magic packet through any online agent in the same organization that shares a device group or public IP.
+
+## API-Key Scoped Permissions
+
+API tokens now support granular, flag-based permissions. When creating or editing a token, you can scope it to specific actions:
+
+| Permission      | Flags Value | Controls                            |
+| --------------- | ----------- | ----------------------------------- |
+| `DeviceRead`    | 1           | GET /api/Devices                    |
+| `DeviceWrite`   | 2           | PUT /api/Devices                    |
+| `ScriptExecute` | 4           | POST /api/Scripting, Script Results |
+| `AlertRead`     | 8           | Read alerts                         |
+| `AlertWrite`    | 16          | Create/Delete alerts                |
+| `RemoteControl` | 32          | Initiate remote control sessions    |
+| `ServerAdmin`   | 64          | Server administration endpoints     |
+| `WakeOnLan`     | 128         | Wake-on-LAN API                     |
+| `All`           | -1          | Full access (default)               |
+
+Existing tokens default to `All` for backwards compatibility. The `RequireApiPermission` attribute enforces permissions at the controller action level; unauthorized tokens receive `403 Forbidden`.
+
+## SignalR Stream Compression
+
+Remote control frame streams can optionally be compressed with server-side Brotli (quality level: Fastest) to reduce bandwidth usage.
+
+- Enable per-user in **Account → Options → Enable Stream Compression**.
+- Each frame is individually compressed with a 1-byte header: `0x01` = Brotli-compressed, `0x00` = raw.
+- Frames smaller than 64 bytes are passed through uncompressed to avoid overhead on control messages.
+
 ## Integration Tests
 
 The `Tests/IntegrationTests` project uses [Testcontainers](https://dotnet.testcontainers.org/) to spin up real SQL Server and PostgreSQL containers for integration testing. Docker must be running to execute these tests.
+
+Coverage includes:
+- Organization and Device CRUD
+- Device telemetry snapshots
+- Alert rule CRUD
+- API token scoped permission round-trips
+- Device MAC address array persistence
 
 ```bash
 dotnet test Tests/IntegrationTests

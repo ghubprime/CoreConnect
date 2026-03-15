@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using CoreConnect.Server.Services;
 using CoreConnect.Shared;
+using CoreConnect.Shared.Enums;
 using System.Net;
 
 namespace CoreConnect.Server.Auth;
@@ -42,6 +43,7 @@ public class ApiAuthorizationFilter : IAsyncAuthorizationFilter
             if (userResult.IsSuccess && userResult.Value.IsAdministrator)
             {
                 http.Request.Headers["OrganizationID"] = userResult.Value.OrganizationID;
+                http.Items["ApiPermissions"] = ApiPermission.All;
                 return;
             }
         }
@@ -72,6 +74,7 @@ public class ApiAuthorizationFilter : IAsyncAuthorizationFilter
                 if (keyResult.IsSuccess)
                 {
                     http.Request.Headers["OrganizationID"] = keyResult.Value.OrganizationID;
+                    http.Items["ApiPermissions"] = keyResult.Value.Permissions;
                     return;
                 }
             }
@@ -81,3 +84,4 @@ public class ApiAuthorizationFilter : IAsyncAuthorizationFilter
         context.Result = new UnauthorizedResult();
     }
 }
+

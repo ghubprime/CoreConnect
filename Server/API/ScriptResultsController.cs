@@ -1,10 +1,11 @@
-﻿using CoreConnect.Shared.Extensions;
+using CoreConnect.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CoreConnect.Server.Auth;
 using CoreConnect.Server.Extensions;
 using CoreConnect.Server.Services;
 using CoreConnect.Shared.Dtos;
+using CoreConnect.Shared.Enums;
 using System.Text;
 
 namespace CoreConnect.Server.API;
@@ -29,6 +30,7 @@ public class ScriptResultsController : ControllerBase
 
     [HttpGet]
     [ServiceFilter(typeof(ApiAuthorizationFilter))]
+    [RequireApiPermission(ApiPermission.ScriptExecute)]
     public ActionResult DownloadAll()
     {
         if (!Request.Headers.TryGetOrganizationId(out var orgId))
@@ -43,6 +45,7 @@ public class ScriptResultsController : ControllerBase
 
     [HttpGet("{scriptId}")]
     [ServiceFilter(typeof(ApiAuthorizationFilter))]
+    [RequireApiPermission(ApiPermission.ScriptExecute)]
     public ActionResult<FileResult> DownloadResults(string scriptId)
     {
         if (!Request.Headers.TryGetOrganizationId(out var orgId))

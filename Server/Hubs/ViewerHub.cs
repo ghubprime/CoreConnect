@@ -138,9 +138,24 @@ public class ViewerHub : Hub<IViewerHubClient>
 
         SessionInfo.StreamerState = StreamerState.Connected;
 
+        // Determine if stream compression is enabled for this user's session.
+        var enableCompression = false;
+        if (!string.IsNullOrWhiteSpace(SessionInfo.RequesterUserName))
+        {
+            var optionsResult = await _dataService.GetUserOptions(SessionInfo.RequesterUserName);
+            if (optionsResult.IsSuccess)
+            {
+                enableCompression = optionsResult.Value.EnableStreamCompression;
+            }
+        }
+
+        var stream = enableCompression
+            ? StreamCompression.CompressStream(signaler.Stream)
+            : signaler.Stream;
+
         try
         {
-            await foreach (var chunk in signaler.Stream)
+            await foreach (var chunk in stream)
             {
                 yield return chunk;
             }

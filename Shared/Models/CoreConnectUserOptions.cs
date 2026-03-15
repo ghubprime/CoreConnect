@@ -1,4 +1,4 @@
-﻿using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace CoreConnect.Shared.Models;
@@ -24,4 +24,7 @@ public class CoreConnectUserOptions
 
     [Display(Name = "Theme")]
     public Theme Theme { get; set; }
+
+    [Display(Name = "Enable Stream Compression")]
+    public bool EnableStreamCompression { get; set; }
 }

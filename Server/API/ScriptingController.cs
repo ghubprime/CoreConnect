@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using CoreConnect.Server.Hubs;
@@ -41,6 +41,7 @@ public class ScriptingController : ControllerBase
 
     [ServiceFilter(typeof(ApiAuthorizationFilter))]
     [HttpPost("[action]/{mode}/{deviceID}")]
+    [RequireApiPermission(ApiPermission.ScriptExecute)]
     public async Task<ActionResult<ScriptResult>> ExecuteCommand(string mode, string deviceID)
     {
         if (!Request.Headers.TryGetOrganizationId(out var orgId))

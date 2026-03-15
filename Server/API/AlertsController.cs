@@ -1,8 +1,9 @@
-﻿using CoreConnect.Shared.Extensions;
+using CoreConnect.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using CoreConnect.Server.Auth;
 using CoreConnect.Server.Extensions;
 using CoreConnect.Server.Services;
+using CoreConnect.Shared.Enums;
 using CoreConnect.Shared.Models;
 using System.Text.Json;
 
@@ -31,6 +32,7 @@ public class AlertsController : ControllerBase
     }
 
     [HttpPost("Create")]
+    [RequireApiPermission(ApiPermission.AlertWrite)]
     public async Task<IActionResult> Create(AlertOptions alertOptions)
     {
         if (!Request.Headers.TryGetOrganizationId(out var orgId))
@@ -125,6 +127,7 @@ public class AlertsController : ControllerBase
     }
 
     [HttpDelete("Delete/{alertID}")]
+    [RequireApiPermission(ApiPermission.AlertWrite)]
     public async Task<IActionResult> Delete(string alertID)
     {
         if (!Request.Headers.TryGetOrganizationId(out var orgId))
@@ -149,6 +152,7 @@ public class AlertsController : ControllerBase
     }
 
     [HttpDelete("DeleteAll")]
+    [RequireApiPermission(ApiPermission.AlertWrite)]
     public async Task<IActionResult> DeleteAll()
     {
         if (!Request.Headers.TryGetOrganizationId(out var orgId))

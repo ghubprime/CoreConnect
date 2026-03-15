@@ -1,10 +1,11 @@
-﻿using CoreConnect.Shared.Extensions;
+using CoreConnect.Shared.Extensions;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using CoreConnect.Server.Auth;
 using CoreConnect.Server.Extensions;
 using CoreConnect.Server.Services;
 using CoreConnect.Shared.Entities;
+using CoreConnect.Shared.Enums;
 using CoreConnect.Shared.Models;
 
 namespace CoreConnect.Server.API;
@@ -27,6 +28,7 @@ public class DevicesController : ControllerBase
 
     [HttpGet]
     [ServiceFilter(typeof(ApiAuthorizationFilter))]
+    [RequireApiPermission(ApiPermission.DeviceRead)]
     public IEnumerable<Device> Get()
     {
         if (!Request.Headers.TryGetOrganizationId(out var orgId))
@@ -45,6 +47,7 @@ public class DevicesController : ControllerBase
 
     [ServiceFilter(typeof(ApiAuthorizationFilter))]
     [HttpGet("{id}")]
+    [RequireApiPermission(ApiPermission.DeviceRead)]
     public async Task<ActionResult<Device>> Get(string id)
     {
         if (!Request.Headers.TryGetOrganizationId(out var orgId))
@@ -81,6 +84,7 @@ public class DevicesController : ControllerBase
 
     [HttpPut]
     [ServiceFilter(typeof(ApiAuthorizationFilter))]
+    [RequireApiPermission(ApiPermission.DeviceWrite)]
     public async Task<IActionResult> Update([FromBody] DeviceSetupOptions deviceOptions)
     {
         if (!Request.Headers.TryGetOrganizationId(out var orgId))
