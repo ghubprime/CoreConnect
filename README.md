@@ -1,15 +1,12 @@
-# Remotely
+# CoreConnect
 
 A remote control and remote scripting solution, built with .NET, Blazor, and SignalR Core.
 
-[![Build Status](https://dev.azure.com/immybot/Remotely/_apis/build/status%2Fimmense.Remotely?branchName=master)](https://dev.azure.com/immybot/Remotely/_build/latest?definitionId=2&branchName=master)
-[![Tests](https://github.com/immense/Remotely/actions/workflows/run_tests.yml/badge.svg?branch=master)](https://github.com/immense/Remotely/actions/workflows/run_tests.yml)
+[![Tests](https://github.com/ghubprime/CoreConnect/actions/workflows/run_tests.yml/badge.svg?branch=master)](https://github.com/ghubprime/CoreConnect/actions/workflows/run_tests.yml)
 
 ## Project Links
 
-Subreddit: https://www.reddit.com/r/remotely_app/  
-Docker: https://hub.docker.com/r/immybot/remotely  
-Tutorial: https://www.youtube.com/watch?v=t-TFvr7sZ6M (Thanks, @bmcgonag!)
+GitHub: https://github.com/ghubprime/CoreConnect
 
 ![image](.github/media/ask-remote.png)
 
@@ -17,7 +14,7 @@ Tutorial: https://www.youtube.com/watch?v=t-TFvr7sZ6M (Thanks, @bmcgonag!)
 
 ```
 mkdir -p /var/www/remotely
-wget -q https://raw.githubusercontent.com/immense/Remotely/master/docker-compose/docker-compose.yml
+wget -q https://raw.githubusercontent.com/ghubprime/CoreConnect/master/docker-compose/docker-compose.yml
 docker-compose up -d
 ```
 
@@ -79,7 +76,7 @@ The following steps will configure your Windows 11 machine for building the Remo
   - Link: https://git-scm.com/downloads
 - Install the latest LTS Node:
   - Link: https://nodejs.org/
-- Clone the git repository: `git clone https://github.com/immense/Remotely --recurse`
+- Clone the git repository: `git clone https://github.com/ghubprime/CoreConnect --recurse`
 - When debugging, the agent will use a pre-defined device ID and connect to https://localhost:5001.
 - In development environment, the server will assign all connecting agents to the first organization.
 - The above two allow you to debug the agent and server together, and see your device in the list.
@@ -124,7 +121,7 @@ All other configuration is done in the Server Config page once you're logged in.
 - TrustedCorsOrigins: For cross-origin API requests via JavaScript. The websites listed in this array with be allowed to make requests to the API. This does not grant authentication, which is still required on most endpoints.
 - UseHsts: Whether ASP.NET Core will use HTTP Strict Transport Security.
 - UseHttpLogging: Enables logging for all HTTP requests. Also enables additional log entries in `ClientDownloadsController` regarding the effective scheme, host, and remote IP address as a result of processing forwarded headers.
-  - You must explicitly set a log level for `Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware` for this to work. See the [appsettings.json](https://github.com/immense/Remotely/blob/master/Server/appsettings.json) for an example.
+  - You must explicitly set a log level for `Microsoft.AspNetCore.HttpLogging.HttpLoggingMiddleware` for this to work. See the [appsettings.json](https://github.com/ghubprime/CoreConnect/blob/master/Server/appsettings.json) for an example.
 
 ## Changing the Database
 
@@ -284,7 +281,7 @@ Register-ScheduledJob -ScriptBlock {
                 "ApiRequestUrl": null,
                 "EmailBody": "Low hard drive space for device Maker.",
                 "EmailSubject": "Hard Drive Space Alert",
-                "EmailTo": "translucency_software@outlook.com",
+                "EmailTo": "REPLACEME@tempemail.com",
                 "ShouldAlert": true,
                 "ShouldEmail": true,
                 "ShouldSendApiRequest": false

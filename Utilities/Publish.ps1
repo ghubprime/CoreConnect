@@ -5,7 +5,7 @@
    Publishes the Remotely clients.
    To deploy the server, supply the following arguments: -rid win-x64 -outdir path\to\dir -hostname https://mysite.mydomain.com
 .COPYRIGHT
-   Copyright 2023 Immense Networks.  All rights reserved.
+   Copyright 2026 CtrlTower.  All rights reserved.
 .EXAMPLE
    Run it from the Utilities folder (located in the solution directory).
    Or run "powershell -f Publish.ps1 -rid win-x64 -outdir path\to\dir -hostname https://mysite.mydomain.com

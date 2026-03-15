@@ -1,4 +1,4 @@
-﻿FROM ubuntu:jammy
+FROM ubuntu:jammy
 
 EXPOSE 5000
 
@@ -21,7 +21,7 @@ RUN \
 RUN \
   mkdir -p /app && \
   mkdir /config && \
-  wget -q https://github.com/immense/Remotely/releases/latest/download/Remotely_Server_Linux-x64.zip && \
+  wget -q https://github.com/ghubprime/CoreConnect/releases/latest/download/Remotely_Server_Linux-x64.zip && \
   unzip -o Remotely_Server_Linux-x64.zip -d /app && \
   rm Remotely_Server_Linux-x64.zip
 

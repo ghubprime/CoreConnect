@@ -11,7 +11,7 @@ networks:
 
 services:
   remotely:
-    image: immybot/remotely:latest
+    image: coreconnect:latest
     container_name: remotely
     volumes:
       - /var/www/remotely:/app/AppData
