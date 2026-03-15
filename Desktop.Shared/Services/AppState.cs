@@ -1,11 +1,11 @@
-using Remotely.Desktop.Shared.Enums;
-using Remotely.Desktop.Shared.Messages;
-using Remotely.Shared.Models;
+﻿using CoreConnect.Desktop.Shared.Enums;
+using CoreConnect.Desktop.Shared.Messages;
+using CoreConnect.Shared.Models;
 using Microsoft.Extensions.Logging;
 using Bitbound.SimpleMessenger;
 using System.Collections.Concurrent;
 
-namespace Remotely.Desktop.Shared.Services;
+namespace CoreConnect.Desktop.Shared.Services;
 
 public interface IAppState
 {

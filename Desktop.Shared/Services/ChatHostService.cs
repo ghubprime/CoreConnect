@@ -1,10 +1,10 @@
-﻿using Remotely.Desktop.Shared.Abstractions;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
 using Microsoft.Extensions.Logging;
-using Remotely.Shared.Models;
+using CoreConnect.Shared.Models;
 using System.IO.Pipes;
 using System.Text.Json;
 
-namespace Remotely.Desktop.Shared.Services;
+namespace CoreConnect.Desktop.Shared.Services;
 
 public interface IChatHostService
 {

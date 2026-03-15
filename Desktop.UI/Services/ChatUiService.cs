@@ -1,9 +1,9 @@
-using Remotely.Desktop.Shared.Abstractions;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
 using System.ComponentModel;
-using Remotely.Desktop.UI.Controls.Dialogs;
-using Remotely.Shared.Models;
+using CoreConnect.Desktop.UI.Controls.Dialogs;
+using CoreConnect.Shared.Models;
 
-namespace Remotely.Desktop.UI.Services;
+namespace CoreConnect.Desktop.UI.Services;
 
 public class ChatUiService : IChatUiService
 {

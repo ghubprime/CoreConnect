@@ -1,15 +1,15 @@
 ﻿using System.Collections.Concurrent;
-using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Shared.Models;
+using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Shared.Models;
 using Microsoft.Extensions.Logging;
-using Remotely.Shared.Helpers;
-using Remotely.Shared.Models.Dtos;
-using Remotely.Desktop.Shared.ViewModels;
+using CoreConnect.Shared.Helpers;
+using CoreConnect.Shared.Models.Dtos;
+using CoreConnect.Desktop.Shared.ViewModels;
 using Microsoft.AspNetCore.SignalR.Client;
-using Remotely.Shared.Services;
-using Remotely.Desktop.Native.Windows;
+using CoreConnect.Shared.Services;
+using CoreConnect.Desktop.Native.Windows;
 
-namespace Remotely.Desktop.Shared.Services;
+namespace CoreConnect.Desktop.Shared.Services;
 
 public interface IViewer : IDisposable
 {

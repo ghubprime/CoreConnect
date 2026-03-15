@@ -1,9 +1,9 @@
-﻿using Remotely.Server.Hubs;
-using Remotely.Shared.Entities;
-using Remotely.Shared.Enums;
-using Remotely.Shared.Utilities;
+﻿using CoreConnect.Server.Hubs;
+using CoreConnect.Shared.Entities;
+using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Utilities;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 public interface IScriptScheduleDispatcher
 {

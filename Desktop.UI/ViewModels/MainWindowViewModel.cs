@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Remotely.Desktop.Shared.Services;
+using CoreConnect.Desktop.Shared.Services;
 
-namespace Remotely.Desktop.UI.ViewModels;
+namespace CoreConnect.Desktop.UI.ViewModels;
 
 public interface IMainWindowViewModel : IBrandedViewModelBase
 {

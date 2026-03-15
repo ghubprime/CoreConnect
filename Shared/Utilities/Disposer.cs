@@ -1,4 +1,4 @@
-﻿namespace Remotely.Shared.Utilities;
+﻿namespace CoreConnect.Shared.Utilities;
 
 public static class Disposer
 {

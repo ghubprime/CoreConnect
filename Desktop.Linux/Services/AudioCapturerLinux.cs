@@ -1,6 +1,6 @@
-using Remotely.Desktop.Shared.Abstractions;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
 
-namespace Remotely.Desktop.Linux.Services;
+namespace CoreConnect.Desktop.Linux.Services;
 
 public class AudioCapturerLinux : IAudioCapturer
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Remotely.Agent.Interfaces;
-using Remotely.Shared.Dtos;
-using Remotely.Shared.Enums;
+using CoreConnect.Agent.Interfaces;
+using CoreConnect.Shared.Dtos;
+using CoreConnect.Shared.Enums;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Remotely.Agent.Services;
+namespace CoreConnect.Agent.Services;
 
 public interface IExternalScriptingShell : IDisposable, IScriptingShell
 {

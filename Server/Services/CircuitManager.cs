@@ -1,8 +1,8 @@
-﻿using Remotely.Server.Hubs;
+﻿using CoreConnect.Server.Hubs;
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 public interface ICircuitManager
 {

@@ -1,18 +1,18 @@
-﻿using Remotely.Shared.Models;
+﻿using CoreConnect.Shared.Models;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Remotely.Server.Data;
-using Remotely.Server.Extensions;
-using Remotely.Server.Models;
-using Remotely.Shared;
-using Remotely.Shared.Dtos;
-using Remotely.Shared.Entities;
-using Remotely.Shared.Utilities;
-using Remotely.Shared.ViewModels;
+using CoreConnect.Server.Data;
+using CoreConnect.Server.Extensions;
+using CoreConnect.Server.Models;
+using CoreConnect.Shared;
+using CoreConnect.Shared.Dtos;
+using CoreConnect.Shared.Entities;
+using CoreConnect.Shared.Utilities;
+using CoreConnect.Shared.ViewModels;
 using System.Text.Json;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 // TODO: Separate this into domain-specific services.
 public interface IDataService
@@ -70,11 +70,11 @@ public interface IDataService
 
     bool DoesUserExist(string userName);
 
-    bool DoesUserHaveAccessToDevice(string deviceId, RemotelyUser remotelyUser);
+    bool DoesUserHaveAccessToDevice(string deviceId, CoreConnectUser coreconnectUser);
 
-    bool DoesUserHaveAccessToDevice(string deviceId, string remotelyUserId);
+    bool DoesUserHaveAccessToDevice(string deviceId, string coreconnectUserId);
 
-    string[] FilterDeviceIdsByUserPermission(string[] deviceIds, RemotelyUser remotelyUser);
+    string[] FilterDeviceIdsByUserPermission(string[] deviceIds, CoreConnectUser coreconnectUser);
 
     string[] FilterUsersByDevicePermission(IEnumerable<string> userIds, string deviceId);
 
@@ -96,9 +96,9 @@ public interface IDataService
 
     ScriptResult[] GetAllScriptResultsForUser(string orgId, string userName);
 
-    RemotelyUser[] GetAllUsersForServer();
+    CoreConnectUser[] GetAllUsersForServer();
 
-    Task<RemotelyUser[]> GetAllUsersInOrganization(string orgId);
+    Task<CoreConnectUser[]> GetAllUsersInOrganization(string orgId);
 
     Task<Result<ApiToken>> GetApiKey(string keyId);
 
@@ -114,7 +114,7 @@ public interface IDataService
 
     int GetDeviceCount();
 
-    int GetDeviceCount(RemotelyUser user);
+    int GetDeviceCount(CoreConnectUser user);
 
     Task<Result<DeviceGroup>> GetDeviceGroup(
         string deviceGroupId,
@@ -166,13 +166,13 @@ public interface IDataService
 
     int GetTotalDevices();
 
-    Task<Result<RemotelyUser>> GetUserById(string userId);
+    Task<Result<CoreConnectUser>> GetUserById(string userId);
 
-    Task<Result<RemotelyUser>> GetUserByName(
+    Task<Result<CoreConnectUser>> GetUserByName(
         string userName, 
-        Action<IQueryable<RemotelyUser>>? queryBuilder = null);
+        Action<IQueryable<CoreConnectUser>>? queryBuilder = null);
 
-    Task<Result<RemotelyUserOptions>> GetUserOptions(string userName);
+    Task<Result<CoreConnectUserOptions>> GetUserOptions(string userName);
 
     Task<Result> JoinViaInvitation(string userName, string inviteId);
 
@@ -188,7 +188,7 @@ public interface IDataService
 
     Task SetAllDevicesNotOnline();
 
-    Task SetDisplayName(RemotelyUser user, string displayName);
+    Task SetDisplayName(CoreConnectUser user, string displayName);
 
     Task SetIsDefaultOrganization(string orgId, bool isDefault);
 
@@ -211,7 +211,7 @@ public interface IDataService
 
     Task UpdateTags(string deviceID, string tags);
 
-    Task<Result> UpdateUserOptions(string userName, RemotelyUserOptions options);
+    Task<Result> UpdateUserOptions(string userName, CoreConnectUserOptions options);
     Task<bool> ValidateApiKey(string keyId, string apiSecret, string requestPath, string remoteIP);
 }
 
@@ -749,17 +749,17 @@ public class DataService : IDataService
 
         try
         {
-            var user = new RemotelyUser()
+            var user = new CoreConnectUser()
             {
                 UserName = userEmail.Trim().ToLower(),
                 Email = userEmail.Trim().ToLower(),
                 IsAdministrator = isAdmin,
                 OrganizationID = organizationId,
-                UserOptions = new RemotelyUserOptions(),
+                UserOptions = new CoreConnectUserOptions(),
                 LockoutEnabled = true
             };
             var org = dbContext.Organizations
-                .Include(x => x.RemotelyUsers)
+                .Include(x => x.CoreConnectUsers)
                 .FirstOrDefault(x => x.ID == organizationId);
 
             if (org is null)
@@ -768,7 +768,7 @@ public class DataService : IDataService
             }
 
             dbContext.Users.Add(user);
-            org.RemotelyUsers.Add(user);
+            org.CoreConnectUsers.Add(user);
             await dbContext.SaveChangesAsync();
             return Result.Ok();
         }
@@ -950,7 +950,7 @@ public class DataService : IDataService
 
         var org = dbContext
             .Organizations
-            .Include(x => x.RemotelyUsers)
+            .Include(x => x.CoreConnectUsers)
             .FirstOrDefault(x => x.ID == orgId);
 
         if (org is null)
@@ -1015,9 +1015,9 @@ public class DataService : IDataService
             .Any(x => x.UserName!.Trim().ToLower() == userName.Trim().ToLower());
     }
 
-    public bool DoesUserHaveAccessToDevice(string deviceId, RemotelyUser remotelyUser)
+    public bool DoesUserHaveAccessToDevice(string deviceId, CoreConnectUser coreconnectUser)
     {
-        if (remotelyUser is null)
+        if (coreconnectUser is null)
         {
             return false;
         }
@@ -1028,29 +1028,29 @@ public class DataService : IDataService
             .Include(x => x.DeviceGroup)
             .ThenInclude(x => x!.Users)
             .Any(device => 
-                device.OrganizationID == remotelyUser.OrganizationID &&
+                device.OrganizationID == coreconnectUser.OrganizationID &&
                 device.ID == deviceId &&
                 (
-                    remotelyUser.IsAdministrator ||
-                    device.DeviceGroup!.Users.Any(user => user.Id == remotelyUser.Id
+                    coreconnectUser.IsAdministrator ||
+                    device.DeviceGroup!.Users.Any(user => user.Id == coreconnectUser.Id
                 )));
     }
 
-    public bool DoesUserHaveAccessToDevice(string deviceId, string remotelyUserId)
+    public bool DoesUserHaveAccessToDevice(string deviceId, string coreconnectUserId)
     {
         using var dbContext = _appDbFactory.GetContext();
 
-        var remotelyUser = dbContext.Users.Find(remotelyUserId);
+        var coreconnectUser = dbContext.Users.Find(coreconnectUserId);
 
-        if (remotelyUser is null)
+        if (coreconnectUser is null)
         {
             return false;
         }
 
-        return DoesUserHaveAccessToDevice(deviceId, remotelyUser);
+        return DoesUserHaveAccessToDevice(deviceId, coreconnectUser);
     }
 
-    public string[] FilterDeviceIdsByUserPermission(string[] deviceIds, RemotelyUser remotelyUser)
+    public string[] FilterDeviceIdsByUserPermission(string[] deviceIds, CoreConnectUser coreconnectUser)
     {
         using var dbContext = _appDbFactory.GetContext();
 
@@ -1058,11 +1058,11 @@ public class DataService : IDataService
             .Include(x => x.DeviceGroup)
             .ThenInclude(x => x!.Users)
             .Where(device =>
-                device.OrganizationID == remotelyUser.OrganizationID &&
+                device.OrganizationID == coreconnectUser.OrganizationID &&
                 deviceIds.Contains(device.ID) &&
                 (
-                    remotelyUser.IsAdministrator ||
-                    device.DeviceGroup!.Users.Any(user => user.Id == remotelyUser.Id
+                    coreconnectUser.IsAdministrator ||
+                    device.DeviceGroup!.Users.Any(user => user.Id == coreconnectUser.Id
                 )))
             .Select(x => x.ID)
             .ToArray();
@@ -1190,7 +1190,7 @@ public class DataService : IDataService
             .ToArray();
     }
 
-    public RemotelyUser[] GetAllUsersForServer()
+    public CoreConnectUser[] GetAllUsersForServer()
     {
         using var dbContext = _appDbFactory.GetContext();
 
@@ -1199,26 +1199,26 @@ public class DataService : IDataService
             .ToArray();
     }
 
-    public async Task<RemotelyUser[]> GetAllUsersInOrganization(string orgId)
+    public async Task<CoreConnectUser[]> GetAllUsersInOrganization(string orgId)
     {
         if (string.IsNullOrWhiteSpace(orgId))
         {
-            return Array.Empty<RemotelyUser>();
+            return Array.Empty<CoreConnectUser>();
         }
 
         using var dbContext = _appDbFactory.GetContext();
 
         var organization = await dbContext.Organizations
             .AsNoTracking()
-            .Include(x => x.RemotelyUsers)
+            .Include(x => x.CoreConnectUsers)
             .FirstOrDefaultAsync(x => x.ID == orgId);
 
         if (organization is null)
         {
-            return Array.Empty<RemotelyUser>();
+            return Array.Empty<CoreConnectUser>();
         }
 
-        return organization.RemotelyUsers.ToArray();
+        return organization.CoreConnectUsers.ToArray();
     }
 
     public async Task<Result<ApiToken>> GetApiKey(string keyId)
@@ -1334,7 +1334,7 @@ public class DataService : IDataService
         return dbContext.Devices.Count();
     }
 
-    public int GetDeviceCount(RemotelyUser user)
+    public int GetDeviceCount(CoreConnectUser user)
     {
         using var dbContext = _appDbFactory.GetContext();
 
@@ -1770,11 +1770,11 @@ public class DataService : IDataService
         return dbContext.Devices.Count();
     }
 
-    public async Task<Result<RemotelyUser>> GetUserById(string userId)
+    public async Task<Result<CoreConnectUser>> GetUserById(string userId)
     {
         if (string.IsNullOrWhiteSpace(userId))
         {
-            return Result.Fail<RemotelyUser>("User ID cannot be empty.");
+            return Result.Fail<CoreConnectUser>("User ID cannot be empty.");
         }
         using var dbContext = _appDbFactory.GetContext();
 
@@ -1784,18 +1784,18 @@ public class DataService : IDataService
 
         if (user is null)
         {
-            return Result.Fail<RemotelyUser>("User not found.");
+            return Result.Fail<CoreConnectUser>("User not found.");
         }
         return Result.Ok(user);
     }
 
-    public async Task<Result<RemotelyUser>> GetUserByName(
+    public async Task<Result<CoreConnectUser>> GetUserByName(
         string userName,
-        Action<IQueryable<RemotelyUser>>? queryBuilder = null)
+        Action<IQueryable<CoreConnectUser>>? queryBuilder = null)
     {
         if (string.IsNullOrWhiteSpace(userName))
         {
-            return Result.Fail<RemotelyUser>("Username cannot be empty.");
+            return Result.Fail<CoreConnectUser>("Username cannot be empty.");
         }
 
         using var dbContext = _appDbFactory.GetContext();
@@ -1808,12 +1808,12 @@ public class DataService : IDataService
 
         if (user is null)
         {
-            return Result.Fail<RemotelyUser>("User not found.");
+            return Result.Fail<CoreConnectUser>("User not found.");
         }
         return Result.Ok(user);
     }
 
-    public async Task<Result<RemotelyUserOptions>> GetUserOptions(string userName)
+    public async Task<Result<CoreConnectUserOptions>> GetUserOptions(string userName)
     {
         using var dbContext = _appDbFactory.GetContext();
 
@@ -1823,7 +1823,7 @@ public class DataService : IDataService
 
         if (user is null)
         {
-            return Result.Fail<RemotelyUserOptions>("User not found.");
+            return Result.Fail<CoreConnectUserOptions>("User not found.");
         }
         return Result.Ok(user.UserOptions ?? new());
     }
@@ -1860,7 +1860,7 @@ public class DataService : IDataService
         }
 
         var organization = await dbContext.Organizations
-            .Include(x => x.RemotelyUsers)
+            .Include(x => x.CoreConnectUsers)
             .FirstOrDefaultAsync(x => x.ID == invite.OrganizationID);
 
         if (organization is null)
@@ -1871,7 +1871,7 @@ public class DataService : IDataService
         user.Organization = organization;
         user.OrganizationID = organization.ID;
         user.IsAdministrator = invite.IsAdmin;
-        organization.RemotelyUsers.Add(user);
+        organization.CoreConnectUsers.Add(user);
 
         await dbContext.SaveChangesAsync();
 
@@ -2009,7 +2009,7 @@ public class DataService : IDataService
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task SetDisplayName(RemotelyUser user, string displayName)
+    public async Task SetDisplayName(CoreConnectUser user, string displayName)
     {
         using var dbContext = _appDbFactory.GetContext();
 
@@ -2213,7 +2213,7 @@ public class DataService : IDataService
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<Result> UpdateUserOptions(string userName, RemotelyUserOptions options)
+    public async Task<Result> UpdateUserOptions(string userName, CoreConnectUserOptions options)
     {
         using var dbContext = _appDbFactory.GetContext();
 

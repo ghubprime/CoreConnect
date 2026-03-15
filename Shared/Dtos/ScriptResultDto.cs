@@ -1,6 +1,6 @@
-﻿using Remotely.Shared.DtoEntityBases;
+﻿using CoreConnect.Shared.DtoEntityBases;
 
-namespace Remotely.Shared.Dtos;
+namespace CoreConnect.Shared.Dtos;
 
 public class ScriptResultDto : ScriptResultBase
 {

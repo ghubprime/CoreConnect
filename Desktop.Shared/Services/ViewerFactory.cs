@@ -1,9 +1,9 @@
-﻿using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Shared.Services;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Shared.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Remotely.Desktop.Shared.Services;
+namespace CoreConnect.Desktop.Shared.Services;
 
 internal interface IViewerFactory
 {

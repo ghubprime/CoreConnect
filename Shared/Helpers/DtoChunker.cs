@@ -1,9 +1,9 @@
-﻿using Remotely.Shared.Models.Dtos;
+﻿using CoreConnect.Shared.Models.Dtos;
 using MessagePack;
 using Microsoft.Extensions.Caching.Memory;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Remotely.Shared.Helpers;
+namespace CoreConnect.Shared.Helpers;
 
 public static class DtoChunker
 {

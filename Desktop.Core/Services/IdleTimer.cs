@@ -1,9 +1,9 @@
-﻿using Remotely.Shared.Utilities;
+﻿using CoreConnect.Shared.Utilities;
 using System;
 using System.Collections.Concurrent;
 using System.Timers;
 
-namespace Remotely.Desktop.Core.Services
+namespace CoreConnect.Desktop.Core.Services
 {
     public class IdleTimer
     {

@@ -1,4 +1,4 @@
-﻿namespace Remotely.Server.Services.Stores;
+﻿namespace CoreConnect.Server.Services.Stores;
 
 public interface ISelectedCardsStore
 {

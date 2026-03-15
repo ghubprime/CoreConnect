@@ -1,4 +1,4 @@
-﻿namespace Remotely.Server.Auth;
+﻿namespace CoreConnect.Server.Auth;
 
 public static class PolicyNames
 {

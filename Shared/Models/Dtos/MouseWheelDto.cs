@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Remotely.Shared.Models.Dtos;
+namespace CoreConnect.Shared.Models.Dtos;
 
 [DataContract]
 public class MouseWheelDto

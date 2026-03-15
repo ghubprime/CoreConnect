@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System.Threading.Tasks;
 
-namespace Remotely.Agent.Interfaces;
+namespace CoreConnect.Agent.Interfaces;
 
 public interface IAppLauncher
 {

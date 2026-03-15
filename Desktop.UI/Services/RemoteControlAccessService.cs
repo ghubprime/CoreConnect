@@ -1,8 +1,8 @@
-using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Shared.Enums;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Shared.Enums;
 using Microsoft.Extensions.Logging;
 
-namespace Remotely.Desktop.UI.Services;
+namespace CoreConnect.Desktop.UI.Services;
 
 public class RemoteControlAccessService : IRemoteControlAccessService
 {

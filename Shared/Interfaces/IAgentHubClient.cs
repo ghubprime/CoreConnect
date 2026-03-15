@@ -1,6 +1,6 @@
-﻿using Remotely.Shared.Enums;
+﻿using CoreConnect.Shared.Enums;
 
-namespace Remotely.Shared.Interfaces;
+namespace CoreConnect.Shared.Interfaces;
 public interface IAgentHubClient
 {
     Task ChangeWindowsSession(

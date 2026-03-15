@@ -1,6 +1,6 @@
-﻿using Remotely.Shared.Enums;
+﻿using CoreConnect.Shared.Enums;
 
-namespace Remotely.Shared.ViewModels;
+namespace CoreConnect.Shared.ViewModels;
 
 public class ChatHistoryItem
 {

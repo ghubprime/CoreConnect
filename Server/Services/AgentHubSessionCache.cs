@@ -1,8 +1,8 @@
-﻿using Remotely.Shared.Entities;
+﻿using CoreConnect.Shared.Entities;
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 public interface IAgentHubSessionCache
 {

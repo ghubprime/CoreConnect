@@ -1,6 +1,6 @@
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace Remotely.Desktop.Native.Windows;
+namespace CoreConnect.Desktop.Native.Windows;
 
 public static class Kernel32
 {

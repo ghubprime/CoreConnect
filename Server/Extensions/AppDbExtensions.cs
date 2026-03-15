@@ -1,8 +1,8 @@
-﻿using Remotely.Server.Data;
-using Remotely.Server.Models;
+﻿using CoreConnect.Server.Data;
+using CoreConnect.Server.Models;
 using System.Text.Json;
 
-namespace Remotely.Server.Extensions;
+namespace CoreConnect.Server.Extensions;
 
 public static class AppDbExtensions
 {

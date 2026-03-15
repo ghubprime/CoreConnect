@@ -1,4 +1,4 @@
-﻿namespace Remotely.Server.Data;
+﻿namespace CoreConnect.Server.Data;
 
 public interface IAppDbFactory
 {

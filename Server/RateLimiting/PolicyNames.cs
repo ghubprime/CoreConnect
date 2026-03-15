@@ -1,4 +1,4 @@
-﻿namespace Remotely.Server.RateLimiting;
+﻿namespace CoreConnect.Server.RateLimiting;
 
 public static class PolicyNames
 {

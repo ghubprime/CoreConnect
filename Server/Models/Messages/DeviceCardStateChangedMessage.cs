@@ -1,5 +1,5 @@
-﻿using Remotely.Server.Enums;
+﻿using CoreConnect.Server.Enums;
 
-namespace Remotely.Server.Models.Messages;
+namespace CoreConnect.Server.Models.Messages;
 
 public record DeviceCardStateChangedMessage(string DeviceId, DeviceCardState State);

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
-using Remotely.Shared.Entities;
+using CoreConnect.Shared.Entities;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 public interface IAuthService
 {
     Task<bool> IsAuthenticated();
-    Task<Result<RemotelyUser>> GetUser();
+    Task<Result<CoreConnectUser>> GetUser();
 }
 
 public class AuthService : IAuthService
@@ -28,7 +28,7 @@ public class AuthService : IAuthService
         return principal?.User?.Identity?.IsAuthenticated ?? false;
     }
 
-    public async Task<Result<RemotelyUser>> GetUser()
+    public async Task<Result<CoreConnectUser>> GetUser()
     {
         var principal = await _authProvider.GetAuthenticationStateAsync();
 
@@ -37,6 +37,6 @@ public class AuthService : IAuthService
             return await _dataService.GetUserByName($"{principal.User.Identity.Name}");
         }
 
-        return Result.Fail<RemotelyUser>("Not authenticated.");
+        return Result.Fail<CoreConnectUser>("Not authenticated.");
     }
 }

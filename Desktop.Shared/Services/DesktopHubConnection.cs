@@ -1,17 +1,17 @@
-﻿using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Desktop.Shared.Messages;
-using Remotely.Shared.Enums;
-using Remotely.Shared.Interfaces;
-using Remotely.Shared.Models;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Desktop.Shared.Messages;
+using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Interfaces;
+using CoreConnect.Shared.Models;
 using Bitbound.SimpleMessenger;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Remotely.Shared.Primitives;
+using CoreConnect.Shared.Primitives;
 using System.Diagnostics;
-using Remotely.Desktop.Native.Windows;
+using CoreConnect.Desktop.Native.Windows;
 
-namespace Remotely.Desktop.Shared.Services;
+namespace CoreConnect.Desktop.Shared.Services;
 
 public interface IDesktopHubConnection
 {

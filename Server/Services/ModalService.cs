@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Remotely.Server.Models;
+using CoreConnect.Server.Models;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 public interface IModalService
 {

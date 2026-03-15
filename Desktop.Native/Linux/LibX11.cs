@@ -26,7 +26,7 @@ in this Software without prior written authorization from The Open Group.
 
 using System.Runtime.InteropServices;
 
-namespace Remotely.Desktop.Native.Linux;
+namespace CoreConnect.Desktop.Native.Linux;
 
 public static unsafe class LibX11
 {

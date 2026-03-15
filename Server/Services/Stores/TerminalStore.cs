@@ -1,7 +1,7 @@
-﻿using Remotely.Shared.ViewModels;
+﻿using CoreConnect.Shared.ViewModels;
 using System.Collections.Concurrent;
 
-namespace Remotely.Server.Services.Stores;
+namespace CoreConnect.Server.Services.Stores;
 
 public interface ITerminalStore
 {

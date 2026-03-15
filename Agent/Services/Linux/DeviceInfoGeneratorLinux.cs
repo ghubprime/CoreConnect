@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using Remotely.Agent.Interfaces;
-using Remotely.Shared.Dtos;
-using Remotely.Shared.Services;
+using CoreConnect.Agent.Interfaces;
+using CoreConnect.Shared.Dtos;
+using CoreConnect.Shared.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Remotely.Agent.Services.Linux;
+namespace CoreConnect.Agent.Services.Linux;
 
 public class DeviceInfoGeneratorLinux : DeviceInfoGeneratorBase, IDeviceInformationService
 {

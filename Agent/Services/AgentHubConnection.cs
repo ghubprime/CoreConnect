@@ -2,12 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Remotely.Agent.Extensions;
-using Remotely.Agent.Interfaces;
-using Remotely.Shared;
-using Remotely.Shared.Enums;
-using Remotely.Shared.Interfaces;
-using Remotely.Shared.Models;
+using CoreConnect.Agent.Extensions;
+using CoreConnect.Agent.Interfaces;
+using CoreConnect.Shared;
+using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Interfaces;
+using CoreConnect.Shared.Models;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -18,9 +18,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using Timer = System.Timers.Timer;
-using Remotely.Desktop.Native.Windows;
+using CoreConnect.Desktop.Native.Windows;
 
-namespace Remotely.Agent.Services;
+namespace CoreConnect.Agent.Services;
 
 public interface IAgentHubConnection : IAgentHubClient
 {
@@ -482,7 +482,7 @@ public class AgentHubConnection : IAgentHubConnection, IDisposable
 
             _logger.LogInformation("File upload started by {requesterID}.", requesterId);
 
-            var sharedFilePath = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), "RemotelySharedFiles")).FullName;
+            var sharedFilePath = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), "CoreConnectSharedFiles")).FullName;
 
             foreach (var fileID in fileIds)
             {

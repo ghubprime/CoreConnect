@@ -1,8 +1,8 @@
-using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Shared.Models;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Shared.Models;
 using System.Drawing;
 
-namespace Remotely.Desktop.Linux.Services;
+namespace CoreConnect.Desktop.Linux.Services;
 
 public class CursorIconWatcherLinux : ICursorIconWatcher
 {

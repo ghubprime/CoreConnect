@@ -1,6 +1,6 @@
-﻿using Remotely.Shared.Enums;
+﻿using CoreConnect.Shared.Enums;
 
-namespace Remotely.Shared.Utilities;
+namespace CoreConnect.Shared.Utilities;
 
 // TODO: Make instanced and put behind interface.
 public static class EnvironmentHelper
@@ -12,10 +12,10 @@ public static class EnvironmentHelper
             switch (Platform)
             {
                 case Platform.Windows:
-                    return "Remotely_Agent.exe";
+                    return "CoreConnect_Agent.exe";
                 case Platform.Linux:
                 case Platform.MacOS:
-                    return "Remotely_Agent";
+                    return "CoreConnect_Agent";
                 default:
                     throw new PlatformNotSupportedException();
             }
@@ -29,10 +29,10 @@ public static class EnvironmentHelper
             switch (Platform)
             {
                 case Platform.Windows:
-                    return "Remotely_Desktop.exe";
+                    return "CoreConnect_Desktop.exe";
                 case Platform.Linux:
                 case Platform.MacOS:
-                    return "Remotely_Desktop";
+                    return "CoreConnect_Desktop";
                 default:
                     throw new PlatformNotSupportedException();
             }

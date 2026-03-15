@@ -1,6 +1,6 @@
-﻿using Remotely.Shared.Enums;
+﻿using CoreConnect.Shared.Enums;
 
-namespace Remotely.Server.Models;
+namespace CoreConnect.Server.Models;
 
 public class SettingsModel
 {

@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 
-namespace Remotely.Desktop.UI.Views;
+namespace CoreConnect.Desktop.UI.Views;
 
 public partial class SessionIndicatorWindow : Window
 {

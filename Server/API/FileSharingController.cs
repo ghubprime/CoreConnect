@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Remotely.Server.Auth;
-using Remotely.Server.Extensions;
-using Remotely.Server.Services;
-using Remotely.Shared;
+using CoreConnect.Server.Auth;
+using CoreConnect.Server.Extensions;
+using CoreConnect.Server.Services;
+using CoreConnect.Shared;
 
-namespace Remotely.Server.API;
+namespace CoreConnect.Server.API;
 
 [Route("api/[controller]")]
 [ApiController]

@@ -1,4 +1,4 @@
-﻿namespace Remotely.Server.Options;
+﻿namespace CoreConnect.Server.Options;
 
 public class ApplicationOptions
 {

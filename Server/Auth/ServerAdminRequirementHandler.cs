@@ -1,9 +1,9 @@
 ﻿#nullable enable
 
 using Microsoft.AspNetCore.Authorization;
-using Remotely.Server.Services;
+using CoreConnect.Server.Services;
 
-namespace Remotely.Server.Auth;
+namespace CoreConnect.Server.Auth;
 
 public class ServerAdminRequirementHandler : AuthorizationHandler<ServerAdminRequirement>
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32.SafeHandles;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using Remotely.Desktop.Native.Windows;
+using CoreConnect.Desktop.Native.Windows;
 
 public static class SECUR32
 {
@@ -28,7 +28,7 @@ public static class SECUR32
     // SECURITY_LOGON_TYPE
     public enum SecurityLogonType
     {
-        Interactive = 2,    // Interactively logged on (locally or remotely)
+        Interactive = 2,    // Interactively logged on (locally or coreconnect)
         Network,        // Accessing system via network
         Batch,          // Started via a batch queue
         Service,        // Service started by service controller

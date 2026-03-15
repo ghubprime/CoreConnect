@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Remotely.Server.Services;
-using Remotely.Shared;
+using CoreConnect.Server.Services;
+using CoreConnect.Shared;
 using System.Net;
 
-namespace Remotely.Server.Auth;
+namespace CoreConnect.Server.Auth;
 
 public class ApiAuthorizationFilter : IAsyncAuthorizationFilter
 {

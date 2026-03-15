@@ -1,18 +1,18 @@
 ﻿#nullable enable
-using Remotely.Server.Services;
+using CoreConnect.Server.Services;
 using Bitbound.SimpleMessenger;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Remotely.Server.Hubs;
-using Remotely.Server.Services.Stores;
-using Remotely.Server.Tests.Mocks;
-using Remotely.Shared.Extensions;
-using Remotely.Shared.Interfaces;
+using CoreConnect.Server.Hubs;
+using CoreConnect.Server.Services.Stores;
+using CoreConnect.Server.Tests.Mocks;
+using CoreConnect.Shared.Extensions;
+using CoreConnect.Shared.Interfaces;
 using System.Threading.Tasks;
 
-namespace Remotely.Server.Tests;
+namespace CoreConnect.Server.Tests;
 
 [TestClass]
 public class CircuitConnectionTests

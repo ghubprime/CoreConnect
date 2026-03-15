@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Remotely.Server.Hubs;
-using Remotely.Server.Models.Messages;
-using Remotely.Server.Services.Stores;
-using Remotely.Shared.Enums;
-using Remotely.Shared.ViewModels;
+using CoreConnect.Server.Hubs;
+using CoreConnect.Server.Models.Messages;
+using CoreConnect.Server.Services.Stores;
+using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.ViewModels;
 
-namespace Remotely.Server.Components.Devices;
+namespace CoreConnect.Server.Components.Devices;
 
 public partial class ChatFrame : AuthComponentBase
 {

@@ -1,11 +1,11 @@
 ﻿using Avalonia.Controls;
-using Remotely.Desktop.Shared.Reactive;
+using CoreConnect.Desktop.Shared.Reactive;
 using Microsoft.Extensions.Logging;
 using System.Windows.Input;
-using Remotely.Desktop.Shared.Services;
+using CoreConnect.Desktop.Shared.Services;
 
 
-namespace Remotely.Desktop.UI.ViewModels;
+namespace CoreConnect.Desktop.UI.ViewModels;
 
 public interface IPromptForAccessWindowViewModel : IBrandedViewModelBase
 {

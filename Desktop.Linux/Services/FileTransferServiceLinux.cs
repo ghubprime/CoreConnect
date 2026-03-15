@@ -1,15 +1,15 @@
-using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Desktop.Shared.Services;
-using Remotely.Desktop.Shared.ViewModels;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Desktop.Shared.Services;
+using CoreConnect.Desktop.Shared.ViewModels;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
-using Remotely.Desktop.UI.Controls.Dialogs;
-using Remotely.Desktop.UI.Views;
-using Remotely.Desktop.UI.Services;
+using CoreConnect.Desktop.UI.Controls.Dialogs;
+using CoreConnect.Desktop.UI.Views;
+using CoreConnect.Desktop.UI.Services;
 using System.Threading;
 using System.IO;
 
-namespace Remotely.Desktop.Linux.Services;
+namespace CoreConnect.Desktop.Linux.Services;
 
 public class FileTransferServiceLinux : IFileTransferService
 {

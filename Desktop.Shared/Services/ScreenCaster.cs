@@ -1,16 +1,16 @@
-using SkiaSharp;
-using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Desktop.Shared.Enums;
-using Remotely.Shared.Models;
+﻿using SkiaSharp;
+using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Desktop.Shared.Enums;
+using CoreConnect.Shared.Models;
 using Microsoft.Extensions.Logging;
-using Remotely.Shared.Helpers;
-using Remotely.Shared.Models.Dtos;
-using Remotely.Shared.Services;
+using CoreConnect.Shared.Helpers;
+using CoreConnect.Shared.Models.Dtos;
+using CoreConnect.Shared.Services;
 using Microsoft.IO;
 using Bitbound.SimpleMessenger;
-using Remotely.Desktop.Shared.Messages;
+using CoreConnect.Desktop.Shared.Messages;
 
-namespace Remotely.Desktop.Shared.Services;
+namespace CoreConnect.Desktop.Shared.Services;
 
 public interface IScreenCaster : IDisposable
 {

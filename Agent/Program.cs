@@ -1,22 +1,22 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Remotely.Agent.Interfaces;
-using Remotely.Agent.Services;
-using Remotely.Shared.Utilities;
-using Remotely.Shared.Services;
+using CoreConnect.Agent.Interfaces;
+using CoreConnect.Agent.Services;
+using CoreConnect.Shared.Utilities;
+using CoreConnect.Shared.Services;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Runtime.Versioning;
-using Remotely.Agent.Services.Linux;
-using Remotely.Agent.Services.MacOS;
-using Remotely.Agent.Services.Windows;
+using CoreConnect.Agent.Services.Linux;
+using CoreConnect.Agent.Services.MacOS;
+using CoreConnect.Agent.Services.Windows;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
 using Microsoft.Win32;
 using System.Reflection;
 
-namespace Remotely.Agent;
+namespace CoreConnect.Agent;
 
 public class Program
 {

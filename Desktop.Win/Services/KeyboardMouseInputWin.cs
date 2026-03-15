@@ -1,15 +1,15 @@
-﻿using Remotely.Desktop.Native.Windows;
-using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Desktop.Shared.Enums;
-using Remotely.Desktop.Shared.Services;
-using Remotely.Desktop.UI.Services;
+﻿using CoreConnect.Desktop.Native.Windows;
+using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Desktop.Shared.Enums;
+using CoreConnect.Desktop.Shared.Services;
+using CoreConnect.Desktop.UI.Services;
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using static Remotely.Desktop.Native.Windows.User32;
+using static CoreConnect.Desktop.Native.Windows.User32;
 
-namespace Remotely.Desktop.Win.Services;
+namespace CoreConnect.Desktop.Win.Services;
 
 [SupportedOSPlatform("windows")]
 public class KeyboardMouseInputWin(

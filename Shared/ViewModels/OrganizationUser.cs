@@ -1,4 +1,4 @@
-﻿namespace Remotely.Shared.ViewModels;
+﻿namespace CoreConnect.Shared.ViewModels;
 
 public class OrganizationUser
 {

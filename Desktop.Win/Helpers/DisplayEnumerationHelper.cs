@@ -1,9 +1,9 @@
-﻿using Remotely.Shared.Models;
+﻿using CoreConnect.Shared.Models;
 using System.Drawing;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
-namespace Remotely.Desktop.Win.Helpers;
+namespace CoreConnect.Desktop.Win.Helpers;
 
 internal static class DisplaysEnumerationHelper
 {

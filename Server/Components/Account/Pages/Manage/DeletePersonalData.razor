@@ -2,10 +2,10 @@
 
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Identity
-@using Remotely.Server.Data
+@using CoreConnect.Server.Data
 
-@inject UserManager<RemotelyUser> UserManager
-@inject SignInManager<RemotelyUser> SignInManager
+@inject UserManager<CoreConnectUser> UserManager
+@inject SignInManager<CoreConnectUser> SignInManager
 @inject IdentityUserAccessor UserAccessor
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<DeletePersonalData> Logger
@@ -40,7 +40,7 @@
 
 @code {
     private string? message;
-    private RemotelyUser user = default!;
+    private CoreConnectUser user = default!;
     private bool requirePassword;
 
     [CascadingParameter]

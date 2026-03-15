@@ -1,14 +1,14 @@
 ﻿using MessagePack;
-using Remotely.Desktop.Core.Enums;
-using Remotely.Desktop.Core.Interfaces;
-using Remotely.Shared.Enums;
-using Remotely.Shared.Models.RemoteControlDtos;
-using Remotely.Shared.Utilities;
+using CoreConnect.Desktop.Core.Enums;
+using CoreConnect.Desktop.Core.Interfaces;
+using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Models.RemoteControlDtos;
+using CoreConnect.Shared.Utilities;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace Remotely.Desktop.Core.Services
+namespace CoreConnect.Desktop.Core.Services
 {
     public interface IDtoMessageHandler
     {

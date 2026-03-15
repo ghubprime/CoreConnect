@@ -1,15 +1,15 @@
-using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Desktop.Shared.Enums;
-using Remotely.Desktop.Shared.Services;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Desktop.Shared.Enums;
+using CoreConnect.Desktop.Shared.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Remotely.Shared.Primitives;
+using CoreConnect.Shared.Primitives;
 using System.CommandLine;
 using System.CommandLine.NamingConventionBinder;
 using System.Runtime.Versioning;
-using Remotely.Desktop.Native.Windows;
+using CoreConnect.Desktop.Native.Windows;
 
-namespace Remotely.Desktop.Shared.Startup;
+namespace CoreConnect.Desktop.Shared.Startup;
 
 public static class IServiceProviderExtensions
 {

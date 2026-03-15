@@ -1,9 +1,9 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using Remotely.Desktop.Shared;
+using CoreConnect.Desktop.Shared;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Remotely.Desktop.UI.Views;
+namespace CoreConnect.Desktop.UI.Views;
 
 public partial class MainWindow : Window
 {

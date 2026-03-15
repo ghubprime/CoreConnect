@@ -5,13 +5,13 @@
 @using System.Text.Encodings.Web
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
-@using Remotely.Server.Data
-@using Remotely.Shared
+@using CoreConnect.Server.Data
+@using CoreConnect.Shared
 
-@inject UserManager<RemotelyUser> UserManager
-@inject IUserStore<RemotelyUser> UserStore
-@inject SignInManager<RemotelyUser> SignInManager
-@inject IEmailSender<RemotelyUser> EmailSender
+@inject UserManager<CoreConnectUser> UserManager
+@inject IUserStore<CoreConnectUser> UserStore
+@inject SignInManager<CoreConnectUser> SignInManager
+@inject IEmailSender<CoreConnectUser> EmailSender
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
@@ -125,10 +125,10 @@ else
         RedirectManager.RedirectTo(ReturnUrl);
     }
 
-    private RemotelyUser CreateUser()
+    private CoreConnectUser CreateUser()
     {
         var organizationCount = DataService.GetOrganizationCount();
-        var user = new RemotelyUser
+        var user = new CoreConnectUser
             {
                 UserName = Input.Email,
                 Email = Input.Email,
@@ -138,7 +138,7 @@ else
                     OrganizationName = string.Empty,
                     IsDefaultOrganization = organizationCount == 0
                 },
-                UserOptions = new RemotelyUserOptions(),
+                UserOptions = new CoreConnectUserOptions(),
                 IsAdministrator = true,
                 LockoutEnabled = true
             };
@@ -151,13 +151,13 @@ else
         return user;
     }
 
-    private IUserEmailStore<RemotelyUser> GetEmailStore()
+    private IUserEmailStore<CoreConnectUser> GetEmailStore()
     {
         if (!UserManager.SupportsUserEmail)
         {
             throw new NotSupportedException("The default UI requires a user store with email support.");
         }
-        return (IUserEmailStore<RemotelyUser>)UserStore;
+        return (IUserEmailStore<CoreConnectUser>)UserStore;
     }
 
     private async Task<bool> IsRegistrationEnabled()

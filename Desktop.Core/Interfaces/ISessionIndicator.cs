@@ -1,4 +1,4 @@
-﻿namespace Remotely.Desktop.Core.Interfaces
+﻿namespace CoreConnect.Desktop.Core.Interfaces
 {
     public interface ISessionIndicator
     {

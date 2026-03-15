@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Identity;
-using Remotely.Shared.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using CoreConnect.Shared.Entities;
 
-namespace Remotely.Server.Components.Account;
+namespace CoreConnect.Server.Components.Account;
 
-internal sealed class IdentityUserAccessor(UserManager<RemotelyUser> userManager, IdentityRedirectManager redirectManager)
+internal sealed class IdentityUserAccessor(UserManager<CoreConnectUser> userManager, IdentityRedirectManager redirectManager)
 {
-    public async Task<RemotelyUser> GetRequiredUserAsync(HttpContext context)
+    public async Task<CoreConnectUser> GetRequiredUserAsync(HttpContext context)
     {
         var user = await userManager.GetUserAsync(context.User);
 

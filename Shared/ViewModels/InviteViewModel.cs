@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Remotely.Shared.ViewModels;
+namespace CoreConnect.Shared.ViewModels;
 
 public class InviteViewModel
 {

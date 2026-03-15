@@ -1,12 +1,12 @@
-﻿using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Desktop.Shared.Enums;
-using Remotely.Shared.Helpers;
-using Remotely.Shared.Models.Dtos;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Desktop.Shared.Enums;
+using CoreConnect.Shared.Helpers;
+using CoreConnect.Shared.Models.Dtos;
 using MessagePack;
 using Microsoft.Extensions.Logging;
-using Remotely.Desktop.Native.Windows;
+using CoreConnect.Desktop.Native.Windows;
 
-namespace Remotely.Desktop.Shared.Services;
+namespace CoreConnect.Desktop.Shared.Services;
 
 public interface IDtoMessageHandler
 {

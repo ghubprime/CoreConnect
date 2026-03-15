@@ -1,9 +1,9 @@
-using MessagePack;
+﻿using MessagePack;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
-namespace Remotely.Shared.Primitives;
+namespace CoreConnect.Shared.Primitives;
 
 /// <summary>
 /// Describes the success or failure of any kind of operation.

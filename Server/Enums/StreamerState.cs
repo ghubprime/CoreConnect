@@ -1,4 +1,4 @@
-﻿namespace Remotely.Server.Enums;
+﻿namespace CoreConnect.Server.Enums;
 
 [Flags]
 public enum StreamerState

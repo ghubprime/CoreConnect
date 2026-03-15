@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Remotely.Server.Services;
+using CoreConnect.Server.Services;
 
-namespace Remotely.Server.Filters;
+namespace CoreConnect.Server.Filters;
 
 internal class ViewerAuthorizationFilter(
     IDataService _dataService,

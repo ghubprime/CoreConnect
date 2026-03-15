@@ -1,4 +1,4 @@
-﻿namespace Remotely.Shared.Extensions;
+﻿namespace CoreConnect.Shared.Extensions;
 
 public static class TaskExtensions
 {

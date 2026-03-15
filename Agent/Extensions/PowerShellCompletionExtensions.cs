@@ -1,9 +1,9 @@
-﻿using Remotely.Shared.Models;
-using Remotely.Shared.Utilities;
+﻿using CoreConnect.Shared.Models;
+using CoreConnect.Shared.Utilities;
 using System.Linq;
 using System.Management.Automation;
 
-namespace Remotely.Agent.Extensions;
+namespace CoreConnect.Agent.Extensions;
 
 public static class PowerShellCompletionExtensions
 {

@@ -1,4 +1,4 @@
-﻿namespace Remotely.Server.Extensions;
+﻿namespace CoreConnect.Server.Extensions;
 
 public static class IApplicationBuilderExtensions
 {

@@ -1,9 +1,9 @@
-using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Desktop.Shared.Services;
-using Remotely.Desktop.UI.Services;
-using Remotely.Shared.Extensions;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Desktop.Shared.Services;
+using CoreConnect.Desktop.UI.Services;
+using CoreConnect.Shared.Extensions;
 
-namespace Remotely.Desktop.Win.Services;
+namespace CoreConnect.Desktop.Win.Services;
 
 public class ShutdownServiceWin : IShutdownService
 {

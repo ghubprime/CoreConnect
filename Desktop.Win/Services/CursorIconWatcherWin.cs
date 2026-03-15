@@ -1,6 +1,6 @@
-﻿using Remotely.Desktop.Native.Windows;
-using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Shared.Models;
+﻿using CoreConnect.Desktop.Native.Windows;
+using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Shared.Models;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -9,7 +9,7 @@ using System.Runtime.Versioning;
 using System.Timers;
 using Timer = System.Timers.Timer;
 
-namespace Remotely.Desktop.Win.Services;
+namespace CoreConnect.Desktop.Win.Services;
 
 // TODO: Change to IHostedService and emit through IMessenger.
 /// <summary>

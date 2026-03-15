@@ -1,11 +1,11 @@
-﻿using Remotely.Desktop.Shared.Abstractions;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
-using Remotely.Desktop.Shared.Startup;
-using Remotely.Desktop.UI.Startup;
+using CoreConnect.Desktop.Shared.Startup;
+using CoreConnect.Desktop.UI.Startup;
 using System.Runtime.Versioning;
-using Remotely.Desktop.Win.Services;
+using CoreConnect.Desktop.Win.Services;
 
-namespace Remotely.Desktop.Win.Startup;
+namespace CoreConnect.Desktop.Win.Startup;
 
 public static class IServiceCollectionExtensions
 {

@@ -1,6 +1,6 @@
-﻿using Remotely.Shared.Enums;
+﻿using CoreConnect.Shared.Enums;
 
-namespace Remotely.Desktop.Shared.Abstractions;
+namespace CoreConnect.Desktop.Shared.Abstractions;
 
 public interface IRemoteControlAccessService
 {

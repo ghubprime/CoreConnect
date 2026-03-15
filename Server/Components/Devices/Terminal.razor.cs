@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
-using Remotely.Server.Components.ModalContents;
-using Remotely.Server.Hubs;
-using Remotely.Server.Models.Messages;
-using Remotely.Server.Services;
-using Remotely.Server.Services.Stores;
-using Remotely.Shared.Entities;
-using Remotely.Shared.Enums;
-using Remotely.Shared.Models;
-using Remotely.Shared.Utilities;
+using CoreConnect.Server.Components.ModalContents;
+using CoreConnect.Server.Hubs;
+using CoreConnect.Server.Models.Messages;
+using CoreConnect.Server.Services;
+using CoreConnect.Server.Services.Stores;
+using CoreConnect.Shared.Entities;
+using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Models;
+using CoreConnect.Shared.Utilities;
 
-namespace Remotely.Server.Components.Devices;
+namespace CoreConnect.Server.Components.Devices;
 
 public partial class Terminal : AuthComponentBase, IDisposable
 {

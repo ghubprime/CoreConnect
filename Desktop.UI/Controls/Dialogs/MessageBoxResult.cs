@@ -1,4 +1,4 @@
-﻿namespace Remotely.Desktop.UI.Controls.Dialogs;
+﻿namespace CoreConnect.Desktop.UI.Controls.Dialogs;
 
 public enum MessageBoxResult
 {

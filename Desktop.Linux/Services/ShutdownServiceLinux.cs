@@ -1,9 +1,9 @@
-using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Desktop.Shared.Services;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Desktop.Shared.Services;
 using Microsoft.Extensions.Logging;
-using Remotely.Desktop.UI.Services;
+using CoreConnect.Desktop.UI.Services;
 
-namespace Remotely.Desktop.Linux.Services;
+namespace CoreConnect.Desktop.Linux.Services;
 
 public class ShutdownServiceLinux : IShutdownService
 {

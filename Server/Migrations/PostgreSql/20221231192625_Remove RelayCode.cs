@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Remotely.Server.Migrations.PostgreSql;
+namespace CoreConnect.Server.Migrations.PostgreSql;
 
 public partial class RemoveRelayCode : Migration
 {

@@ -1,6 +1,6 @@
-using Microsoft.Extensions.Logging;
-using Remotely.Agent.Interfaces;
-using Remotely.Shared.Utilities;
+﻿using Microsoft.Extensions.Logging;
+using CoreConnect.Agent.Interfaces;
+using CoreConnect.Shared.Utilities;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace Remotely.Agent.Services.MacOS;
+namespace CoreConnect.Agent.Services.MacOS;
 
 public class UpdaterMac : IUpdater
 {
@@ -75,7 +75,7 @@ public class UpdaterMac : IUpdater
             var connectionInfo = _configService.GetConnectionInfo();
             var serverUrl = _configService.GetConnectionInfo().Host;
 
-            var fileUrl = serverUrl + $"/Content/Remotely-MacOS-{_achitecture}.zip";
+            var fileUrl = serverUrl + $"/Content/CoreConnect-MacOS-{_achitecture}.zip";
 
             using var httpClient = _httpClientFactory.CreateClient();
             using var request = new HttpRequestMessage(HttpMethod.Head, fileUrl);
@@ -129,9 +129,9 @@ public class UpdaterMac : IUpdater
 
             _logger.LogInformation("Service Updater: Downloading install package.");
 
-            var zipPath = Path.Combine(Path.GetTempPath(), "RemotelyUpdate.zip");
+            var zipPath = Path.Combine(Path.GetTempPath(), "CoreConnectUpdate.zip");
 
-            var installerPath = Path.Combine(Path.GetTempPath(), "RemotelyUpdate.sh");
+            var installerPath = Path.Combine(Path.GetTempPath(), "CoreConnectUpdate.sh");
 
             await _updateDownloader.DownloadFile(
                    $"{serverUrl}/API/ClientDownloads/MacOSInstaller-{_achitecture}/{connectionInfo.OrganizationID}",

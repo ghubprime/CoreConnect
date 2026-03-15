@@ -1,13 +1,13 @@
-﻿using Remotely.Shared.Extensions;
+﻿using CoreConnect.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Remotely.Server.Auth;
-using Remotely.Server.Extensions;
-using Remotely.Server.Services;
-using Remotely.Shared.Dtos;
+using CoreConnect.Server.Auth;
+using CoreConnect.Server.Extensions;
+using CoreConnect.Server.Services;
+using CoreConnect.Shared.Dtos;
 using System.Text;
 
-namespace Remotely.Server.API;
+namespace CoreConnect.Server.API;
 
 [Route("api/[controller]")]
 [ApiController]

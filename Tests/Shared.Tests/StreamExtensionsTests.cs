@@ -1,7 +1,7 @@
-using System.Security.Cryptography;
-using Remotely.Shared.Extensions;
+﻿using System.Security.Cryptography;
+using CoreConnect.Shared.Extensions;
 
-namespace Remotely.Shared.Tests;
+namespace CoreConnect.Shared.Tests;
 
 [TestClass]
 public class StreamExtensionsTests

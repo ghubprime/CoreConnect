@@ -1,18 +1,18 @@
-﻿using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Desktop.Shared.Services;
-using Remotely.Desktop.Shared.ViewModels;
-using Remotely.Desktop.UI.Controls.Dialogs;
-using Remotely.Desktop.UI.Services;
-using Remotely.Desktop.UI.Views;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Desktop.Shared.Services;
+using CoreConnect.Desktop.Shared.ViewModels;
+using CoreConnect.Desktop.UI.Controls.Dialogs;
+using CoreConnect.Desktop.UI.Services;
+using CoreConnect.Desktop.UI.Views;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime.Versioning;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using Remotely.Shared.Extensions;
+using CoreConnect.Shared.Extensions;
 using System.IO;
 
-namespace Remotely.Desktop.Win.Services;
+namespace CoreConnect.Desktop.Win.Services;
 
 public class FileTransferServiceWin : IFileTransferService
 {

@@ -1,9 +1,9 @@
-﻿using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Desktop.UI.Controls.Dialogs;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Desktop.UI.Controls.Dialogs;
 using Microsoft.Extensions.Logging;
-using Remotely.Desktop.Shared.Services;
+using CoreConnect.Desktop.Shared.Services;
 
-namespace Remotely.Desktop.UI.ViewModels;
+namespace CoreConnect.Desktop.UI.ViewModels;
 
 public interface ISessionIndicatorWindowViewModel : IBrandedViewModelBase
 {

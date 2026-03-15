@@ -1,6 +1,6 @@
-﻿using Remotely.Server.Models;
+﻿using CoreConnect.Server.Models;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 
 /// <summary>

@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using Remotely.Server.Components.Pages;
-using Remotely.Server.Hubs;
-using Remotely.Server.Services;
-using Remotely.Shared.Entities;
-using Remotely.Shared.Enums;
-using Remotely.Shared.Utilities;
+using CoreConnect.Server.Components.Pages;
+using CoreConnect.Server.Hubs;
+using CoreConnect.Server.Services;
+using CoreConnect.Shared.Entities;
+using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Utilities;
 
-namespace Remotely.Server.Components.Scripts;
+namespace CoreConnect.Server.Components.Scripts;
 
 [Authorize]
 public partial class RunScript : AuthComponentBase

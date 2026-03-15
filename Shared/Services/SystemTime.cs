@@ -1,4 +1,4 @@
-﻿namespace Remotely.Shared.Services;
+﻿namespace CoreConnect.Shared.Services;
 
 public interface ISystemTime
 {

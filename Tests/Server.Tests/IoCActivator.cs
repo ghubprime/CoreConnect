@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Remotely.Server.Data;
-using Remotely.Server.Services;
-using Remotely.Shared.Entities;
+using CoreConnect.Server.Data;
+using CoreConnect.Server.Services;
+using CoreConnect.Shared.Entities;
 using System;
 using System.Collections.Generic;
 
-namespace Remotely.Server.Tests;
+namespace CoreConnect.Server.Tests;
 
 [TestClass]
 public class IoCActivator
@@ -35,7 +35,7 @@ public class IoCActivator
             optionsLifetime: ServiceLifetime.Transient);
 
         _builder.Services.
-            AddIdentity<RemotelyUser, IdentityRole>(options => options.Stores.MaxLengthForKeys = 128)
+            AddIdentity<CoreConnectUser, IdentityRole>(options => options.Stores.MaxLengthForKeys = 128)
                 .AddEntityFrameworkStores<AppDb>()
                 .AddDefaultTokenProviders();
 

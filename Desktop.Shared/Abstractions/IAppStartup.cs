@@ -1,4 +1,4 @@
-﻿namespace Remotely.Desktop.Shared.Abstractions;
+﻿namespace CoreConnect.Desktop.Shared.Abstractions;
 
 public interface IAppStartup
 {

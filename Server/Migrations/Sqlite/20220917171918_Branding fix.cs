@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Remotely.Server.Migrations.Sqlite;
+namespace CoreConnect.Server.Migrations.Sqlite;
 
 public partial class Brandingfix : Migration
 {

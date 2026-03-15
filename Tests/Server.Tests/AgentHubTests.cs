@@ -1,16 +1,16 @@
-﻿using Remotely.Server.Hubs;
-using Remotely.Server.Services;
+﻿using CoreConnect.Server.Hubs;
+using CoreConnect.Server.Services;
 using Bitbound.SimpleMessenger;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Remotely.Shared.Extensions;
-using Remotely.Shared.Interfaces;
+using CoreConnect.Shared.Extensions;
+using CoreConnect.Shared.Interfaces;
 using System.Threading.Tasks;
 
-namespace Remotely.Server.Tests;
+namespace CoreConnect.Server.Tests;
 
 [TestClass]
 public class AgentHubTests

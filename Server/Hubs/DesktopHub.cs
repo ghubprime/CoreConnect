@@ -1,11 +1,11 @@
-using Remotely.Server.Enums;
-using Remotely.Server.Models;
-using Remotely.Server.Services;
-using Remotely.Shared.Enums;
-using Remotely.Shared.Interfaces;
+﻿using CoreConnect.Server.Enums;
+using CoreConnect.Server.Models;
+using CoreConnect.Server.Services;
+using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Remotely.Server.Hubs;
+namespace CoreConnect.Server.Hubs;
 
 public class DesktopHub : Hub<IDesktopHubClient>
 {

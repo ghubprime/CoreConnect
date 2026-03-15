@@ -1,7 +1,7 @@
-﻿using Remotely.Server.Enums;
-using Remotely.Server.Models;
+﻿using CoreConnect.Server.Enums;
+using CoreConnect.Server.Models;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 public interface IToastService
 {

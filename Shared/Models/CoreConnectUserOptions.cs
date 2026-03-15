@@ -1,9 +1,9 @@
-﻿using Remotely.Shared.Enums;
+﻿using CoreConnect.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace Remotely.Shared.Models;
+namespace CoreConnect.Shared.Models;
 
-public class RemotelyUserOptions
+public class CoreConnectUserOptions
 {
     [Display(Name = "Display Name")]
     [StringLength(100)]

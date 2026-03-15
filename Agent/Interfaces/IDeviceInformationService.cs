@@ -1,7 +1,7 @@
-﻿using Remotely.Shared.Dtos;
+﻿using CoreConnect.Shared.Dtos;
 using System.Threading.Tasks;
 
-namespace Remotely.Agent.Interfaces;
+namespace CoreConnect.Agent.Interfaces;
 
 public interface IDeviceInformationService
 {

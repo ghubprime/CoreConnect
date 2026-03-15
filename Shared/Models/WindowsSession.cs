@@ -1,6 +1,6 @@
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
-namespace Remotely.Shared.Models;
+namespace CoreConnect.Shared.Models;
 
 [DataContract]
 public enum WindowsSessionType

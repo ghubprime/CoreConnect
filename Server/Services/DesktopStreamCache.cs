@@ -1,8 +1,8 @@
-﻿using Remotely.Server.Models;
+﻿using CoreConnect.Server.Models;
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 public interface IDesktopStreamCache
 {

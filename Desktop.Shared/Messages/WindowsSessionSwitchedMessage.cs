@@ -1,6 +1,6 @@
-﻿using Remotely.Shared.Enums;
+﻿using CoreConnect.Shared.Enums;
 
-namespace Remotely.Desktop.Shared.Messages;
+namespace CoreConnect.Desktop.Shared.Messages;
 
 public class WindowsSessionSwitchedMessage
 {

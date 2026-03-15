@@ -1,8 +1,8 @@
-﻿using Remotely.Desktop.Shared.Abstractions;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
 using NAudio.Wave;
 using System.IO;
 
-namespace Remotely.Desktop.Win.Services;
+namespace CoreConnect.Desktop.Win.Services;
 
 public class AudioCapturerWin : IAudioCapturer
 {

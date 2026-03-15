@@ -1,8 +1,8 @@
-namespace Remotely.Shared;
+﻿namespace CoreConnect.Shared;
 
 public class AppConstants
 {
-    public const string DefaultProductName = "Remotely";
+    public const string DefaultProductName = "CoreConnect";
     public const string DefaultPublisherName = "CtrlTower";
     public const string DebugOrgId = "e8f4ad87-4a4b-4da1-bcb2-1788eaeb80e8";
     public const int EmbeddedDataBlockLength = 256;

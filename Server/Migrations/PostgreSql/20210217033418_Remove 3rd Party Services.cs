@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Remotely.Server.Migrations.PostgreSql;
+namespace CoreConnect.Server.Migrations.PostgreSql;
 
 public partial class Remove3rdPartyServices : Migration
 {

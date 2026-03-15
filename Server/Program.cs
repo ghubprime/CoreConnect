@@ -1,4 +1,4 @@
-using Remotely.Server.Extensions;
+﻿using CoreConnect.Server.Extensions;
 using Bitbound.SimpleMessenger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -10,26 +10,26 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using Remotely.Server.Auth;
-using Remotely.Server.Components.Account;
-using Remotely.Server.Data;
-using Remotely.Server.Hubs;
-using Remotely.Server.Models;
-using Remotely.Server.Options;
-using Remotely.Server.Services;
-using Remotely.Server.Services.Stores;
-using Remotely.Shared.Entities;
-using Remotely.Shared.Services;
+using CoreConnect.Server.Auth;
+using CoreConnect.Server.Components.Account;
+using CoreConnect.Server.Data;
+using CoreConnect.Server.Hubs;
+using CoreConnect.Server.Models;
+using CoreConnect.Server.Options;
+using CoreConnect.Server.Services;
+using CoreConnect.Server.Services.Stores;
+using CoreConnect.Shared.Entities;
+using CoreConnect.Shared.Services;
 using Serilog;
 using System.Net;
-using RatePolicyNames = Remotely.Server.RateLimiting.PolicyNames;
-using Remotely.Server.Filters;
+using RatePolicyNames = CoreConnect.Server.RateLimiting.PolicyNames;
+using CoreConnect.Server.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var services = builder.Services;
 
-configuration.AddEnvironmentVariables("Remotely_");
+configuration.AddEnvironmentVariables("CoreConnect_");
 
 services.Configure<ApplicationOptions>(
     configuration.GetSection(ApplicationOptions.SectionKey));
@@ -104,7 +104,7 @@ builder.Services.AddAuthentication(options =>
 })
     .AddIdentityCookies();
 
-services.AddIdentityCore<RemotelyUser>(options =>
+services.AddIdentityCore<CoreConnectUser>(options =>
 {
     options.Stores.MaxLengthForKeys = 128;
     options.Password.RequireNonAlphanumeric = false;
@@ -116,7 +116,7 @@ services.AddIdentityCore<RemotelyUser>(options =>
 services.AddScoped<IAuthorizationHandler, TwoFactorRequiredHandler>();
 services.AddScoped<IAuthorizationHandler, OrganizationAdminRequirementHandler>();
 services.AddScoped<IAuthorizationHandler, ServerAdminRequirementHandler>();
-services.AddSingleton<IEmailSender<RemotelyUser>, IdentityNoOpEmailSender>();
+services.AddSingleton<IEmailSender<CoreConnectUser>, IdentityNoOpEmailSender>();
 
 services.AddAuthorization(options =>
 {
@@ -220,7 +220,7 @@ if (builder.Environment.IsDevelopment())
 }
 else
 {
-    services.AddScoped<IEmailSender<RemotelyUser>, EmailSenderEx>();
+    services.AddScoped<IEmailSender<CoreConnectUser>, EmailSenderEx>();
     services.AddScoped<IEmailSenderEx, EmailSenderEx>();
 }
 services.AddSingleton<IAppDbFactory, AppDbFactory>();
@@ -380,7 +380,7 @@ void ConfigureSerilog(WebApplicationBuilder webAppBuilder, SettingsModel setting
                 .Enrich.FromLogContext()
                 .Enrich.WithThreadId()
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj} {Properties}{NewLine}{Exception}")
-                .WriteTo.File($"{logPath}/Remotely_Server.log",
+                .WriteTo.File($"{logPath}/CoreConnect_Server.log",
                     rollingInterval: RollingInterval.Day,
                     retainedFileTimeLimit: TimeSpan.FromDays(dataRetentionDays),
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {Message:lj} {Properties}{NewLine}{Exception}",

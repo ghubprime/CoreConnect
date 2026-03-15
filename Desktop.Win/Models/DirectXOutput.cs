@@ -1,9 +1,9 @@
-﻿using Remotely.Shared.Helpers;
+﻿using CoreConnect.Shared.Helpers;
 using SharpDX.Direct3D11;
 using SharpDX.DXGI;
 using System.Drawing;
 
-namespace Remotely.Desktop.Win.Models;
+namespace CoreConnect.Desktop.Win.Models;
 
 public class DirectXOutput : IDisposable
 {

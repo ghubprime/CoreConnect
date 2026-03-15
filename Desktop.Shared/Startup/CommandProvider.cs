@@ -1,8 +1,8 @@
-using System.CommandLine;
+﻿using System.CommandLine;
 using CommunityToolkit.Diagnostics;
-using Remotely.Desktop.Shared.Enums;
+using CoreConnect.Desktop.Shared.Enums;
 
-namespace Remotely.Desktop.Shared.Startup;
+namespace CoreConnect.Desktop.Shared.Startup;
 public static class CommandProvider
 {
     /// <summary>

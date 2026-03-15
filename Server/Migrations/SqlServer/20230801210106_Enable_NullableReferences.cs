@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Remotely.Server.Migrations.SqlServer;
+namespace CoreConnect.Server.Migrations.SqlServer;
 
 /// <inheritdoc />
 public partial class Enable_NullableReferences : Migration
@@ -37,8 +37,8 @@ public partial class Enable_NullableReferences : Migration
             table: "InviteLinks");
 
         migrationBuilder.DropForeignKey(
-            name: "FK_RemotelyUsers_Organizations_OrganizationID",
-            table: "RemotelyUsers");
+            name: "FK_CoreConnectUsers_Organizations_OrganizationID",
+            table: "CoreConnectUsers");
 
         migrationBuilder.DropForeignKey(
             name: "FK_SavedScripts_Organizations_OrganizationID",
@@ -321,8 +321,8 @@ public partial class Enable_NullableReferences : Migration
             onDelete: ReferentialAction.Cascade);
 
         migrationBuilder.AddForeignKey(
-            name: "FK_RemotelyUsers_Organizations_OrganizationID",
-            table: "RemotelyUsers",
+            name: "FK_CoreConnectUsers_Organizations_OrganizationID",
+            table: "CoreConnectUsers",
             column: "OrganizationID",
             principalTable: "Organizations",
             principalColumn: "ID",
@@ -386,8 +386,8 @@ public partial class Enable_NullableReferences : Migration
             table: "InviteLinks");
 
         migrationBuilder.DropForeignKey(
-            name: "FK_RemotelyUsers_Organizations_OrganizationID",
-            table: "RemotelyUsers");
+            name: "FK_CoreConnectUsers_Organizations_OrganizationID",
+            table: "CoreConnectUsers");
 
         migrationBuilder.DropForeignKey(
             name: "FK_SavedScripts_Organizations_OrganizationID",
@@ -658,8 +658,8 @@ public partial class Enable_NullableReferences : Migration
             principalColumn: "ID");
 
         migrationBuilder.AddForeignKey(
-            name: "FK_RemotelyUsers_Organizations_OrganizationID",
-            table: "RemotelyUsers",
+            name: "FK_CoreConnectUsers_Organizations_OrganizationID",
+            table: "CoreConnectUsers",
             column: "OrganizationID",
             principalTable: "Organizations",
             principalColumn: "ID");

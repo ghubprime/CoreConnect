@@ -1,6 +1,6 @@
-﻿using Remotely.Shared.Services;
+﻿using CoreConnect.Shared.Services;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 public class DataCleanupService : BackgroundService, IDisposable
 {

@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Remotely.Shared.Models;
+using CoreConnect.Shared.Models;
 using System.Text.Json.Serialization;
 
-namespace Remotely.Shared.Entities;
+namespace CoreConnect.Shared.Entities;
 
-public class RemotelyUser : IdentityUser
+public class CoreConnectUser : IdentityUser
 {
     public ICollection<Alert> Alerts { get; set; } = new List<Alert>();
 
@@ -22,5 +22,5 @@ public class RemotelyUser : IdentityUser
 
     public string? TempPassword { get; set; }
 
-    public RemotelyUserOptions? UserOptions { get; set; }
+    public CoreConnectUserOptions? UserOptions { get; set; }
 }

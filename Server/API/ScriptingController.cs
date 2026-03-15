@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Remotely.Server.Hubs;
-using Remotely.Server.Services;
-using Remotely.Shared.Utilities;
-using Remotely.Shared.Enums;
-using Remotely.Server.Auth;
-using Remotely.Shared.Helpers;
-using Remotely.Shared;
-using Remotely.Server.Extensions;
-using Remotely.Shared.Entities;
-using Remotely.Shared.Interfaces;
+using CoreConnect.Server.Hubs;
+using CoreConnect.Server.Services;
+using CoreConnect.Shared.Utilities;
+using CoreConnect.Shared.Enums;
+using CoreConnect.Server.Auth;
+using CoreConnect.Shared.Helpers;
+using CoreConnect.Shared;
+using CoreConnect.Server.Extensions;
+using CoreConnect.Shared.Entities;
+using CoreConnect.Shared.Interfaces;
 
-namespace Remotely.Server.API;
+namespace CoreConnect.Server.API;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -24,9 +24,9 @@ public class ScriptingController : ControllerBase
     private readonly IAgentHubSessionCache _serviceSessionCache;
     private readonly IExpiringTokenService _expiringTokenService;
 
-    private readonly UserManager<RemotelyUser> _userManager;
+    private readonly UserManager<CoreConnectUser> _userManager;
 
-    public ScriptingController(UserManager<RemotelyUser> userManager,
+    public ScriptingController(UserManager<CoreConnectUser> userManager,
         IDataService dataService,
         IAgentHubSessionCache serviceSessionCache,
         IExpiringTokenService expiringTokenService,

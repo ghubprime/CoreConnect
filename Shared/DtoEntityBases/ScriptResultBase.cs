@@ -1,8 +1,8 @@
-﻿using Remotely.Shared.Enums;
-using Remotely.Shared.Utilities;
+﻿using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Utilities;
 using System.Text.Json.Serialization;
 
-namespace Remotely.Shared.DtoEntityBases;
+namespace CoreConnect.Shared.DtoEntityBases;
 
 public abstract class ScriptResultBase
 {

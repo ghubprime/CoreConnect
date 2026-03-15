@@ -1,7 +1,7 @@
-﻿using Remotely.Server.Components.TreeView;
-using Remotely.Shared.Entities;
+﻿using CoreConnect.Server.Components.TreeView;
+using CoreConnect.Shared.Entities;
 
-namespace Remotely.Server.Components.Scripts;
+namespace CoreConnect.Server.Components.Scripts;
 
 public class ScriptTreeNode
 {

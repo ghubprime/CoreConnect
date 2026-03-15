@@ -1,4 +1,4 @@
-﻿namespace Remotely.Shared.Enums;
+﻿namespace CoreConnect.Shared.Enums;
 
 public enum SessionEndReasonsEx
 {

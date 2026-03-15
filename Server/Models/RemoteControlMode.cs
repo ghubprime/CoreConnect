@@ -1,4 +1,4 @@
-﻿namespace Remotely.Server.Models;
+﻿namespace CoreConnect.Server.Models;
 
 public enum RemoteControlMode
 {

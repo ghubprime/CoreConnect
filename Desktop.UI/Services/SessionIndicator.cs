@@ -1,8 +1,8 @@
-﻿using Remotely.Desktop.Shared;
-using Remotely.Desktop.Shared.Abstractions;
+﻿using CoreConnect.Desktop.Shared;
+using CoreConnect.Desktop.Shared.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Remotely.Desktop.UI.Services;
+namespace CoreConnect.Desktop.UI.Services;
 
 public class SessionIndicator : ISessionIndicator
 {

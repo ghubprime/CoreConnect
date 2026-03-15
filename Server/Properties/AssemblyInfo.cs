@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Remotely.Server.Tests")]
+[assembly: InternalsVisibleTo("CoreConnect.Server.Tests")]

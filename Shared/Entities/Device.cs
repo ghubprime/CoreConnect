@@ -1,10 +1,10 @@
-﻿using Remotely.Shared.Attributes;
-using Remotely.Shared.Models;
+﻿using CoreConnect.Shared.Attributes;
+using CoreConnect.Shared.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 
-namespace Remotely.Shared.Entities;
+namespace CoreConnect.Shared.Entities;
 
 public class Device
 {

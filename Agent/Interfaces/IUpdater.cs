@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Remotely.Agent.Interfaces;
+namespace CoreConnect.Agent.Interfaces;
 
 public interface IUpdater
 {

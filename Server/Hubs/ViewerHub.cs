@@ -1,13 +1,13 @@
-using Remotely.Server.Enums;
-using Remotely.Server.Filters;
-using Remotely.Server.Models;
-using Remotely.Server.Services;
-using Remotely.Shared.Interfaces;
-using Remotely.Shared.Models;
+﻿using CoreConnect.Server.Enums;
+using CoreConnect.Server.Filters;
+using CoreConnect.Server.Models;
+using CoreConnect.Server.Services;
+using CoreConnect.Shared.Interfaces;
+using CoreConnect.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
-namespace Remotely.Server.Hubs;
+namespace CoreConnect.Server.Hubs;
 
 [ServiceFilter(typeof(ViewerAuthorizationFilter))]
 public class ViewerHub : Hub<IViewerHubClient>

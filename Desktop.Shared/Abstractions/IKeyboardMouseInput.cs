@@ -1,7 +1,7 @@
-﻿using Remotely.Desktop.Shared.Enums;
-using Remotely.Desktop.Shared.Services;
+﻿using CoreConnect.Desktop.Shared.Enums;
+using CoreConnect.Desktop.Shared.Services;
 
-namespace Remotely.Desktop.Shared.Abstractions;
+namespace CoreConnect.Desktop.Shared.Abstractions;
 
 public interface IKeyboardMouseInput
 {

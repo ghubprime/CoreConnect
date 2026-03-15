@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
-using Remotely.Agent.Interfaces;
-using Remotely.Shared.Extensions;
-using Remotely.Shared.Models;
-using Remotely.Shared.Primitives;
-using Remotely.Shared.Services;
-using Remotely.Shared.Utilities;
+using CoreConnect.Agent.Interfaces;
+using CoreConnect.Shared.Extensions;
+using CoreConnect.Shared.Models;
+using CoreConnect.Shared.Primitives;
+using CoreConnect.Shared.Services;
+using CoreConnect.Shared.Utilities;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Remotely.Agent.Services.Linux;
+namespace CoreConnect.Agent.Services.Linux;
 
 
 public class AppLauncherLinux : IAppLauncher

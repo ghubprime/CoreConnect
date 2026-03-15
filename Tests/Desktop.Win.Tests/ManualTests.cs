@@ -1,15 +1,15 @@
 ﻿#nullable disable
-using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Desktop.Shared.Services;
-using Remotely.Desktop.Windows.Services;
-using Remotely.Shared.Models;
+using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Desktop.Shared.Services;
+using CoreConnect.Desktop.Windows.Services;
+using CoreConnect.Shared.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Remotely.Desktop.Win.Services;
-using Remotely.Shared.Models;
-using Remotely.Shared.Models.RemoteControlDtos;
+using CoreConnect.Desktop.Win.Services;
+using CoreConnect.Shared.Models;
+using CoreConnect.Shared.Models.RemoteControlDtos;
 using SkiaSharp;
 using SkiaSharp.Views.Desktop;
 using System;
@@ -22,7 +22,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Remotely.Tests
+namespace CoreConnect.Tests
 {
     [TestClass]
     [Ignore("Manual test.")]
@@ -307,7 +307,7 @@ namespace Remotely.Tests
 
         private SKBitmap GetImage(string imageFileName)
         {
-            using var mrs = Assembly.GetExecutingAssembly().GetManifestResourceStream($"Remotely.Desktop.Win.Tests.Resources.{imageFileName}.jpg");
+            using var mrs = Assembly.GetExecutingAssembly().GetManifestResourceStream($"CoreConnect.Desktop.Win.Tests.Resources.{imageFileName}.jpg");
             var resourceImage = (Bitmap)Bitmap.FromStream(mrs);
 
             if (resourceImage.PixelFormat != PixelFormat.Format32bppArgb)

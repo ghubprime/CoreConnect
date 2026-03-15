@@ -1,8 +1,8 @@
-﻿using Remotely.Shared.Primitives;
+﻿using CoreConnect.Shared.Primitives;
 using SkiaSharp;
 using System.Drawing;
 
-namespace Remotely.Desktop.Shared.Abstractions;
+namespace CoreConnect.Desktop.Shared.Abstractions;
 
 public interface IScreenCapturer : IDisposable
 {

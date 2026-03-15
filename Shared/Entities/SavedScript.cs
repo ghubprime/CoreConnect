@@ -1,9 +1,9 @@
-﻿using Remotely.Shared.Enums;
+﻿using CoreConnect.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Remotely.Shared.Entities;
+namespace CoreConnect.Shared.Entities;
 
 public class SavedScript
 {
@@ -11,7 +11,7 @@ public class SavedScript
     public string? Content { get; set; }
 
     [JsonIgnore]
-    public RemotelyUser? Creator { get; set; }
+    public CoreConnectUser? Creator { get; set; }
 
     public string CreatorId { get; set; } = null!;
 

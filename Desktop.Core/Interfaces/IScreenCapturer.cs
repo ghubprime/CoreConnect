@@ -1,10 +1,10 @@
-﻿using Remotely.Shared;
+﻿using CoreConnect.Shared;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace Remotely.Desktop.Core.Interfaces
+namespace CoreConnect.Desktop.Core.Interfaces
 {
     public interface IScreenCapturer : IDisposable
     {

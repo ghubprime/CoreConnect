@@ -2,5 +2,5 @@
 global using System.Collections.Generic;
 global using System.Linq;
 global using System.Threading.Tasks;
-global using Remotely.Shared.Primitives;
-global using Remotely.Server.Components;
+global using CoreConnect.Shared.Primitives;
+global using CoreConnect.Server.Components;

@@ -1,4 +1,4 @@
-﻿namespace Remotely.Shared.Helpers;
+﻿namespace CoreConnect.Shared.Helpers;
 
 public static class Disposer
 {

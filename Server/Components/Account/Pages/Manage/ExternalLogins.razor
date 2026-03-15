@@ -2,12 +2,12 @@
 
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
-@using Remotely.Server.Data
+@using CoreConnect.Server.Data
 
-@inject UserManager<RemotelyUser> UserManager
-@inject SignInManager<RemotelyUser> SignInManager
+@inject UserManager<CoreConnectUser> UserManager
+@inject SignInManager<CoreConnectUser> SignInManager
 @inject IdentityUserAccessor UserAccessor
-@inject IUserStore<RemotelyUser> UserStore
+@inject IUserStore<CoreConnectUser> UserStore
 @inject IdentityRedirectManager RedirectManager
 
 <PageTitle>Manage your external logins</PageTitle>
@@ -66,7 +66,7 @@
 @code {
     public const string LinkLoginCallbackAction = "LinkLoginCallback";
 
-    private RemotelyUser user = default!;
+    private CoreConnectUser user = default!;
     private IList<UserLoginInfo>? currentLogins;
     private IList<AuthenticationScheme>? otherLogins;
     private bool showRemoveButton;
@@ -92,7 +92,7 @@
             .ToList();
 
         string? passwordHash = null;
-        if (UserStore is IUserPasswordStore<RemotelyUser> userPasswordStore)
+        if (UserStore is IUserPasswordStore<CoreConnectUser> userPasswordStore)
         {
             passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
         }

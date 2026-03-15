@@ -1,4 +1,4 @@
-﻿namespace Remotely.Shared.Attributes;
+﻿namespace CoreConnect.Shared.Attributes;
 
 [AttributeUsage(AttributeTargets.Property)]
 public class SortableAttribute : Attribute

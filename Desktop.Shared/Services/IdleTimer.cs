@@ -1,8 +1,8 @@
-using Remotely.Desktop.Shared.Abstractions;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
 using Microsoft.Extensions.Logging;
 using System.Timers;
 
-namespace Remotely.Desktop.Shared.Services;
+namespace CoreConnect.Desktop.Shared.Services;
 
 public interface IIdleTimer
 {

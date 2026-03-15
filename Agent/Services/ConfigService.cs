@@ -1,13 +1,13 @@
-﻿using Remotely.Shared;
+﻿using CoreConnect.Shared;
 using Microsoft.Extensions.Logging;
-using Remotely.Shared.Models;
+using CoreConnect.Shared.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 
-namespace Remotely.Agent.Services;
+namespace CoreConnect.Agent.Services;
 
 public interface IConfigService
 {

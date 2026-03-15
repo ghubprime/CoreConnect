@@ -1,8 +1,8 @@
-using Remotely.Server.Enums;
-using Remotely.Server.Services;
-using Remotely.Shared.Helpers;
+﻿using CoreConnect.Server.Enums;
+using CoreConnect.Server.Services;
+using CoreConnect.Shared.Helpers;
 
-namespace Remotely.Server.Models;
+namespace CoreConnect.Server.Models;
 
 /// <summary>
 /// Contains data related to a remote control session.  Consuming projects

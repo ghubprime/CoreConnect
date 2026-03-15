@@ -1,6 +1,6 @@
-﻿using Remotely.Desktop.UI.Controls.Dialogs;
+﻿using CoreConnect.Desktop.UI.Controls.Dialogs;
 
-namespace Remotely.Desktop.UI.Services;
+namespace CoreConnect.Desktop.UI.Services;
 
 public interface IDialogProvider
 {

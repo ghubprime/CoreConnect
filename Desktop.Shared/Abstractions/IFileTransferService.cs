@@ -1,7 +1,7 @@
-﻿using Remotely.Desktop.Shared.Services;
-using Remotely.Desktop.Shared.ViewModels;
+﻿using CoreConnect.Desktop.Shared.Services;
+using CoreConnect.Desktop.Shared.ViewModels;
 
-namespace Remotely.Desktop.Shared.Abstractions;
+namespace CoreConnect.Desktop.Shared.Abstractions;
 
 public interface IFileTransferService
 {

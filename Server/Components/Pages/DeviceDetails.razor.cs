@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Components.Web;
-using Remotely.Server.Hubs;
-using Remotely.Server.Models.Messages;
-using Remotely.Server.Services;
-using Remotely.Shared.Entities;
-using Remotely.Shared.Utilities;
+using CoreConnect.Server.Hubs;
+using CoreConnect.Server.Models.Messages;
+using CoreConnect.Server.Services;
+using CoreConnect.Shared.Entities;
+using CoreConnect.Shared.Utilities;
 using System.Collections.Concurrent;
 using System.Text.Json;
 
-namespace Remotely.Server.Components.Pages;
+namespace CoreConnect.Server.Components.Pages;
 
 public partial class DeviceDetails : AuthComponentBase
 {

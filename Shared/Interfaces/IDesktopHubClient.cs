@@ -1,7 +1,7 @@
-﻿using Remotely.Shared.Enums;
-using Remotely.Shared.Models;
+﻿using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Models;
 
-namespace Remotely.Shared.Interfaces;
+namespace CoreConnect.Shared.Interfaces;
 
 public interface IDesktopHubClient
 {

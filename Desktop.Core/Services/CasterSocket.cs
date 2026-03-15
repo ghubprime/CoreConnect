@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
-using Remotely.Desktop.Core.Interfaces;
-using Remotely.Shared.Models;
-using Remotely.Shared.Utilities;
+using CoreConnect.Desktop.Core.Interfaces;
+using CoreConnect.Shared.Models;
+using CoreConnect.Shared.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Remotely.Desktop.Core.Services
+namespace CoreConnect.Desktop.Core.Services
 {
     public interface ICasterSocket
     {

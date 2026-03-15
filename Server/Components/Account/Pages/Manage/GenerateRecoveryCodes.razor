@@ -1,9 +1,9 @@
 ﻿@page "/Account/Manage/GenerateRecoveryCodes"
 
 @using Microsoft.AspNetCore.Identity
-@using Remotely.Server.Data
+@using CoreConnect.Server.Data
 
-@inject UserManager<RemotelyUser> UserManager
+@inject UserManager<CoreConnectUser> UserManager
 @inject IdentityUserAccessor UserAccessor
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<GenerateRecoveryCodes> Logger
@@ -40,7 +40,7 @@ else
 
 @code {
     private string? message;
-    private RemotelyUser user = default!;
+    private CoreConnectUser user = default!;
     private IEnumerable<string>? recoveryCodes;
 
     [CascadingParameter]

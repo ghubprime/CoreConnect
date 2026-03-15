@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
-using Remotely.Server.Services;
-using Remotely.Shared.Entities;
+using CoreConnect.Server.Services;
+using CoreConnect.Shared.Entities;
 
-namespace Remotely.Server.Components.ModalContents;
+namespace CoreConnect.Server.Components.ModalContents;
 
 [Authorize]
 public partial class EditDeviceGroup : AuthComponentBase
@@ -14,7 +14,7 @@ public partial class EditDeviceGroup : AuthComponentBase
     public required DeviceGroup[] DeviceGroups { get; set; }
 
     [Parameter]
-    public required RemotelyUser EditUser { get; set; }
+    public required CoreConnectUser EditUser { get; set; }
 
     [Inject]
     private IDataService DataService { get; init; } = null!;

@@ -1,6 +1,6 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
-namespace Remotely.Shared.Helpers;
+namespace CoreConnect.Shared.Helpers;
 
 public class RandomGenerator
 {

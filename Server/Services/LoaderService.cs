@@ -1,8 +1,8 @@
 ﻿using Bitbound.SimpleMessenger;
-using Remotely.Server.Hubs;
-using Remotely.Server.Models.Messages;
+using CoreConnect.Server.Hubs;
+using CoreConnect.Server.Models.Messages;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 public interface ILoaderService
 {

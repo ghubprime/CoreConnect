@@ -1,6 +1,6 @@
-﻿using Remotely.Shared.Models;
+﻿using CoreConnect.Shared.Models;
 
-namespace Remotely.Desktop.Shared.Abstractions;
+namespace CoreConnect.Desktop.Shared.Abstractions;
 
 public interface ICursorIconWatcher
 {

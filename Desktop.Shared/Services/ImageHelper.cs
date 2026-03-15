@@ -1,10 +1,10 @@
-﻿using Remotely.Desktop.Shared.Extensions;
+﻿using CoreConnect.Desktop.Shared.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.IO;
-using Remotely.Shared.Primitives;
+using CoreConnect.Shared.Primitives;
 using SkiaSharp;
 
-namespace Remotely.Desktop.Shared.Services;
+namespace CoreConnect.Desktop.Shared.Services;
 
 public interface IImageHelper
 {

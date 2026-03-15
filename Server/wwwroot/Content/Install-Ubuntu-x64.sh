@@ -1,26 +1,26 @@
-#!/bin/bash
+﻿#!/bin/bash
 HostName=
 Organization=
 GUID=$(cat /proc/sys/kernel/random/uuid)
 UpdatePackagePath=""
-InstallDir="/usr/local/bin/Remotely"
+InstallDir="/usr/local/bin/CoreConnect"
 
 apt-get update
 apt-get -y install curl
 
-ETag=$(curl --head $HostName/Content/Remotely-Linux.zip | grep -i "etag" | cut -d' ' -f 2)
-LogPath="/var/log/remotely/Agent_Install.log"
+ETag=$(curl --head $HostName/Content/CoreConnect-Linux.zip | grep -i "etag" | cut -d' ' -f 2)
+LogPath="/var/log/coreconnect/Agent_Install.log"
 
-mkdir -p /var/log/remotely
+mkdir -p /var/log/coreconnect
 Args=( "$@" )
 ArgLength=${#Args[@]}
 
 for (( i=0; i<${ArgLength}; i+=2 ));
 do
     if [ "${Args[$i]}" = "--uninstall" ]; then
-        systemctl stop remotely-agent
+        systemctl stop coreconnect-agent
         rm -r -f $InstallDir
-        rm -f /etc/systemd/system/remotely-agent.service
+        rm -f /etc/systemd/system/coreconnect-agent.service
         systemctl daemon-reload
         exit
     elif [ "${Args[$i]}" = "--path" ]; then
@@ -59,23 +59,23 @@ if [ -f "$InstallDir/ConnectionInfo.json" ]; then
 fi
 
 rm -r -f $InstallDir
-rm -f /etc/systemd/system/remotely-agent.service
+rm -f /etc/systemd/system/coreconnect-agent.service
 
 mkdir -p $InstallDir
 
 if [ -z "$UpdatePackagePath" ]; then
     echo  "Downloading client." | tee -a $LogPath
-    wget -q -O /tmp/Remotely-Linux.zip $HostName/Content/Remotely-Linux.zip
+    wget -q -O /tmp/CoreConnect-Linux.zip $HostName/Content/CoreConnect-Linux.zip
 else
     echo  "Copying install files." | tee -a $LogPath
-    cp "$UpdatePackagePath" /tmp/Remotely-Linux.zip
+    cp "$UpdatePackagePath" /tmp/CoreConnect-Linux.zip
     rm -f "$UpdatePackagePath"
 fi
 
-unzip -o /tmp/Remotely-Linux.zip -d $InstallDir
-rm -f /tmp/Remotely-Linux.zip
-chmod +x $InstallDir/Remotely_Agent
-chmod +x $InstallDir/Desktop/Remotely_Desktop
+unzip -o /tmp/CoreConnect-Linux.zip -d $InstallDir
+rm -f /tmp/CoreConnect-Linux.zip
+chmod +x $InstallDir/CoreConnect_Agent
+chmod +x $InstallDir/Desktop/CoreConnect_Desktop
 
 
 connectionInfo="{
@@ -87,16 +87,16 @@ connectionInfo="{
 
 echo "$connectionInfo" > $InstallDir/ConnectionInfo.json
 
-curl --head $HostName/Content/Remotely-Linux.zip | grep -i "etag" | cut -d' ' -f 2 > $InstallDir/etag.txt
+curl --head $HostName/Content/CoreConnect-Linux.zip | grep -i "etag" | cut -d' ' -f 2 > $InstallDir/etag.txt
 
 echo Creating service. | tee -a $LogPath
 
 serviceConfig="[Unit]
-Description=The Remotely agent used for remote access.
+Description=The CoreConnect agent used for remote access.
 
 [Service]
 WorkingDirectory=$InstallDir
-ExecStart=$InstallDir/Remotely_Agent
+ExecStart=$InstallDir/CoreConnect_Agent
 Restart=always
 StartLimitIntervalSec=0
 RestartSec=10
@@ -104,9 +104,9 @@ RestartSec=10
 [Install]
 WantedBy=graphical.target"
 
-echo "$serviceConfig" > /etc/systemd/system/remotely-agent.service
+echo "$serviceConfig" > /etc/systemd/system/coreconnect-agent.service
 
-systemctl enable remotely-agent
-systemctl restart remotely-agent
+systemctl enable coreconnect-agent
+systemctl restart coreconnect-agent
 
 echo Install complete. | tee -a $LogPath

@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
-using Remotely.Server.Enums;
-using Remotely.Server.Hubs;
-using Remotely.Server.Models.Messages;
-using Remotely.Server.Services;
-using Remotely.Server.Services.Stores;
-using Remotely.Shared;
-using Remotely.Shared.Entities;
-using Remotely.Shared.Enums;
-using Remotely.Shared.Utilities;
-using Remotely.Shared.ViewModels;
+using CoreConnect.Server.Enums;
+using CoreConnect.Server.Hubs;
+using CoreConnect.Server.Models.Messages;
+using CoreConnect.Server.Services;
+using CoreConnect.Server.Services.Stores;
+using CoreConnect.Shared;
+using CoreConnect.Shared.Entities;
+using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Utilities;
+using CoreConnect.Shared.ViewModels;
 using System.Collections.Concurrent;
 using System.Text.Json;
 
-namespace Remotely.Server.Components.Devices;
+namespace CoreConnect.Server.Components.Devices;
 
 public partial class DeviceCard : AuthComponentBase
 {

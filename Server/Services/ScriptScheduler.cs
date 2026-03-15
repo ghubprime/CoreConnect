@@ -1,6 +1,6 @@
-﻿using Remotely.Shared.Utilities;
+﻿using CoreConnect.Shared.Utilities;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 public class ScriptScheduler : IHostedService, IDisposable
 {

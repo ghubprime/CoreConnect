@@ -5,10 +5,10 @@
 @using System.Text.Encodings.Web
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
-@using Remotely.Server.Data
+@using CoreConnect.Server.Data
 
-@inject UserManager<RemotelyUser> UserManager
-@inject IEmailSender<RemotelyUser> EmailSender
+@inject UserManager<CoreConnectUser> UserManager
+@inject IEmailSender<CoreConnectUser> EmailSender
 @inject IdentityUserAccessor UserAccessor
 @inject NavigationManager NavigationManager
 
@@ -55,7 +55,7 @@
 
 @code {
     private string? message;
-    private RemotelyUser user = default!;
+    private CoreConnectUser user = default!;
     private string? email;
     private bool isEmailConfirmed;
 

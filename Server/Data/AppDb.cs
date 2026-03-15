@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Remotely.Server.Converters;
-using Remotely.Shared.Entities;
-using Remotely.Shared.Models;
+using CoreConnect.Server.Converters;
+using CoreConnect.Shared.Entities;
+using CoreConnect.Shared.Models;
 using System.Text.Json;
 
-namespace Remotely.Server.Data;
+namespace CoreConnect.Server.Data;
 
 public class AppDb : IdentityDbContext
 {
@@ -39,7 +39,7 @@ public class AppDb : IdentityDbContext
     public DbSet<ScriptRun> ScriptRuns { get; set; }
     public DbSet<ScriptSchedule> ScriptSchedules { get; set; }
     public DbSet<SharedFile> SharedFiles { get; set; }
-    public new DbSet<RemotelyUser> Users { get; set; }
+    public new DbSet<CoreConnectUser> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
@@ -59,13 +59,13 @@ public class AppDb : IdentityDbContext
 
         base.OnModelCreating(builder);
 
-        builder.Entity<IdentityUser>().ToTable("RemotelyUsers");
+        builder.Entity<IdentityUser>().ToTable("CoreConnectUsers");
 
         builder.Entity<Organization>()
             .HasMany(x => x.Devices)
             .WithOne(x => x.Organization);
         builder.Entity<Organization>()
-            .HasMany(x => x.RemotelyUsers)
+            .HasMany(x => x.CoreConnectUsers)
             .WithOne(x => x.Organization);
         builder.Entity<Organization>()
             .HasMany(x => x.DeviceGroups)
@@ -107,34 +107,34 @@ public class AppDb : IdentityDbContext
             .OnDelete(DeleteBehavior.ClientSetNull);
 
 
-        builder.Entity<RemotelyUser>()
+        builder.Entity<CoreConnectUser>()
             .HasMany(x => x.DeviceGroups)
             .WithMany(x => x.Users);
 
-        builder.Entity<RemotelyUser>()
+        builder.Entity<CoreConnectUser>()
             .HasMany(x => x.Alerts)
             .WithOne(x => x.User)
             .OnDelete(DeleteBehavior.ClientCascade);
 
-        builder.Entity<RemotelyUser>()
+        builder.Entity<CoreConnectUser>()
             .Property(x => x.UserOptions)
             .HasConversion(
                 x => JsonSerializer.Serialize(x, jsonOptions),
-                x => JsonSerializer.Deserialize<RemotelyUserOptions>(x, jsonOptions));
+                x => JsonSerializer.Deserialize<CoreConnectUserOptions>(x, jsonOptions));
 
-        builder.Entity<RemotelyUser>()
+        builder.Entity<CoreConnectUser>()
             .HasMany(x => x.SavedScripts)
             .WithOne(x => x.Creator)
             .HasForeignKey(x => x.CreatorId)
             .OnDelete(DeleteBehavior.ClientCascade);
 
-        builder.Entity<RemotelyUser>()
+        builder.Entity<CoreConnectUser>()
             .HasMany(x => x.ScriptSchedules)
             .WithOne(x => x.Creator)
             .HasForeignKey(x => x.CreatorId)
             .OnDelete(DeleteBehavior.ClientCascade);
 
-        builder.Entity<RemotelyUser>()
+        builder.Entity<CoreConnectUser>()
             .HasIndex(x => x.UserName);
 
         builder.Entity<Device>()

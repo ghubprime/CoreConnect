@@ -1,13 +1,13 @@
-{
+﻿{
   "profiles": {
     "Docker Compose": {
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "composeLaunchAction": "LaunchBrowser",
-      "composeLaunchServiceName": "remotely",
+      "composeLaunchServiceName": "coreconnect",
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}",
       "serviceActions": {
-        "remotely": "StartDebugging"
+        "coreconnect": "StartDebugging"
       }
     }
   }

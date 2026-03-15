@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Remotely.Shared.Entities;
+namespace CoreConnect.Shared.Entities;
 
 public class KeyValueRecord
 {

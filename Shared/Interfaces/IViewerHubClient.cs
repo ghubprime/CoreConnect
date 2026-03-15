@@ -1,4 +1,4 @@
-﻿namespace Remotely.Shared.Interfaces;
+﻿namespace CoreConnect.Shared.Interfaces;
 
 public interface IViewerHubClient
 {

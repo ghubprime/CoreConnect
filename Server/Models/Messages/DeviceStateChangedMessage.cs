@@ -1,5 +1,5 @@
-﻿using Remotely.Shared.Entities;
+﻿using CoreConnect.Shared.Entities;
 
-namespace Remotely.Server.Models.Messages;
+namespace CoreConnect.Server.Models.Messages;
 
 public record DeviceStateChangedMessage(Device Device);

@@ -1,4 +1,4 @@
-﻿namespace Remotely.Server.Components.TreeView;
+﻿namespace CoreConnect.Server.Components.TreeView;
 
 public enum TreeItemType
 {

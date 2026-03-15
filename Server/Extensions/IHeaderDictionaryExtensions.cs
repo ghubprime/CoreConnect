@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Remotely.Server.Auth;
+using CoreConnect.Server.Auth;
 
-namespace Remotely.Server.Extensions;
+namespace CoreConnect.Server.Extensions;
 
 public static class IHeaderDictionaryExtensions
 {

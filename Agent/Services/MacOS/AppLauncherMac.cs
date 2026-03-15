@@ -1,8 +1,8 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
-using Remotely.Agent.Interfaces;
+using CoreConnect.Agent.Interfaces;
 
-namespace Remotely.Agent.Services.MacOS;
+namespace CoreConnect.Agent.Services.MacOS;
 
 public class AppLauncherMac : IAppLauncher
 {

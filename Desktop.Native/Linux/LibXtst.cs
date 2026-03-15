@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Remotely.Desktop.Native.Linux;
+namespace CoreConnect.Desktop.Native.Linux;
 
 public class LibXtst
 {

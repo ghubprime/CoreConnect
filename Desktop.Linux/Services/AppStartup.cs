@@ -1,11 +1,11 @@
-using Remotely.Desktop.Shared.Abstractions;
-using Remotely.Desktop.Shared.Enums;
-using Remotely.Desktop.Shared.Services;
-using Remotely.Desktop.UI.Services;
-using Remotely.Shared.Models;
+﻿using CoreConnect.Desktop.Shared.Abstractions;
+using CoreConnect.Desktop.Shared.Enums;
+using CoreConnect.Desktop.Shared.Services;
+using CoreConnect.Desktop.UI.Services;
+using CoreConnect.Shared.Models;
 using Microsoft.Extensions.Logging;
 
-namespace Remotely.Desktop.Linux.Services;
+namespace CoreConnect.Desktop.Linux.Services;
 
 internal class AppStartup : IAppStartup
 {

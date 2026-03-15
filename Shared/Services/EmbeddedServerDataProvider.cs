@@ -1,10 +1,10 @@
 ﻿#nullable enable
 
 using MessagePack;
-using Remotely.Shared.Models;
-using Remotely.Shared.Primitives;
+using CoreConnect.Shared.Models;
+using CoreConnect.Shared.Primitives;
 
-namespace Remotely.Shared.Services;
+namespace CoreConnect.Shared.Services;
 
 public interface IEmbeddedServerDataProvider
 {

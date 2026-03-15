@@ -1,7 +1,7 @@
-﻿using Remotely.Shared.Helpers;
+﻿using CoreConnect.Shared.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Remotely.Server.Services;
+namespace CoreConnect.Server.Services;
 
 public interface IOtpProvider
 {

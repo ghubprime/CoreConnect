@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace Remotely.Shared.ViewModels;
+namespace CoreConnect.Shared.ViewModels;
 
 public class ChatSession
 {

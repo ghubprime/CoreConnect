@@ -1,9 +1,9 @@
-using Avalonia.Controls;
-using Remotely.Desktop.Shared;
-using Remotely.Desktop.Shared.Services;
+﻿using Avalonia.Controls;
+using CoreConnect.Desktop.Shared;
+using CoreConnect.Desktop.Shared.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Remotely.Desktop.UI.Views;
+namespace CoreConnect.Desktop.UI.Views;
 public partial class MainView : UserControl
 {
     public MainView()

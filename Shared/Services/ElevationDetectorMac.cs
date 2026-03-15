@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Remotely.Shared.Services;
+namespace CoreConnect.Shared.Services;
 
 public class ElevationDetectorMac : IElevationDetector
 {

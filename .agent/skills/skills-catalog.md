@@ -1,4 +1,4 @@
-# Remotely Agent Skills Catalog
+﻿# CoreConnect Agent Skills Catalog
 
 This catalog outlines the automated scripts available to the Lead Architect for testing, migrating, and verifying the application.
 

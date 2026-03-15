@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Remotely.Desktop.Core.Interfaces
+namespace CoreConnect.Desktop.Core.Interfaces
 {
     public interface IShutdownService
     {

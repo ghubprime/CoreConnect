@@ -1,9 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <AssemblyName>Remotely.Tests.LoadTester</AssemblyName>
+    <AssemblyName>CoreConnect.Tests.LoadTester</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

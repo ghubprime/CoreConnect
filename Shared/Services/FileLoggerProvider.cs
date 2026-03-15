@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Remotely.Shared.Services;
+namespace CoreConnect.Shared.Services;
 
 public class FileLoggerProvider : ILoggerProvider
 {

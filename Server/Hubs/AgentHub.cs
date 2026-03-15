@@ -1,17 +1,17 @@
-﻿using Remotely.Server.Services;
+﻿using CoreConnect.Server.Services;
 using Bitbound.SimpleMessenger;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
-using Remotely.Server.Models.Messages;
-using Remotely.Shared;
-using Remotely.Shared.Dtos;
-using Remotely.Shared.Entities;
-using Remotely.Shared.Enums;
-using Remotely.Shared.Interfaces;
-using Remotely.Shared.Models;
-using Remotely.Shared.Utilities;
+using CoreConnect.Server.Models.Messages;
+using CoreConnect.Shared;
+using CoreConnect.Shared.Dtos;
+using CoreConnect.Shared.Entities;
+using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Interfaces;
+using CoreConnect.Shared.Models;
+using CoreConnect.Shared.Utilities;
 
-namespace Remotely.Server.Hubs;
+namespace CoreConnect.Server.Hubs;
 
 public class AgentHub : Hub<IAgentHubClient>
 {

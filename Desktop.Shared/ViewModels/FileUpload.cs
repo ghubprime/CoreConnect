@@ -1,6 +1,6 @@
-﻿using Remotely.Desktop.Shared.Reactive;
+﻿using CoreConnect.Desktop.Shared.Reactive;
 
-namespace Remotely.Desktop.Shared.ViewModels;
+namespace CoreConnect.Desktop.Shared.ViewModels;
 
 public partial class FileUpload : ObservableObject
 {

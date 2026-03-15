@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Remotely.Shared.Utilities;
+namespace CoreConnect.Shared.Utilities;
 
 public static class ConsoleHelper
 {

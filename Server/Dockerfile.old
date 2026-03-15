@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+﻿FROM ubuntu:jammy
 
 EXPOSE 5000
 
@@ -21,15 +21,15 @@ RUN \
 RUN \
   mkdir -p /app && \
   mkdir /config && \
-  wget -q https://github.com/ghubprime/CoreConnect/releases/latest/download/Remotely_Server_Linux-x64.zip && \
-  unzip -o Remotely_Server_Linux-x64.zip -d /app && \
-  rm Remotely_Server_Linux-x64.zip
+  wget -q https://github.com/ghubprime/CoreConnect/releases/latest/download/CoreConnect_Server_Linux-x64.zip && \
+  unzip -o CoreConnect_Server_Linux-x64.zip -d /app && \
+  rm CoreConnect_Server_Linux-x64.zip
 
 RUN \
-  mkdir -p /remotely-data && \
-  sed -i 's/DataSource=Remotely.db/DataSource=\/remotely-data\/Remotely.db/' /app/appsettings.json
+  mkdir -p /coreconnect-data && \
+  sed -i 's/DataSource=CoreConnect.db/DataSource=\/coreconnect-data\/CoreConnect.db/' /app/appsettings.json
 
-VOLUME "/remotely-data"
+VOLUME "/coreconnect-data"
 
 WORKDIR /app
 
