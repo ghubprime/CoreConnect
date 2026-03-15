@@ -362,6 +362,9 @@ namespace CoreConnect.Server.Migrations.PostgreSql
                         .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
+                    b.Property<string>("AllowedIpRanges")
+                        .HasColumnType("text");
+
                     b.Property<string>("BrandingInfoId")
                         .HasColumnType("text");
 

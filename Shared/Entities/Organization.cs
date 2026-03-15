@@ -38,4 +38,10 @@ public class Organization
 
     public ICollection<CoreConnectUser> CoreConnectUsers { get; set; } = [];
     public ICollection<SharedFile> SharedFiles { get; set; } = [];
+
+    /// <summary>
+    /// Optional list of CIDR ranges (e.g. "10.0.0.0/8", "192.168.1.0/24") that
+    /// restrict API and SignalR access to this organization. Null or empty = no restriction.
+    /// </summary>
+    public string[]? AllowedIpRanges { get; set; }
 }

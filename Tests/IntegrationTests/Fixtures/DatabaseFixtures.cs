@@ -104,6 +104,53 @@ public class PostgreSqlFixture : IAsyncLifetime
 }
 
 /// <summary>
+/// Shared fixture for SQLite integration tests. No container needed —
+/// uses a temporary file-based database.
+/// </summary>
+public class SqliteFixture : IAsyncLifetime
+{
+    private readonly string _dbPath = Path.Combine(Path.GetTempPath(), $"coreconnect_test_{Guid.NewGuid():N}.db");
+
+    public string ConnectionString => $"Data Source={_dbPath}";
+
+    public AppDb CreateDbContext()
+    {
+        var context = new SqliteDbContext(BuildConfig(), BuildHostEnv());
+        return context;
+    }
+
+    public async Task InitializeAsync()
+    {
+        await using var db = CreateDbContext();
+        await db.Database.EnsureCreatedAsync();
+    }
+
+    public async Task DisposeAsync()
+    {
+        await Task.CompletedTask;
+        if (File.Exists(_dbPath))
+        {
+            File.Delete(_dbPath);
+        }
+    }
+
+    private IConfiguration BuildConfig()
+    {
+        return new ConfigurationBuilder()
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["ConnectionStrings:SQLite"] = ConnectionString
+            })
+            .Build();
+    }
+
+    private static Microsoft.AspNetCore.Hosting.IWebHostEnvironment BuildHostEnv()
+    {
+        return new TestHostEnvironment();
+    }
+}
+
+/// <summary>
 /// Minimal IWebHostEnvironment implementation for testing.
 /// </summary>
 internal class TestHostEnvironment : Microsoft.AspNetCore.Hosting.IWebHostEnvironment

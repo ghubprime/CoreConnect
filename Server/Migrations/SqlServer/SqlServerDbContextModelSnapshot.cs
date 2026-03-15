@@ -363,6 +363,9 @@ namespace CoreConnect.Server.Migrations.SqlServer
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("AllowedIpRanges")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("BrandingInfoId")
                         .HasColumnType("nvarchar(max)");
 
