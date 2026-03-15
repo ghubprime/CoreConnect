@@ -219,6 +219,9 @@ public interface IDataService
     Task<AlertRule[]> GetAlertRules(string orgId);
     Task<AlertRule?> GetAlertRule(string alertRuleId, string orgId);
     Task<AlertRule> UpdateAlertRule(AlertRule alertRule);
+
+    Task AddTelemetrySnapshot(DeviceTelemetrySnapshot snapshot);
+    Task<List<DeviceTelemetrySnapshot>> GetTelemetrySnapshots(string deviceId, DateTimeOffset since);
 }
 
 public class DataService : IDataService
@@ -677,6 +680,11 @@ public class DataService : IDataService
                                 .Where(x => x.Timestamp < expirationDate);
 
         dbContext.RemoveRange(sharedFiles);
+
+        var telemetrySnapshots = dbContext.TelemetrySnapshots
+                                    .Where(x => x.Timestamp < expirationDate);
+
+        dbContext.RemoveRange(telemetrySnapshots);
 
         await dbContext.SaveChangesAsync();
     }
@@ -2366,5 +2374,22 @@ public class DataService : IDataService
         dbContext.AlertRules.Update(alertRule);
         await dbContext.SaveChangesAsync();
         return alertRule;
+    }
+
+    public async Task AddTelemetrySnapshot(DeviceTelemetrySnapshot snapshot)
+    {
+        using var dbContext = _appDbFactory.GetContext();
+        dbContext.TelemetrySnapshots.Add(snapshot);
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task<List<DeviceTelemetrySnapshot>> GetTelemetrySnapshots(string deviceId, DateTimeOffset since)
+    {
+        using var dbContext = _appDbFactory.GetContext();
+        return await dbContext.TelemetrySnapshots
+            .AsNoTracking()
+            .Where(x => x.DeviceId == deviceId && x.Timestamp >= since)
+            .OrderBy(x => x.Timestamp)
+            .ToListAsync();
     }
 }

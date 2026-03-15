@@ -41,6 +41,8 @@ public class AppDb : IdentityDbContext
     public DbSet<ScriptRun> ScriptRuns { get; set; }
     public DbSet<ScriptSchedule> ScriptSchedules { get; set; }
     public DbSet<SharedFile> SharedFiles { get; set; }
+    public DbSet<DeviceTelemetrySnapshot> TelemetrySnapshots { get; set; }
+    public DbSet<UserCredential> UserCredentials { get; set; }
     public new DbSet<CoreConnectUser> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -173,6 +175,24 @@ public class AppDb : IdentityDbContext
             .HasMany(x => x.ScriptResults)
             .WithOne(x => x.Device)
             .OnDelete(DeleteBehavior.ClientCascade);
+
+        builder.Entity<Device>()
+            .HasMany(x => x.TelemetrySnapshots)
+            .WithOne(x => x.Device)
+            .HasForeignKey(x => x.DeviceId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<DeviceTelemetrySnapshot>()
+            .HasIndex(x => new { x.DeviceId, x.Timestamp });
+
+        builder.Entity<CoreConnectUser>()
+            .HasMany<UserCredential>()
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<UserCredential>()
+            .HasIndex(x => x.CredentialId);
 
         builder.Entity<Device>()
             .Property(x => x.MacAddresses)

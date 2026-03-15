@@ -1,4 +1,4 @@
-﻿@page "/device-details/{deviceId?}/{activeTab?}"
+@page "/device-details/{deviceId?}/{activeTab?}"
 
 @attribute [Authorize]
 @inherits AuthComponentBase
@@ -53,6 +53,9 @@ else
             </TabHeader>
             <TabHeader Name="script-history" OnActivated="GetScriptHistory" NavigationUri="@($"/device-details/{DeviceId}/script-history")">
                 Script History
+            </TabHeader>
+            <TabHeader Name="telemetry" NavigationUri="@($"/device/{DeviceId}/telemetry")">
+                Telemetry
             </TabHeader>
         </TabHeaders>
 

@@ -1,4 +1,4 @@
-﻿using CoreConnect.Server.Hubs;
+using CoreConnect.Server.Hubs;
 using CoreConnect.Server.Services;
 using Bitbound.SimpleMessenger;
 using Microsoft.AspNetCore.SignalR;
@@ -31,6 +31,7 @@ public class AgentHubTests
         var serviceSessionCache = new Mock<IAgentHubSessionCache>();
         var remoteControlSessions = new Mock<IRemoteControlSessionCache>();
         var messenger = new Mock<IMessenger>();
+        var alertProcessor = new Mock<IAlertRuleProcessor>();
         var logger = new Mock<ILogger<AgentHub>>();
 
         var settings = await _dataService.GetSettings();
@@ -45,6 +46,7 @@ public class AgentHubTests
             expiringTokenService.Object,
             remoteControlSessions.Object,
             messenger.Object,
+            alertProcessor.Object,
             logger.Object);
 
         var hubClients = new Mock<IHubCallerClients<IAgentHubClient>>();
@@ -73,6 +75,7 @@ public class AgentHubTests
         var serviceSessionCache = new Mock<IAgentHubSessionCache>();
         var remoteControlSessions = new Mock<IRemoteControlSessionCache>();
         var messenger = new Mock<IMessenger>();
+        var alertProcessor = new Mock<IAlertRuleProcessor>();
         var logger = new Mock<ILogger<AgentHub>>();
 
 
@@ -88,6 +91,7 @@ public class AgentHubTests
             expiringTokenService.Object,
             remoteControlSessions.Object,
             messenger.Object,
+            alertProcessor.Object,
             logger.Object);
 
         var hubClients = new Mock<IHubCallerClients<IAgentHubClient>>();

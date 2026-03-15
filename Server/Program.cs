@@ -21,6 +21,7 @@ using CoreConnect.Server.Services.Stores;
 using CoreConnect.Shared.Entities;
 using CoreConnect.Shared.Services;
 using Serilog;
+using Fido2NetLib;
 using System.Net;
 using RatePolicyNames = CoreConnect.Server.RateLimiting.PolicyNames;
 using CoreConnect.Server.Filters;
@@ -259,6 +260,25 @@ services.AddHostedService<RemoteControlSessionCleaner>();
 services.AddHostedService<RemoteControlSessionReconnector>();
 services.AddSingleton<IAlertRuleProcessor, AlertRuleProcessor>();
 
+// WebAuthn / FIDO2
+services.AddDistributedMemoryCache();
+services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(5);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+services.AddFido2(options =>
+{
+    options.ServerDomain = !string.IsNullOrWhiteSpace(settings.ServerUrl)
+        ? new Uri(settings.ServerUrl).Host
+        : "localhost";
+    options.ServerName = "CoreConnect";
+    options.Origins = !string.IsNullOrWhiteSpace(settings.ServerUrl)
+        ? new HashSet<string> { settings.ServerUrl.TrimEnd('/') }
+        : new HashSet<string> { "https://localhost" };
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -297,6 +317,7 @@ app.UseSwaggerUI();
 ConfigureStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

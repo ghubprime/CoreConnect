@@ -1,0 +1,149 @@
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
+@inject IJSRuntime JS
+@inject NavigationManager NavManager
+
+<div class="card mt-3">
+    <div class="card-header">
+        <h5 class="mb-0">Passkey / WebAuthn</h5>
+    </div>
+    <div class="card-body">
+        @if (!string.IsNullOrEmpty(_statusMessage))
+        {
+            <div class="alert @(_isError ? "alert-danger" : "alert-success") alert-dismissible fade show" role="alert">
+                @_statusMessage
+                <button type="button" class="btn-close" @onclick="() => _statusMessage = null"></button>
+            </div>
+        }
+
+        @if (_isRegistrationMode)
+        {
+            <p class="text-muted">
+                Register a passkey to sign in without a password using your device's
+                biometric sensor, security key, or platform authenticator.
+            </p>
+            <button class="btn btn-primary" @onclick="RegisterPasskey" disabled="@_isProcessing">
+                @if (_isProcessing)
+                {
+                    <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                }
+                Register Passkey
+            </button>
+        }
+        else
+        {
+            <p class="text-muted">
+                Sign in with a passkey registered to your account.
+            </p>
+            <button class="btn btn-outline-primary" @onclick="LoginWithPasskey" disabled="@_isProcessing">
+                @if (_isProcessing)
+                {
+                    <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+                }
+                Sign in with Passkey
+            </button>
+        }
+    </div>
+</div>
+
+@code {
+    /// <summary>
+    /// When true, shows "Register Passkey" UI.
+    /// When false, shows "Sign in with Passkey" UI.
+    /// </summary>
+    [Parameter]
+    public bool IsRegistrationMode { get; set; } = true;
+
+    [Parameter]
+    public string? UserName { get; set; }
+
+    private bool _isRegistrationMode;
+    private bool _isProcessing;
+    private string? _statusMessage;
+    private bool _isError;
+
+    protected override void OnParametersSet()
+    {
+        _isRegistrationMode = IsRegistrationMode;
+    }
+
+    private async Task RegisterPasskey()
+    {
+        _isProcessing = true;
+        _statusMessage = null;
+
+        try
+        {
+            // 1. Get options from server.
+            var optionsJson = await JS.InvokeAsync<string>(
+                "fetch",
+                "/api/webauthn/register/options",
+                new { method = "POST", headers = new { ContentType = "application/json" } });
+
+            // Use JS interop for the actual credential creation.
+            var options = await JS.InvokeAsync<object>(
+                "eval",
+                $"fetch('/api/webauthn/register/options', {{ method: 'POST', credentials: 'include' }}).then(r => r.json())");
+
+            var credential = await JS.InvokeAsync<object>(
+                "coreConnectWebAuthn.createCredential", options);
+
+            var result = await JS.InvokeAsync<object>(
+                "eval",
+                $"fetch('/api/webauthn/register', {{ method: 'POST', headers: {{ 'Content-Type': 'application/json' }}, credentials: 'include', body: JSON.stringify(arguments[0]) }}).then(r => r.json())",
+                credential);
+
+            _statusMessage = "Passkey registered successfully!";
+            _isError = false;
+        }
+        catch (Exception ex)
+        {
+            _statusMessage = $"Registration failed: {ex.Message}";
+            _isError = true;
+        }
+        finally
+        {
+            _isProcessing = false;
+        }
+    }
+
+    private async Task LoginWithPasskey()
+    {
+        _isProcessing = true;
+        _statusMessage = null;
+
+        try
+        {
+            var body = UserName is not null
+                ? $"{{ \"userName\": \"{UserName}\" }}"
+                : "{}";
+
+            var options = await JS.InvokeAsync<object>(
+                "eval",
+                $"fetch('/api/webauthn/login/options', {{ method: 'POST', headers: {{ 'Content-Type': 'application/json' }}, credentials: 'include', body: {body} }}).then(r => r.json())");
+
+            var assertion = await JS.InvokeAsync<object>(
+                "coreConnectWebAuthn.getCredential", options);
+
+            var result = await JS.InvokeAsync<object>(
+                "eval",
+                $"fetch('/api/webauthn/login', {{ method: 'POST', headers: {{ 'Content-Type': 'application/json' }}, credentials: 'include', body: JSON.stringify(arguments[0]) }}).then(r => r.json())",
+                assertion);
+
+            _statusMessage = "Login successful! Redirecting…";
+            _isError = false;
+
+            // Force a full page reload to pick up the new auth cookie.
+            NavManager.NavigateTo("/", forceLoad: true);
+        }
+        catch (Exception ex)
+        {
+            _statusMessage = $"Login failed: {ex.Message}";
+            _isError = true;
+        }
+        finally
+        {
+            _isProcessing = false;
+        }
+    }
+}

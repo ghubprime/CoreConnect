@@ -247,6 +247,17 @@ public class AgentHub : Hub<IAgentHubClient>
 
         await _alertProcessor.EvaluateDeviceAsync(Device);
 
+        // Persist a telemetry snapshot for historical charting.
+        var snapshot = new DeviceTelemetrySnapshot
+        {
+            DeviceId = Device.ID,
+            CpuUtilization = Device.CpuUtilization,
+            UsedMemoryPercent = Device.UsedMemoryPercent,
+            UsedStoragePercent = Device.UsedStoragePercent,
+            Timestamp = DateTimeOffset.UtcNow
+        };
+        await _dataService.AddTelemetrySnapshot(snapshot);
+
         _serviceSessionCache.AddOrUpdateByConnectionId(Context.ConnectionId, Device);
 
         var userIDs = _circuitManager.Connections.Select(x => x.User.Id);

@@ -1,4 +1,4 @@
-﻿FROM ubuntu:jammy
+FROM ubuntu:jammy
 
 EXPOSE 5000
 
@@ -16,7 +16,7 @@ RUN \
   libssl1.0
 
 RUN \
-  apt-get -y install aspnetcore-runtime-8.0
+  apt-get -y install aspnetcore-runtime-9.0
 
 RUN \
   adduser --disabled-password --gecos '' -u 2001 coreconnect && \

@@ -1,4 +1,4 @@
-﻿using CoreConnect.Shared.Attributes;
+using CoreConnect.Shared.Attributes;
 using CoreConnect.Shared.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
@@ -80,6 +80,9 @@ public class Device
 
     [JsonIgnore]
     public List<ScriptSchedule> ScriptSchedules { get; set; } = new();
+
+    [JsonIgnore]
+    public List<DeviceTelemetrySnapshot> TelemetrySnapshots { get; set; } = new();
 
     public string? ServerVerificationToken { get; set; }
 

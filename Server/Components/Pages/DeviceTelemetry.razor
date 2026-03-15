@@ -1,0 +1,137 @@
+@page "/device/{DeviceId}/telemetry"
+@attribute [Authorize]
+@using CoreConnect.Server.Services
+@using CoreConnect.Shared.Entities
+@using Microsoft.AspNetCore.Authorization
+@inject IDataService DataService
+@inject NavigationManager NavManager
+
+<PageTitle>Telemetry — @(_device?.DeviceName ?? DeviceId)</PageTitle>
+
+<div class="container-fluid mt-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Devices</a></li>
+            <li class="breadcrumb-item"><a href="/device-details/@DeviceId">@(_device?.DeviceName ?? DeviceId)</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Telemetry</li>
+        </ol>
+    </nav>
+
+    @if (_loading)
+    {
+        <div class="d-flex justify-content-center my-5">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading…</span>
+            </div>
+        </div>
+    }
+    else if (_device is null)
+    {
+        <div class="alert alert-danger">Device not found.</div>
+    }
+    else
+    {
+        <h3 class="mb-4">@_device.DeviceName — 24 h Telemetry</h3>
+
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">CPU Utilization</h6>
+                        @RenderSparkline(_snapshots.Select(s => s.CpuUtilization).ToArray(), "#0d6efd")
+                        <p class="mt-2 mb-0 fw-bold">
+                            Current: @(_device.CpuUtilization.ToString("P1"))
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">Memory Usage</h6>
+                        @RenderSparkline(_snapshots.Select(s => s.UsedMemoryPercent).ToArray(), "#198754")
+                        <p class="mt-2 mb-0 fw-bold">
+                            Current: @(_device.UsedMemoryPercent.ToString("P1"))
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">Storage Usage</h6>
+                        @RenderSparkline(_snapshots.Select(s => s.UsedStoragePercent).ToArray(), "#dc3545")
+                        <p class="mt-2 mb-0 fw-bold">
+                            Current: @(_device.UsedStoragePercent.ToString("P1"))
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p class="text-muted mt-3 small">
+            Showing @_snapshots.Count data points from the last 24 hours.
+            Data is recorded on each agent heartbeat.
+        </p>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string DeviceId { get; set; } = string.Empty;
+
+    private Device? _device;
+    private List<DeviceTelemetrySnapshot> _snapshots = new();
+    private bool _loading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var deviceResult = await DataService.GetDevice(DeviceId);
+        if (deviceResult.IsSuccess)
+        {
+            _device = deviceResult.Value;
+        }
+
+        _snapshots = await DataService.GetTelemetrySnapshots(
+            DeviceId,
+            DateTimeOffset.UtcNow.AddHours(-24));
+
+        _loading = false;
+    }
+
+    private RenderFragment RenderSparkline(double[] values, string color) => __builder =>
+    {
+        if (values.Length == 0)
+        {
+            <p class="text-muted small">No data yet.</p>
+            return;
+        }
+
+        const int width = 300;
+        const int height = 60;
+        const int padding = 2;
+
+        var max = values.Max();
+        if (max == 0) max = 1;
+
+        var points = new List<string>();
+        for (var i = 0; i < values.Length; i++)
+        {
+            var x = padding + (double)i / Math.Max(values.Length - 1, 1) * (width - 2 * padding);
+            var y = height - padding - (values[i] / max) * (height - 2 * padding);
+            points.Add($"{x:F1},{y:F1}");
+        }
+
+        var polyline = string.Join(" ", points);
+
+        <svg width="@width" height="@height" viewBox="0 0 @width @height"
+             style="width:100%;height:auto;" preserveAspectRatio="none">
+            <polyline fill="none"
+                      stroke="@color"
+                      stroke-width="1.5"
+                      stroke-linejoin="round"
+                      stroke-linecap="round"
+                      points="@polyline" />
+        </svg>
+    };
+}
