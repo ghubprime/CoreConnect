@@ -15,7 +15,7 @@ namespace CoreConnect.Server.Migrations.Sqlite
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.10");
+            modelBuilder.HasAnnotation("ProductVersion", "9.0.0");
 
             modelBuilder.Entity("CoreConnect.Shared.Entities.Alert", b =>
                 {
@@ -124,6 +124,9 @@ namespace CoreConnect.Server.Migrations.Sqlite
                     b.Property<string>("OrganizationID")
                         .IsRequired()
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Permissions")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Secret")
                         .HasColumnType("TEXT");
@@ -275,6 +278,36 @@ namespace CoreConnect.Server.Migrations.Sqlite
                     b.HasIndex("OrganizationID");
 
                     b.ToTable("DeviceGroups");
+                });
+
+            modelBuilder.Entity("CoreConnect.Shared.Entities.DeviceTelemetrySnapshot", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("CpuUtilization")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("DeviceId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Timestamp")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("UsedMemoryPercent")
+                        .HasColumnType("REAL");
+
+                    b.Property<double>("UsedStoragePercent")
+                        .HasColumnType("REAL");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceId", "Timestamp");
+
+                    b.ToTable("TelemetrySnapshots");
                 });
 
             modelBuilder.Entity("CoreConnect.Shared.Entities.InviteLink", b =>
@@ -586,6 +619,50 @@ namespace CoreConnect.Server.Migrations.Sqlite
                     b.HasIndex("OrganizationID");
 
                     b.ToTable("SharedFiles");
+                });
+
+            modelBuilder.Entity("CoreConnect.Shared.Entities.UserCredential", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("AaGuid")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedOn")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CredType")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("CredentialId")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<string>("DisplayName")
+                        .HasMaxLength(100)
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("PublicKey")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<uint>("SignatureCounter")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CredentialId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserCredentials");
                 });
 
             modelBuilder.Entity("CoreConnectUserDeviceGroup", b =>
@@ -974,6 +1051,17 @@ namespace CoreConnect.Server.Migrations.Sqlite
                     b.Navigation("Organization");
                 });
 
+            modelBuilder.Entity("CoreConnect.Shared.Entities.DeviceTelemetrySnapshot", b =>
+                {
+                    b.HasOne("CoreConnect.Shared.Entities.Device", "Device")
+                        .WithMany("TelemetrySnapshots")
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Device");
+                });
+
             modelBuilder.Entity("CoreConnect.Shared.Entities.InviteLink", b =>
                 {
                     b.HasOne("CoreConnect.Shared.Entities.Organization", "Organization")
@@ -1090,6 +1178,17 @@ namespace CoreConnect.Server.Migrations.Sqlite
                         .HasForeignKey("OrganizationID");
 
                     b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("CoreConnect.Shared.Entities.UserCredential", b =>
+                {
+                    b.HasOne("CoreConnect.Shared.Entities.CoreConnectUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CoreConnectUserDeviceGroup", b =>
@@ -1219,6 +1318,8 @@ namespace CoreConnect.Server.Migrations.Sqlite
                     b.Navigation("Alerts");
 
                     b.Navigation("ScriptResults");
+
+                    b.Navigation("TelemetrySnapshots");
                 });
 
             modelBuilder.Entity("CoreConnect.Shared.Entities.DeviceGroup", b =>

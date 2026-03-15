@@ -17,7 +17,7 @@ namespace CoreConnect.Server.Migrations.SqlServer
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -127,6 +127,9 @@ namespace CoreConnect.Server.Migrations.SqlServer
                     b.Property<string>("OrganizationID")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Permissions")
+                        .HasColumnType("int");
 
                     b.Property<string>("Secret")
                         .HasColumnType("nvarchar(max)");
@@ -278,6 +281,37 @@ namespace CoreConnect.Server.Migrations.SqlServer
                     b.HasIndex("OrganizationID");
 
                     b.ToTable("DeviceGroups");
+                });
+
+            modelBuilder.Entity("CoreConnect.Shared.Entities.DeviceTelemetrySnapshot", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<double>("CpuUtilization")
+                        .HasColumnType("float");
+
+                    b.Property<string>("DeviceId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTimeOffset>("Timestamp")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<double>("UsedMemoryPercent")
+                        .HasColumnType("float");
+
+                    b.Property<double>("UsedStoragePercent")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeviceId", "Timestamp");
+
+                    b.ToTable("TelemetrySnapshots");
                 });
 
             modelBuilder.Entity("CoreConnect.Shared.Entities.InviteLink", b =>
@@ -586,6 +620,49 @@ namespace CoreConnect.Server.Migrations.SqlServer
                     b.HasIndex("OrganizationID");
 
                     b.ToTable("SharedFiles");
+                });
+
+            modelBuilder.Entity("CoreConnect.Shared.Entities.UserCredential", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("AaGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CredType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("CredentialId")
+                        .IsRequired()
+                        .HasColumnType("varbinary(900)");
+
+                    b.Property<string>("DisplayName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<byte[]>("PublicKey")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<long>("SignatureCounter")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CredentialId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserCredentials");
                 });
 
             modelBuilder.Entity("CoreConnectUserDeviceGroup", b =>
@@ -980,6 +1057,17 @@ namespace CoreConnect.Server.Migrations.SqlServer
                     b.Navigation("Organization");
                 });
 
+            modelBuilder.Entity("CoreConnect.Shared.Entities.DeviceTelemetrySnapshot", b =>
+                {
+                    b.HasOne("CoreConnect.Shared.Entities.Device", "Device")
+                        .WithMany("TelemetrySnapshots")
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Device");
+                });
+
             modelBuilder.Entity("CoreConnect.Shared.Entities.InviteLink", b =>
                 {
                     b.HasOne("CoreConnect.Shared.Entities.Organization", "Organization")
@@ -1096,6 +1184,17 @@ namespace CoreConnect.Server.Migrations.SqlServer
                         .HasForeignKey("OrganizationID");
 
                     b.Navigation("Organization");
+                });
+
+            modelBuilder.Entity("CoreConnect.Shared.Entities.UserCredential", b =>
+                {
+                    b.HasOne("CoreConnect.Shared.Entities.CoreConnectUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CoreConnectUserDeviceGroup", b =>
@@ -1225,6 +1324,8 @@ namespace CoreConnect.Server.Migrations.SqlServer
                     b.Navigation("Alerts");
 
                     b.Navigation("ScriptResults");
+
+                    b.Navigation("TelemetrySnapshots");
                 });
 
             modelBuilder.Entity("CoreConnect.Shared.Entities.DeviceGroup", b =>
