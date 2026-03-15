@@ -1,6 +1,6 @@
-﻿# CoreConnect
+# CoreConnect
 
-A remote control and remote scripting solution, built with .NET, Blazor, and SignalR Core.
+A remote control and remote scripting solution, built with .NET 9, Blazor, and SignalR Core.
 
 [![Tests](https://github.com/ghubprime/CoreConnect/actions/workflows/run_tests.yml/badge.svg?branch=master)](https://github.com/ghubprime/CoreConnect/actions/workflows/run_tests.yml)
 
@@ -67,7 +67,7 @@ The following steps will configure your Windows 11 machine for building the Core
     - .NET desktop development
     - .NET Core cross-platform development
   - You should have the following Individual Components selected:
-    - .NET SDK (latest version).
+    - .NET 9 SDK (required).
     - MSBuild (which auto-selects Roslyn compilers).
     - NuGet targets and build tasks.
     - .NET Framework 4.8 SDK.
@@ -76,6 +76,8 @@ The following steps will configure your Windows 11 machine for building the Core
   - Link: https://git-scm.com/downloads
 - Install the latest LTS Node:
   - Link: https://nodejs.org/
+- Install Docker Desktop (required for integration tests).
+  - Link: https://www.docker.com/products/docker-desktop/
 - Clone the git repository: `git clone https://github.com/ghubprime/CoreConnect --recurse`
 - When debugging, the agent will use a pre-defined device ID and connect to https://localhost:5001.
 - In development environment, the server will assign all connecting agents to the first organization.
@@ -92,6 +94,32 @@ An organization admin has access to the Organization page and server log entries
 Within the Account section, there is a tab for branding, which will apply to the quick support clients and Windows installer.
 
 However, the clients will need to have been built from source with the server URL hard-coded in the apps for them to be able to retrieve the branding info.
+
+## Passkey / WebAuthn Authentication
+
+CoreConnect supports passwordless login via FIDO2/WebAuthn passkeys. Users can register a passkey from their account management page and then sign in using their device's biometric sensor, security key, or platform authenticator — no password required.
+
+The WebAuthn feature is powered by `Fido2NetLib` and works with any FIDO2-compliant authenticator. The server domain and origin are derived from the `ServerUrl` setting.
+
+## Device Telemetry Dashboard
+
+CoreConnect records CPU, memory, and storage utilization on each agent heartbeat. Historical telemetry is viewable on a per-device Telemetry tab, which renders 24-hour sparkline charts using inline SVG (no external charting libraries required).
+
+Telemetry data is automatically cleaned up according to the `DataRetentionInDays` setting.
+
+## Automated Alert Rules
+
+In addition to the manual Alerts API (see below), CoreConnect supports automated alert rules that trigger when device telemetry exceeds a configured threshold. Rules can be linked to saved scripts for automated remediation.
+
+Alert rules are managed from the Alert Rules page and are evaluated on each agent heartbeat.
+
+## Integration Tests
+
+The `Tests/IntegrationTests` project uses [Testcontainers](https://dotnet.testcontainers.org/) to spin up real SQL Server and PostgreSQL containers for integration testing. Docker must be running to execute these tests.
+
+```bash
+dotnet test Tests/IntegrationTests
+```
 
 ## Configuration
 
