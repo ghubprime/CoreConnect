@@ -1,4 +1,4 @@
-﻿using CoreConnect.Shared.Models;
+using CoreConnect.Shared.Models;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -1472,11 +1472,10 @@ public class DataService : IDataService
 
         return dbContext.Users
             .AsNoTracking()
-            .Include(x => x.DeviceGroups)
-            .ThenInclude(x => x.Devices)
             .Where(x => x.UserName == userName)
             .SelectMany(x => x.DeviceGroups)
             .SelectMany(x => x.Devices)
+            .Distinct()
             .ToArray();
     }
 
