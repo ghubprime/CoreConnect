@@ -1,4 +1,4 @@
-﻿using CoreConnect.Server.Services;
+using CoreConnect.Server.Services;
 using Bitbound.SimpleMessenger;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Caching.Memory;
@@ -23,6 +23,7 @@ public class AgentHub : Hub<IAgentHubClient>
     private readonly IRemoteControlSessionCache _remoteControlSessions;
     private readonly IAgentHubSessionCache _serviceSessionCache;
     private readonly IHubContext<ViewerHub> _viewerHubContext;
+    private readonly IAlertRuleProcessor _alertProcessor;
 
     public AgentHub(
         IDataService dataService,
@@ -32,6 +33,7 @@ public class AgentHub : Hub<IAgentHubClient>
         IExpiringTokenService expiringTokenService,
         IRemoteControlSessionCache remoteControlSessionCache,
         IMessenger messenger,
+        IAlertRuleProcessor alertProcessor,
         ILogger<AgentHub> logger)
     {
         _dataService = dataService;
@@ -41,6 +43,7 @@ public class AgentHub : Hub<IAgentHubClient>
         _expiringTokenService = expiringTokenService;
         _remoteControlSessions = remoteControlSessionCache;
         _messenger = messenger;
+        _alertProcessor = alertProcessor;
         _logger = logger;
     }
 
@@ -119,7 +122,8 @@ public class AgentHub : Hub<IAgentHubClient>
                     session.UserConnectionId,
                     session.RequesterName,
                     session.OrganizationName,
-                    session.OrganizationId);
+                    session.OrganizationId,
+                    false);
             }
         }
         catch (Exception ex)
@@ -183,6 +187,8 @@ public class AgentHub : Hub<IAgentHubClient>
 
             Device = result.Value;
 
+            await _alertProcessor.EvaluateDeviceAsync(Device);
+
             _serviceSessionCache.AddOrUpdateByConnectionId(Context.ConnectionId, Device);
 
             var userIDs = _circuitManager.Connections.Select(x => x.User.Id);
@@ -238,6 +244,8 @@ public class AgentHub : Hub<IAgentHubClient>
         }
 
         Device = result.Value;
+
+        await _alertProcessor.EvaluateDeviceAsync(Device);
 
         _serviceSessionCache.AddOrUpdateByConnectionId(Context.ConnectionId, Device);
 

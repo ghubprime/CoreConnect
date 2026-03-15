@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoreConnect.Shared.Entities;
@@ -6,6 +6,8 @@ namespace CoreConnect.Shared.Entities;
 public class Organization
 {
     public ICollection<Alert> Alerts { get; set; } = [];
+
+    public ICollection<AlertRule> AlertRules { get; set; } = [];
 
     public ICollection<ApiToken> ApiTokens { get; set; } = [];
 

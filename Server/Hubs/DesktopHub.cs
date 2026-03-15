@@ -15,6 +15,7 @@ public class DesktopHub : Hub<IDesktopHubClient>
     private readonly IDesktopStreamCache _streamCache;
     private readonly IHubContext<ViewerHub, IViewerHubClient> _viewerHub;
     private readonly IHubContext<AgentHub, IAgentHubClient> _agentHub;
+    private readonly IDataService _dataService;
 
     public DesktopHub(
         IRemoteControlSessionCache sessionCache,
@@ -22,6 +23,7 @@ public class DesktopHub : Hub<IDesktopHubClient>
         IAgentHubSessionCache agentCache,
         IHubContext<AgentHub, IAgentHubClient> agentHub,
         IHubContext<ViewerHub, IViewerHubClient> viewerHub,
+        IDataService dataService,
         ILogger<DesktopHub> logger)
     {
         _sessionCache = sessionCache;
@@ -29,6 +31,7 @@ public class DesktopHub : Hub<IDesktopHubClient>
         _streamCache = streamCache;
         _viewerHub = viewerHub;
         _agentHub = agentHub;
+        _dataService = dataService;
         _logger = logger;
     }
 
@@ -286,7 +289,7 @@ public class DesktopHub : Hub<IDesktopHubClient>
 
         SessionInfo.AgentConnectionId = agentConnectionId;
 
-        var settings = await _sessionCache.ServiceProvider.GetRequiredService<IDataService>().GetSettings();
+        var settings = await _dataService.GetSettings();
 
         await _agentHub.Clients
                  .Client(SessionInfo.AgentConnectionId)
@@ -316,7 +319,7 @@ public class DesktopHub : Hub<IDesktopHubClient>
             currentSessionId,
             SessionInfo);
 
-        var settings = await _sessionCache.ServiceProvider.GetRequiredService<IDataService>().GetSettings();
+        var settings = await _dataService.GetSettings();
 
         await _agentHub.Clients
             .Client(SessionInfo.AgentConnectionId)

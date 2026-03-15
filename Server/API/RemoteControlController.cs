@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using CoreConnect.Server.Hubs;
@@ -157,13 +157,16 @@ public class RemoteControlController : ControllerBase
             return BadRequest("Failed to resolve organization name.");
         }
 
+        var settings = await _dataService.GetSettings();
+
         await _agentHub.Clients.Client(serviceConnectionId).RemoteControl(
             sessionId,
             accessKey,
             HttpContext.Connection.Id,
             string.Empty,
             orgNameResult.Value,
-            orgId);
+            orgId,
+            settings.EnableWindowsGpuAcceleration);
 
         var waitResult = await session.WaitForSessionReady(TimeSpan.FromSeconds(30));
         if (!waitResult)

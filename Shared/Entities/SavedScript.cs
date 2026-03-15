@@ -1,4 +1,4 @@
-﻿using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -48,4 +48,7 @@ public class SavedScript
 
     [JsonIgnore]
     public List<ScriptResult>? ScriptResults { get; set; }
+
+    [JsonIgnore]
+    public List<AlertRule> AlertRules { get; set; } = new();
 }

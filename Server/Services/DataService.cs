@@ -213,6 +213,12 @@ public interface IDataService
 
     Task<Result> UpdateUserOptions(string userName, CoreConnectUserOptions options);
     Task<bool> ValidateApiKey(string keyId, string apiSecret, string requestPath, string remoteIP);
+
+    Task<AlertRule> AddAlertRule(AlertRule alertRule);
+    Task DeleteAlertRule(string alertRuleId, string orgId);
+    Task<AlertRule[]> GetAlertRules(string orgId);
+    Task<AlertRule?> GetAlertRule(string alertRuleId, string orgId);
+    Task<AlertRule> UpdateAlertRule(AlertRule alertRule);
 }
 
 public class DataService : IDataService
@@ -2314,5 +2320,51 @@ public class DataService : IDataService
             )
             .Select(x => x.Id)
             .ToArray();
+    }
+
+    public async Task<AlertRule> AddAlertRule(AlertRule alertRule)
+    {
+        using var dbContext = _appDbFactory.GetContext();
+        dbContext.AlertRules.Add(alertRule);
+        await dbContext.SaveChangesAsync();
+        return alertRule;
+    }
+
+    public async Task DeleteAlertRule(string alertRuleId, string orgId)
+    {
+        using var dbContext = _appDbFactory.GetContext();
+        var rule = await dbContext.AlertRules.FirstOrDefaultAsync(r => r.ID == alertRuleId && r.OrganizationID == orgId);
+        if (rule != null)
+        {
+            dbContext.AlertRules.Remove(rule);
+            await dbContext.SaveChangesAsync();
+        }
+    }
+
+    public Task<AlertRule[]> GetAlertRules(string orgId)
+    {
+        using var dbContext = _appDbFactory.GetContext();
+        return dbContext.AlertRules
+            .AsNoTracking()
+            .Include(x => x.TargetDeviceGroup)
+            .Include(x => x.SavedScript)
+            .Where(r => r.OrganizationID == orgId)
+            .ToArrayAsync();
+    }
+
+    public Task<AlertRule?> GetAlertRule(string alertRuleId, string orgId)
+    {
+        using var dbContext = _appDbFactory.GetContext();
+        return dbContext.AlertRules
+            .AsNoTracking()
+            .FirstOrDefaultAsync(r => r.ID == alertRuleId && r.OrganizationID == orgId);
+    }
+
+    public async Task<AlertRule> UpdateAlertRule(AlertRule alertRule)
+    {
+        using var dbContext = _appDbFactory.GetContext();
+        dbContext.AlertRules.Update(alertRule);
+        await dbContext.SaveChangesAsync();
+        return alertRule;
     }
 }

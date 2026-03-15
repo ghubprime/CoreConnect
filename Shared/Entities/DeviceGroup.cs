@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -26,4 +26,7 @@ public class DeviceGroup
 
     [JsonIgnore]
     public List<ScriptSchedule>? ScriptSchedules { get; set; }
+
+    [JsonIgnore]
+    public List<AlertRule> AlertRules { get; set; } = new();
 }

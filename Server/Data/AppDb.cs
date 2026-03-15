@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -26,6 +26,8 @@ public class AppDb : IdentityDbContext
     }
 
     public DbSet<Alert> Alerts { get; set; }
+    
+    public DbSet<AlertRule> AlertRules { get; set; }
 
     public DbSet<ApiToken> ApiTokens { get; set; }
     public DbSet<BrandingInfo> BrandingInfos { get; set; }
@@ -85,6 +87,10 @@ public class AppDb : IdentityDbContext
         builder.Entity<Organization>()
             .HasMany(x => x.Alerts)
             .WithOne(x => x.Organization);
+        builder.Entity<Organization>()
+            .HasMany(x => x.AlertRules)
+            .WithOne(x => x.Organization)
+            .OnDelete(DeleteBehavior.ClientCascade);
         builder.Entity<Organization>()
             .HasMany(x => x.ScriptRuns)
             .WithOne(x => x.Organization)
@@ -185,6 +191,13 @@ public class AppDb : IdentityDbContext
             .HasMany(x => x.ScriptSchedules)
             .WithMany(x => x.DeviceGroups);
 
+        builder.Entity<DeviceGroup>()
+            .HasMany(x => x.AlertRules)
+            .WithOne(x => x.TargetDeviceGroup)
+            .HasForeignKey(x => x.TargetDeviceGroupId)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.ClientSetNull);
+
         builder.Entity<ScriptRun>()
             .HasMany(x => x.Devices)
             .WithMany(x => x.ScriptRuns);
@@ -221,6 +234,13 @@ public class AppDb : IdentityDbContext
         builder.Entity<SavedScript>()
             .HasMany(x => x.ScriptResults)
             .WithOne(x => x.SavedScript)
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.ClientSetNull);
+
+        builder.Entity<SavedScript>()
+            .HasMany(x => x.AlertRules)
+            .WithOne(x => x.SavedScript)
+            .HasForeignKey(x => x.SavedScriptId)
             .IsRequired(false)
             .OnDelete(DeleteBehavior.ClientSetNull);
 

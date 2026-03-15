@@ -1,4 +1,4 @@
-﻿using CoreConnect.Server.Enums;
+using CoreConnect.Server.Enums;
 using CoreConnect.Server.Hubs;
 using CoreConnect.Shared.Helpers;
 using CoreConnect.Shared.Interfaces;
@@ -70,7 +70,8 @@ internal class RemoteControlSessionReconnector : BackgroundService
                                     session.UserConnectionId,
                                     session.RequesterName,
                                     session.OrganizationName,
-                                    session.OrganizationId);
+                                    session.OrganizationId,
+                                    false);
                         },
                         TimeSpan.FromSeconds(10),
                         key: $"{session.UnattendedSessionId}",

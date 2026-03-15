@@ -1,0 +1,131 @@
+@page "/alertrules"
+@using CoreConnect.Shared.Entities
+@using CoreConnect.Server.Components.Layout
+@layout MainLayout
+@attribute [Authorize]
+
+<PageTitle>Remediation Alerts - CoreConnect</PageTitle>
+
+<div class="row align-items-center mb-3">
+    <div class="col">
+        <h3>Auto-Remediation Alerts</h3>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary" @onclick="CreateNewRule">
+            <i class="fas fa-plus mr-1"></i> New Alert Rule
+        </button>
+    </div>
+</div>
+
+@if (Rules == null)
+{
+    <LoadingSignal />
+}
+else if (!Rules.Any())
+{
+    <p><em>No alert rules found. Create one to get started.</em></p>
+}
+else
+{
+    <table class="table table-hover table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Metric</th>
+                <th>Condition</th>
+                <th>Linked Script</th>
+                <th>Enabled</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rule in Rules)
+            {
+                <tr>
+                    <td>@rule.Name</td>
+                    <td>@rule.Metric</td>
+                    <td>@rule.Operator @rule.Threshold</td>
+                    <td>@(rule.SavedScript?.Name ?? "None")</td>
+                    <td>
+                        <div class="form-check form-switch col-auto">
+                            <input class="form-check-input" type="checkbox" checked="@rule.IsEnabled" @onchange="@(async (e) => await ToggleRule(rule, (bool)(e.Value ?? false)))">
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-secondary me-2" @onclick="() => EditRule(rule)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteRule(rule)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (IsEditing)
+{
+    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@(string.IsNullOrEmpty(EditingRule.ID) ? "New Alert Rule" : "Edit Alert Rule")</h5>
+                    <button type="button" class="btn-close" @onclick="CancelEdit"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" @bind="EditingRule.Name" />
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Metric</label>
+                            <select class="form-select" @bind="EditingRule.Metric">
+                                <option value="CpuUtilization">CPU Utilization %</option>
+                                <option value="UsedMemoryPercent">Used Memory %</option>
+                                <option value="UsedStoragePercent">Used Storage %</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Operator</label>
+                            <select class="form-select" @bind="EditingRule.Operator">
+                                <option value=">">&gt;</option>
+                                <option value="<">&lt;</option>
+                                <option value=">=">&ge;</option>
+                                <option value="<=">&le;</option>
+                                <option value="==">==</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Threshold</label>
+                            <input type="number" class="form-control" @bind="EditingRule.Threshold" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Trigger Saved Script</label>
+                        <select class="form-select" @bind="EditingRule.SavedScriptId">
+                            <option value="">-- No Script --</option>
+                            @foreach (var script in AvailableScripts)
+                            {
+                                <option value="@script.Id">@script.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3 form-check text-start">
+                        <input type="checkbox" class="form-check-input" id="isEnabledCheck" @bind="EditingRule.IsEnabled" />
+                        <label class="form-check-label" for="isEnabledCheck">Rule Enabled</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+                    <button type="button" class="btn btn-primary" @onclick="SaveRule">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
