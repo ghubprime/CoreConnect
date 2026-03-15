@@ -92,7 +92,7 @@ else if (_isRunning)
         var user = await GetCurrentUser();
         if (user is not null)
         {
-            var groups = await DataService.GetDeviceGroups(user.UserName ?? string.Empty);
+            var groups = DataService.GetDeviceGroups(user.UserName ?? string.Empty);
             _deviceGroups = groups.ToList();
         }
     }

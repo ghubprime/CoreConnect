@@ -92,4 +92,12 @@ public interface IAgentHubClient
     /// The agent invokes ReceiveScriptOutputChunk on the hub to relay stdout/stderr.
     /// </summary>
     Task ScriptOutputChunk(int scriptRunId, string chunk, bool isError);
+
+    Task GetProcesses(string requesterConnectionId);
+
+    Task GetServices(string requesterConnectionId);
+
+    Task KillProcess(int processId);
+
+    Task RestartService(string serviceName);
 }

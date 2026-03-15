@@ -194,6 +194,9 @@ namespace CoreConnect.Server.Migrations.Sqlite
                     b.Property<bool>("Is64Bit")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsOnline")
                         .HasColumnType("INTEGER");
 

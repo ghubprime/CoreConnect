@@ -438,3 +438,5 @@ void ConfigureSerilog(WebApplicationBuilder webAppBuilder, SettingsModel setting
         Console.WriteLine($"Failed to configure Serilog file logging.  Error: {ex.Message}");
     }
 }
+
+public partial class Program { }

@@ -1,0 +1,8 @@
+C:\Users\S\Antigravity\CoreConnect\Server\Components\Pages\DeviceServices.razor(117,98): error CS1593: Delegate 'RegistrationCallback<StreamReceivedMessage<ServiceInfo>>' does not take 1 arguments [C:\Users\S\Antigravity\CoreConnect\Server\Server.csproj]
+C:\Users\S\Antigravity\CoreConnect\Server\Components\Pages\DeviceProcesses.razor(116,98): error CS1593: Delegate 'RegistrationCallback<StreamReceivedMessage<ProcessInfo>>' does not take 1 arguments [C:\Users\S\Antigravity\CoreConnect\Server\Server.csproj]
+
+Build FAILED.
+    6 Warning(s)
+    2 Error(s)
+
+Time Elapsed 00:00:10.86

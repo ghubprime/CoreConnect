@@ -231,6 +231,18 @@ public class CircuitConnection : CircuitHandler, ICircuitConnection
             return Result.Fail<RemoteControlSession>("Device is not online.");
         }
 
+        if (!targetDevice.IsApproved)
+        {
+            var message = new DisplayNotificationMessage(
+                 "The selected device is not approved for remote control.",
+                 "Device is not approved.",
+                 "bg-warning");
+
+            await _messenger.Send(message, ConnectionId);
+
+            return Result.Fail<RemoteControlSession>("Device is not approved.");
+        }
+
 
         if (!_dataService.DoesUserHaveAccessToDevice(deviceId, User))
         {

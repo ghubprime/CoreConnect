@@ -198,6 +198,9 @@ namespace CoreConnect.Server.Migrations.SqlServer
                     b.Property<bool>("Is64Bit")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsOnline")
                         .HasColumnType("bit");
 

@@ -19,6 +19,11 @@ using System.Threading.Tasks;
 using System.Timers;
 using Timer = System.Timers.Timer;
 using CoreConnect.Desktop.Native.Windows;
+using System.Diagnostics;
+using System.ServiceProcess;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
+using System.Collections.Generic;
 
 namespace CoreConnect.Agent.Services;
 
@@ -570,6 +575,138 @@ public class AgentHubConnection : IAgentHubConnection, IDisposable
         }
     }
 
+    public async Task GetProcesses(string requesterConnectionId)
+    {
+        try
+        {
+            EnsureHubConnection();
+
+            if (!_isServerVerified)
+            {
+                _logger.LogWarning("GetProcesses attempted before server was verified.");
+                return;
+            }
+
+            var stream = StreamProcessesAsync();
+            await _hubConnection.SendAsync("StreamProcesses", stream, requesterConnectionId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error starting process stream.");
+        }
+    }
+
+    private async IAsyncEnumerable<ProcessInfo> StreamProcessesAsync()
+    {
+        var processes = Process.GetProcesses().OrderBy(p => p.ProcessName).ToArray();
+        foreach (var p in processes)
+        {
+            ProcessInfo info = new()
+            {
+                Id = p.Id,
+                Name = p.ProcessName,
+            };
+
+            try
+            {
+                info.WorkingSetBytes = p.WorkingSet64;
+                info.MainWindowTitle = p.MainWindowTitle;
+                info.SessionId = p.SessionId.ToString();
+            }
+            catch
+            {
+                // Access denied on some processes is expected
+            }
+
+            yield return info;
+            
+            // Yield to avoid blocking the signaling thread
+            await Task.Yield();
+        }
+    }
+
+    public async Task GetServices(string requesterConnectionId)
+    {
+        try
+        {
+            EnsureHubConnection();
+
+            if (!_isServerVerified)
+            {
+                _logger.LogWarning("GetServices attempted before server was verified.");
+                return;
+            }
+
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                _logger.LogWarning("GetServices is currently only supported on Windows.");
+                return;
+            }
+
+            var stream = StreamServicesAsync();
+            await _hubConnection.SendAsync("StreamServices", stream, requesterConnectionId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error starting services stream.");
+        }
+    }
+
+    [SupportedOSPlatform("windows")]
+    private async IAsyncEnumerable<ServiceInfo> StreamServicesAsync()
+    {
+        var services = ServiceController.GetServices().OrderBy(s => s.DisplayName).ToArray();
+        foreach (var s in services)
+        {
+            yield return new ServiceInfo
+            {
+                Name = s.ServiceName,
+                DisplayName = s.DisplayName,
+                Status = s.Status.ToString(),
+                StartType = s.StartType.ToString()
+            };
+            
+            // Yield to avoid blocking
+            await Task.Yield();
+        }
+    }
+
+    public Task KillProcess(int processId)
+    {
+        try
+        {
+            var p = Process.GetProcessById(processId);
+            p.Kill();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error killing process {processId}");
+        }
+        return Task.CompletedTask;
+    }
+
+    public Task RestartService(string serviceName)
+    {
+        try
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                var svc = new ServiceController(serviceName);
+                if (svc.Status == ServiceControllerStatus.Running)
+                {
+                    svc.Stop();
+                    svc.WaitForStatus(ServiceControllerStatus.Stopped, TimeSpan.FromSeconds(10));
+                }
+                svc.Start();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Error restarting service {serviceName}");
+        }
+        return Task.CompletedTask;
+    }
+
     private async Task<bool> CheckForServerMigration()
     {
         if (_connectionInfo is null || _hubConnection is null)
@@ -677,6 +814,14 @@ public class AgentHubConnection : IAgentHubConnection, IDisposable
         _hubConnection.On<string>(nameof(WakeDevice), WakeDevice);
 
         _hubConnection.On<int, string, bool>(nameof(ScriptOutputChunk), ScriptOutputChunk);
+
+        _hubConnection.On<string>(nameof(GetProcesses), GetProcesses);
+        
+        _hubConnection.On<string>(nameof(GetServices), GetServices);
+        
+        _hubConnection.On<int>(nameof(KillProcess), KillProcess);
+        
+        _hubConnection.On<string>(nameof(RestartService), RestartService);
     }
 
     private async Task<bool> VerifyServer()

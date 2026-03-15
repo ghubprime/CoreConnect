@@ -193,6 +193,11 @@ public class AgentHub : Hub<IAgentHubClient>
 
             Device = result.Value;
 
+            if (!Device.IsApproved)
+            {
+                return true;
+            }
+
             await _alertProcessor.EvaluateDeviceAsync(Device);
 
             _serviceSessionCache.AddOrUpdateByConnectionId(Context.ConnectionId, Device);
@@ -250,6 +255,11 @@ public class AgentHub : Hub<IAgentHubClient>
         }
 
         Device = result.Value;
+
+        if (!Device.IsApproved)
+        {
+            return;
+        }
 
         await _alertProcessor.EvaluateDeviceAsync(Device);
 
@@ -406,6 +416,32 @@ public class AgentHub : Hub<IAgentHubClient>
     {
         var message = new TransferCompleteMessage(transferId);
         return _messenger.Send(message, requesterId);
+    }
+
+    public async Task StreamProcesses(IAsyncEnumerable<ProcessInfo> stream, string requesterId)
+    {
+        try
+        {
+            var message = new StreamReceivedMessage<ProcessInfo>(stream);
+            await _messenger.Send(message, requesterId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while streaming processes to viewer {requesterId}.", requesterId);
+        }
+    }
+
+    public async Task StreamServices(IAsyncEnumerable<ServiceInfo> stream, string requesterId)
+    {
+        try
+        {
+            var message = new StreamReceivedMessage<ServiceInfo>(stream);
+            await _messenger.Send(message, requesterId);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error while streaming services to viewer {requesterId}.", requesterId);
+        }
     }
 
     private async Task<bool> CheckForDeviceBan(params string[] deviceIdNameOrIPs)

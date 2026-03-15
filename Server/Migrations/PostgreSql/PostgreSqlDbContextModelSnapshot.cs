@@ -197,6 +197,9 @@ namespace CoreConnect.Server.Migrations.PostgreSql
                     b.Property<bool>("Is64Bit")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("IsOnline")
                         .HasColumnType("boolean");
 

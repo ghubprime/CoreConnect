@@ -57,6 +57,12 @@ else
             <TabHeader Name="telemetry" NavigationUri="@($"/device/{DeviceId}/telemetry")">
                 Telemetry
             </TabHeader>
+            <TabHeader Name="processes" NavigationUri="@($"/device-details/{DeviceId}/processes")">
+                Processes
+            </TabHeader>
+            <TabHeader Name="services" NavigationUri="@($"/device-details/{DeviceId}/services")">
+                Services
+            </TabHeader>
         </TabHeaders>
 
         <TabContents>
@@ -273,6 +279,13 @@ else
                     </tbody>
                 </table>
 
+            </TabContent>
+            <TabContent Name="processes">
+                <DeviceProcesses Device="@_device" />
+            </TabContent>
+            
+            <TabContent Name="services">
+                <DeviceServices Device="@_device" />
             </TabContent>
         </TabContents>
     </TabControl>

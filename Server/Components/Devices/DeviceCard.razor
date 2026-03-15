@@ -1,4 +1,4 @@
-﻿@attribute [Authorize]
+@attribute [Authorize]
 @inherits AuthComponentBase
 
 <div @ref="_card" class="card border-secondary my-3 me-3 device-card @_theme @GetCardStateClass()"
@@ -12,7 +12,11 @@
          @onclick:stopPropagation="_state == DeviceCardState.Expanded"
          @onclick:preventDefault="_state == DeviceCardState.Expanded">
         <div>
-            @if (Device.IsOnline)
+            @if (!Device.IsApproved)
+            {
+                <i class="oi oi-warning text-danger" title="Device Not Approved"></i>
+            }
+            else if (Device.IsOnline)
             {
                 if (IsOutdated)
                 {
@@ -122,6 +126,16 @@
                     </ChildListItems>
                 </DropdownButton>
             </div>
+
+            @if (!Device.IsApproved)
+            {
+                <div class="font-weight-bold text-danger mt-2" style="grid-column: span 2">
+                    <button class="btn btn-sm btn-outline-danger w-100" @onclick="ApproveDevice" @onclick:stopPropagation>
+                        <i class="oi oi-check"></i> Approve Device
+                    </button>
+                </div>
+                <div style="grid-column: span 2" class="expanded-visible"></div>
+            }
 
             <div class="font-weight-bold text-info">
                 <label>Platform</label>

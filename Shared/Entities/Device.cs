@@ -40,6 +40,10 @@ public class Device
     public string ID { get; set; } = Guid.NewGuid().ToString();
 
     public bool Is64Bit { get; set; }
+    
+    [Display(Name = "Approved")]
+    public bool IsApproved { get; set; } = false;
+    
     public bool IsOnline { get; set; }
 
     [Sortable]

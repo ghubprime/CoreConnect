@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web;
 using CoreConnect.Server.Enums;
@@ -198,6 +198,22 @@ public partial class DeviceCard : AuthComponentBase
             _state = DeviceCardState.Normal;
         }
     }
+
+    private async Task ApproveDevice()
+    {
+        var result = await DataService.ApproveDevice(Device.ID);
+        if (result.IsSuccess)
+        {
+            Device.IsApproved = true;
+            ToastService.ShowToast("Device approved.");
+            await InvokeAsync(StateHasChanged);
+        }
+        else
+        {
+            ToastService.ShowToast("Failed to approve device.", classString: "bg-danger");
+        }
+    }
+
     private async Task HandleValidSubmit()
     {
         EnsureUserSet();

@@ -23,6 +23,8 @@ public interface IDataService
     Task<Result> AddDeviceToGroup(string deviceId, string groupId);
     Task<Result<InviteLink>> AddInvite(string orgId, InviteViewModel invite);
 
+    Task<Result> ApproveDevice(string deviceId);
+
     Task<Result<Device>> AddOrUpdateDevice(DeviceClientDto device);
 
     Task<Result> AddOrUpdateSavedScript(SavedScript script, string userId);
@@ -360,6 +362,21 @@ public class DataService : IDataService
         organization.InviteLinks.Add(inviteLink);
         await dbContext.SaveChangesAsync();
         return Result.Ok(inviteLink);
+    }
+
+    public async Task<Result> ApproveDevice(string deviceId)
+    {
+        using var dbContext = _appDbFactory.GetContext();
+        var device = await dbContext.Devices.FindAsync(deviceId);
+        
+        if (device is null)
+        {
+            return Result.Fail("Device not found.");
+        }
+        
+        device.IsApproved = true;
+        await dbContext.SaveChangesAsync();
+        return Result.Ok();
     }
 
     public async Task<Result<Device>> AddOrUpdateDevice(DeviceClientDto deviceDto)
