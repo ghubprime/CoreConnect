@@ -17,6 +17,7 @@ public class AgentHub : Hub<IAgentHubClient>
 {
     private readonly IDataService _dataService;
     private readonly ICircuitManager _circuitManager;
+    private readonly IDeviceBanService _deviceBanService;
     private readonly IExpiringTokenService _expiringTokenService;
     private readonly ILogger<AgentHub> _logger;
     private readonly IMessenger _messenger;
@@ -36,6 +37,7 @@ public class AgentHub : Hub<IAgentHubClient>
         IMessenger messenger,
         IAlertRuleProcessor alertProcessor,
         IScriptConsoleRelay scriptConsoleRelay,
+        IDeviceBanService deviceBanService,
         ILogger<AgentHub> logger)
     {
         _dataService = dataService;
@@ -47,6 +49,7 @@ public class AgentHub : Hub<IAgentHubClient>
         _messenger = messenger;
         _alertProcessor = alertProcessor;
         _scriptConsoleRelay = scriptConsoleRelay;
+        _deviceBanService = deviceBanService;
         _logger = logger;
     }
 
@@ -407,22 +410,10 @@ public class AgentHub : Hub<IAgentHubClient>
 
     private async Task<bool> CheckForDeviceBan(params string[] deviceIdNameOrIPs)
     {
-        var settings = await _dataService.GetSettings();
-        foreach (var device in deviceIdNameOrIPs)
+        if (await _deviceBanService.IsBanned(deviceIdNameOrIPs))
         {
-            if (string.IsNullOrWhiteSpace(device))
-            {
-                continue;
-            }
-
-            if (settings.BannedDevices.Any(x => !string.IsNullOrWhiteSpace(x) &&
-                x.Equals(device, StringComparison.OrdinalIgnoreCase)))
-            {
-                _logger.LogWarning("Device ID/name/IP ({device}) is banned.  Sending uninstall command.", device);
-
-                await Clients.Caller.UninstallAgent();
-                return true;
-            }
+            await Clients.Caller.UninstallAgent();
+            return true;
         }
 
         return false;
