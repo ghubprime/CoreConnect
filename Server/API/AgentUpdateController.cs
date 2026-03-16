@@ -16,17 +16,20 @@ public class AgentUpdateController : ControllerBase
     private readonly IHubContext<AgentHub, IAgentHubClient> _agentHubContext;
     private readonly ILogger<AgentUpdateController> _logger;
     private readonly IDataService _dataService;
+    private readonly IDeviceBanService _deviceBanService;
     private readonly IWebHostEnvironment _hostEnv;
     private readonly IAgentHubSessionCache _serviceSessionCache;
 
     public AgentUpdateController(IWebHostEnvironment hostingEnv,
         IDataService dataService,
+        IDeviceBanService deviceBanService,
         IAgentHubSessionCache serviceSessionCache,
         IHubContext<AgentHub, IAgentHubClient> agentHubContext,
         ILogger<AgentUpdateController> logger)
     {
         _hostEnv = hostingEnv;
         _dataService = dataService;
+        _deviceBanService = deviceBanService;
         _serviceSessionCache = serviceSessionCache;
         _agentHubContext = agentHubContext;
         _logger = logger;
@@ -94,17 +97,8 @@ public class AgentUpdateController : ControllerBase
 
     private async Task<bool> CheckForDeviceBan(string deviceIp)
     {
-        if (string.IsNullOrWhiteSpace(deviceIp))
+        if (await _deviceBanService.IsBanned(deviceIp))
         {
-            return false;
-        }
-
-        var settings = await _dataService.GetSettings();
-        if (settings.BannedDevices.Contains(deviceIp))
-        {
-            _logger.LogInformation("Device IP ({deviceIp}) is banned.  Sending uninstall command.", deviceIp);
-
-            
             var bannedDevices = _serviceSessionCache.GetAllDevices().Where(x => x.PublicIP == deviceIp);
             var connectionIds = _serviceSessionCache.GetConnectionIdsByDeviceIds(bannedDevices.Select(x => x.ID));
             await _agentHubContext.Clients.Clients(connectionIds).UninstallAgent();

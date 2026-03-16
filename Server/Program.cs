@@ -228,6 +228,7 @@ else
 }
 services.AddSingleton<IAppDbFactory, AppDbFactory>();
 services.AddTransient<IDataService, DataService>();
+services.AddTransient<IDeviceBanService, DeviceBanService>();
 services.AddScoped<ApiAuthorizationFilter>();
 services.AddScoped<LocalOnlyFilter>();
 services.AddScoped<ExpiringTokenFilter>();

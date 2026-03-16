@@ -32,11 +32,13 @@ public class AgentHubTests
         var remoteControlSessions = new Mock<IRemoteControlSessionCache>();
         var messenger = new Mock<IMessenger>();
         var alertProcessor = new Mock<IAlertRuleProcessor>();
+        var scriptConsoleRelay = new Mock<IScriptConsoleRelay>();
+        var deviceBanService = new Mock<IDeviceBanService>();
         var logger = new Mock<ILogger<AgentHub>>();
 
-        var settings = await _dataService.GetSettings();
-        settings.BannedDevices = [_testData.Org1Device1.DeviceName!];
-        await _dataService.SaveSettings(settings);
+        deviceBanService
+            .Setup(x => x.IsBanned(It.Is<string[]>(s => s.Contains(_testData.Org1Device1.DeviceName))))
+            .ReturnsAsync(true);
 
         var hub = new AgentHub(
             _dataService,
@@ -47,6 +49,8 @@ public class AgentHubTests
             remoteControlSessions.Object,
             messenger.Object,
             alertProcessor.Object,
+            scriptConsoleRelay.Object,
+            deviceBanService.Object,
             logger.Object);
 
         var hubClients = new Mock<IHubCallerClients<IAgentHubClient>>();
@@ -60,8 +64,6 @@ public class AgentHubTests
         caller.Verify(x => x.UninstallAgent(), Times.Once);
     }
 
-    // TODO: Checking of device ban should be pulled out into
-    // a separate service that's better testable.
     [TestMethod]
     [DoNotParallelize]
     public async Task DeviceCameOnline_BannedById()
@@ -76,12 +78,13 @@ public class AgentHubTests
         var remoteControlSessions = new Mock<IRemoteControlSessionCache>();
         var messenger = new Mock<IMessenger>();
         var alertProcessor = new Mock<IAlertRuleProcessor>();
+        var scriptConsoleRelay = new Mock<IScriptConsoleRelay>();
+        var deviceBanService = new Mock<IDeviceBanService>();
         var logger = new Mock<ILogger<AgentHub>>();
 
-
-        var settings = await _dataService.GetSettings();
-        settings.BannedDevices = [$"{_testData.Org1Device1.ID}"];
-        await _dataService.SaveSettings(settings);
+        deviceBanService
+            .Setup(x => x.IsBanned(It.Is<string[]>(s => s.Contains(_testData.Org1Device1.ID))))
+            .ReturnsAsync(true);
 
         var hub = new AgentHub(
             _dataService,
@@ -92,6 +95,8 @@ public class AgentHubTests
             remoteControlSessions.Object,
             messenger.Object,
             alertProcessor.Object,
+            scriptConsoleRelay.Object,
+            deviceBanService.Object,
             logger.Object);
 
         var hubClients = new Mock<IHubCallerClients<IAgentHubClient>>();
