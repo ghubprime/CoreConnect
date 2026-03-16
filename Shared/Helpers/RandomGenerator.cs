@@ -1,15 +1,14 @@
-﻿using System.Security.Cryptography;
+using System.Security.Cryptography;
 
 namespace CoreConnect.Shared.Helpers;
 
 public class RandomGenerator
 {
-    private const string AllowableCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ0123456789";
+    private const string AllowableCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     public static string GenerateString(int length)
     {
-        var bytes = RandomNumberGenerator.GetBytes(length);
-        return new string(bytes.Select(x => AllowableCharacters[x % AllowableCharacters.Length]).ToArray());
+        return RandomNumberGenerator.GetString(AllowableCharacters, length);
     }
 
     public static string GenerateAccessKey()
