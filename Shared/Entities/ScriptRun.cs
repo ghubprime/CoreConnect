@@ -1,4 +1,4 @@
-﻿using CoreConnect.Shared.Enums;
+using CoreConnect.Shared.Enums;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -34,4 +34,10 @@ public class ScriptRun
     [JsonIgnore]
     public ScriptSchedule? Schedule { get; set; }
     public int? ScheduleId { get; set; }
+
+    /// <summary>
+    /// Indicates this script run was triggered automatically by the alert
+    /// auto-remediation system rather than by a manual user action.
+    /// </summary>
+    public bool IsAutoRemediation { get; set; }
 }

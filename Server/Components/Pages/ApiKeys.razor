@@ -1,6 +1,7 @@
-﻿@page "/api-keys"
+@page "/api-keys"
 @using CoreConnect.Shared.Helpers;
 @using CoreConnect.Shared.Entities;
+@using CoreConnect.Shared.Enums;
 @attribute [Authorize(Policy = PolicyNames.OrganizationAdminRequired)]
 @inherits AuthComponentBase
 
@@ -47,12 +48,31 @@ else if (User is not null)
         </button>
     </div>
 
+    <div class="mb-3 mt-2">
+        <label class="form-label fw-bold">Permissions for new token:</label>
+        <div class="d-flex flex-wrap gap-3">
+            @foreach (var perm in _availablePermissions)
+            {
+                <div class="form-check">
+                    <input class="form-check-input"
+                           type="checkbox"
+                           id="@($"newperm_{perm}")"
+                           checked="@_newTokenPermissions.HasFlag(perm)"
+                           @onchange="@((e) => ToggleNewTokenPermission(perm, (bool)(e.Value ?? false)))" />
+                    <label class="form-check-label" for="@($"newperm_{perm}")">@perm</label>
+                </div>
+            }
+        </div>
+    </div>
+
     <table class="table table-dark table-hover table-striped">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>ID</th>
+                <th>Permissions</th>
                 <th>Last Used</th>
+                <th></th>
                 <th></th>
                 <th></th>
             </tr>
@@ -63,17 +83,71 @@ else if (User is not null)
                 <tr @key="apiToken.ID">
                     <td>@apiToken.Name</td>
                     <td>@apiToken.ID</td>
+                    <td>
+                        @if (apiToken.Permissions == ApiPermission.All)
+                        {
+                            <span class="badge bg-success">All</span>
+                        }
+                        else
+                        {
+                            @foreach (var perm in _availablePermissions)
+                            {
+                                if (apiToken.Permissions.HasFlag(perm))
+                                {
+                                    <span class="badge bg-info me-1">@perm</span>
+                                }
+                            }
+                        }
+                    </td>
                     <td>@apiToken.LastUsed</td>
                     <td>
-                        <button type="button" class="btn btn-primary" @onclick="() => RenameKey(apiToken.ID)">Rename</button>
+                        <button type="button" class="btn btn-primary btn-sm" @onclick="() => RenameKey(apiToken.ID)">Rename</button>
                     </td>
                     <td>
-                        <button type="submit" class="btn btn-danger" @onclick="() => DeleteKey(apiToken.ID)">Delete</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" @onclick="() => EditPermissions(apiToken)">
+                            <i class="fas fa-shield-alt me-1"></i>Permissions
+                        </button>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-danger btn-sm" @onclick="() => DeleteKey(apiToken.ID)">Delete</button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+}
+
+@if (_isEditingPermissions && _editingToken is not null)
+{
+    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Permissions — @_editingToken.Name</h5>
+                    <button type="button" class="btn-close" @onclick="CancelPermissionEdit"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-column gap-2">
+                        @foreach (var perm in _availablePermissions)
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       id="@($"editperm_{perm}")"
+                                       checked="@_editingPermissions.HasFlag(perm)"
+                                       @onchange="@((e) => ToggleEditPermission(perm, (bool)(e.Value ?? false)))" />
+                                <label class="form-check-label" for="@($"editperm_{perm}")">@perm</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CancelPermissionEdit">Cancel</button>
+                    <button type="button" class="btn btn-primary" @onclick="SavePermissions">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 @code {
@@ -82,6 +156,17 @@ else if (User is not null)
     private string _createKeyName = string.Empty;
     private string _newKeySecret = string.Empty;
     private bool _isLoading = true;
+
+    private ApiPermission _newTokenPermissions = ApiPermission.All;
+
+    private bool _isEditingPermissions;
+    private ApiToken? _editingToken;
+    private ApiPermission _editingPermissions;
+
+    private static readonly ApiPermission[] _availablePermissions =
+        Enum.GetValues<ApiPermission>()
+            .Where(p => p != ApiPermission.None && p != ApiPermission.All)
+            .ToArray();
 
     protected override async Task OnInitializedAsync()
     {
@@ -97,7 +182,7 @@ else if (User is not null)
         var secret = RandomGenerator.GenerateString(48);
         var secretHash = new PasswordHasher<string>().HashPassword(string.Empty, secret);
 
-        var result = await DataService.CreateApiToken(UserName, _createKeyName, secretHash);
+        var result = await DataService.CreateApiToken(UserName, _createKeyName, secretHash, _newTokenPermissions);
         if (!result.IsSuccess)
         {
             ToastService.ShowToast2(result.Reason, ToastType.Error);
@@ -106,6 +191,7 @@ else if (User is not null)
         RefreshData();
         _alertMessage = "Key created.";
         _newKeySecret = secret;
+        _newTokenPermissions = ApiPermission.All;
     }
 
     private async Task DeleteKey(string keyId)
@@ -148,6 +234,65 @@ else if (User is not null)
             await DataService.RenameApiToken(UserName, keyId, newName);
             RefreshData();
             _alertMessage = "Key renamed.";
+        }
+    }
+
+    private void EditPermissions(ApiToken token)
+    {
+        _editingToken = token;
+        _editingPermissions = token.Permissions;
+        _isEditingPermissions = true;
+    }
+
+    private void CancelPermissionEdit()
+    {
+        _isEditingPermissions = false;
+        _editingToken = null;
+    }
+
+    private async Task SavePermissions()
+    {
+        EnsureUserSet();
+
+        if (_editingToken is null)
+        {
+            return;
+        }
+
+        var result = await DataService.UpdateApiTokenPermissions(UserName, _editingToken.ID, _editingPermissions);
+        if (!result.IsSuccess)
+        {
+            ToastService.ShowToast2(result.Reason, ToastType.Error);
+            return;
+        }
+
+        _isEditingPermissions = false;
+        _editingToken = null;
+        RefreshData();
+        ToastService.ShowToast("Permissions updated.", classString: "bg-success");
+    }
+
+    private void ToggleNewTokenPermission(ApiPermission perm, bool isChecked)
+    {
+        if (isChecked)
+        {
+            _newTokenPermissions |= perm;
+        }
+        else
+        {
+            _newTokenPermissions &= ~perm;
+        }
+    }
+
+    private void ToggleEditPermission(ApiPermission perm, bool isChecked)
+    {
+        if (isChecked)
+        {
+            _editingPermissions |= perm;
+        }
+        else
+        {
+            _editingPermissions &= ~perm;
         }
     }
 

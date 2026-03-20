@@ -33,6 +33,7 @@ else
                 <th>Name</th>
                 <th>Metric</th>
                 <th>Condition</th>
+                <th>Target Group</th>
                 <th>Linked Script</th>
                 <th>Enabled</th>
                 <th>Actions</th>
@@ -45,6 +46,7 @@ else
                     <td>@rule.Name</td>
                     <td>@rule.Metric</td>
                     <td>@rule.Operator @rule.Threshold</td>
+                    <td>@(AvailableGroups.FirstOrDefault(g => g.ID == rule.TargetDeviceGroupId)?.Name ?? "All Devices")</td>
                     <td>@(rule.SavedScript?.Name ?? "None")</td>
                     <td>
                         <div class="form-check form-switch col-auto">
@@ -112,6 +114,17 @@ else
                             @foreach (var script in AvailableScripts)
                             {
                                 <option value="@script.Id">@script.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Target Device Group</label>
+                        <select class="form-select" @bind="EditingRule.TargetDeviceGroupId">
+                            <option value="">-- All Devices --</option>
+                            @foreach (var group in AvailableGroups)
+                            {
+                                <option value="@group.ID">@group.Name</option>
                             }
                         </select>
                     </div>

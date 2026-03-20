@@ -113,6 +113,7 @@ public class AlertRuleProcessor : IAlertRuleProcessor
                                 RunOnNextConnect = true,
                                 InputType = ScriptInputType.OneTimeScript,
                                 Initiator = "Auto-Remediation System",
+                                IsAutoRemediation = true,
                                 Devices = new List<Device> { attachDevice }
                             };
                             

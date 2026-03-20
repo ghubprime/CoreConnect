@@ -8,6 +8,7 @@ using CoreConnect.Server.Models;
 using CoreConnect.Shared;
 using CoreConnect.Shared.Dtos;
 using CoreConnect.Shared.Entities;
+using CoreConnect.Shared.Enums;
 using CoreConnect.Shared.Utilities;
 using CoreConnect.Shared.ViewModels;
 using System.Text.Json;
@@ -46,7 +47,7 @@ public interface IDataService
 
     Task CleanupOldRecords();
 
-    Task<Result<ApiToken>> CreateApiToken(string userName, string tokenName, string secretHash);
+    Task<Result<ApiToken>> CreateApiToken(string userName, string tokenName, string secretHash, ApiPermission permissions = ApiPermission.All);
 
     Task<Result<Device>> CreateDevice(DeviceSetupOptions options);
 
@@ -183,6 +184,8 @@ public interface IDataService
     Task<bool> RemoveUserFromDeviceGroup(string orgId, string groupId, string userId);
 
     Task<Result> RenameApiToken(string userName, string tokenId, string tokenName);
+
+    Task<Result> UpdateApiTokenPermissions(string userName, string tokenId, ApiPermission permissions);
 
     Task ResetBranding(string organizationId);
 
@@ -706,7 +709,7 @@ public class DataService : IDataService
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<Result<ApiToken>> CreateApiToken(string userName, string tokenName, string secretHash)
+    public async Task<Result<ApiToken>> CreateApiToken(string userName, string tokenName, string secretHash, ApiPermission permissions = ApiPermission.All)
     {
         using var dbContext = _appDbFactory.GetContext();
 
@@ -721,7 +724,8 @@ public class DataService : IDataService
         {
             Name = tokenName,
             OrganizationID = user.OrganizationID,
-            Secret = secretHash
+            Secret = secretHash,
+            Permissions = permissions
         };
         dbContext.ApiTokens.Add(newToken);
         await dbContext.SaveChangesAsync();
@@ -1976,6 +1980,30 @@ public class DataService : IDataService
         }
 
         token.Name = tokenName;
+        await dbContext.SaveChangesAsync();
+        return Result.Ok();
+    }
+
+    public async Task<Result> UpdateApiTokenPermissions(string userName, string tokenId, ApiPermission permissions)
+    {
+        using var dbContext = _appDbFactory.GetContext();
+
+        var user = await dbContext.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+        if (user is null)
+        {
+            return Result.Fail("User not found.");
+        }
+
+        var token = await dbContext.ApiTokens.FirstOrDefaultAsync(x =>
+            x.OrganizationID == user.OrganizationID &&
+            x.ID == tokenId);
+
+        if (token is null)
+        {
+            return Result.Fail("API token not found.");
+        }
+
+        token.Permissions = permissions;
         await dbContext.SaveChangesAsync();
         return Result.Ok();
     }

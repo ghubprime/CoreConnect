@@ -20,6 +20,7 @@ public partial class AlertRulesPage : ComponentBase
 
     public AlertRule[]? Rules { get; set; }
     public List<SavedScript> AvailableScripts { get; set; } = new();
+    public List<DeviceGroup> AvailableGroups { get; set; } = new();
 
     public AlertRule EditingRule { get; set; } = new();
     public bool IsEditing { get; set; }
@@ -47,6 +48,8 @@ public partial class AlertRulesPage : ComponentBase
         AvailableScripts = await DataService.GetSavedScriptsWithoutContent(
             authState.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? string.Empty, 
             _organizationId);
+
+        AvailableGroups = DataService.GetDeviceGroupsForOrganization(_organizationId).ToList();
             
         StateHasChanged();
     }
