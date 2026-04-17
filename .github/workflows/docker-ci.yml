@@ -93,7 +93,7 @@ jobs:
           echo "Running health check..."
           RETRY=0
           MAX_RETRIES=6
-          until curl -sf http://localhost:5000/api/healthcheck > /dev/null 2>&1; do
+          until docker exec coreconnect-ci curl -sf http://localhost:5000/api/healthcheck > /dev/null 2>&1; do
             RETRY=$((RETRY+1))
             if [ $RETRY -ge $MAX_RETRIES ]; then
               echo "Health check failed after ${MAX_RETRIES} retries"
