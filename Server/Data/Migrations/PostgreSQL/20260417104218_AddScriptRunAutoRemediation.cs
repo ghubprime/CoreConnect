@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CoreConnect.Server.Data.Migrations.Sqlite
+namespace CoreConnect.Server.Data.Migrations.SqlServer
 {
     /// <inheritdoc />
     public partial class AddScriptRunAutoRemediation : Migration
@@ -13,7 +13,7 @@ namespace CoreConnect.Server.Data.Migrations.Sqlite
             migrationBuilder.AddColumn<bool>(
                 name: "IsAutoRemediation",
                 table: "ScriptRuns",
-                type: "INTEGER",
+                type: "bit",
                 nullable: false,
                 defaultValue: false);
         }

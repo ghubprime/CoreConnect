@@ -1,8 +1,8 @@
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace CoreConnect.Server.Data.Migrations.SqlServer
+namespace CoreConnect.Server.Data.Migrations.PostgreSQL
 {
     /// <inheritdoc />
     public partial class AddScriptRunAutoRemediation : Migration
@@ -13,7 +13,7 @@ namespace CoreConnect.Server.Data.Migrations.SqlServer
             migrationBuilder.AddColumn<bool>(
                 name: "IsAutoRemediation",
                 table: "ScriptRuns",
-                type: "bit",
+                type: "boolean",
                 nullable: false,
                 defaultValue: false);
         }
