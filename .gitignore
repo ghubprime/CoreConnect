@@ -299,3 +299,15 @@ Server.Installer/Properties/launchSettings.json
 /Server/AppData
 build_check.txt
 build_output.txt
+
+build.log
+build_errors.log
+msbuild.log
+server_build.log
+server_build_errors.log
+server_build_errors.txt
+server_build_errors2.log
+server_build_errors3.txt
+server_build_errors_ascii.txt
+server_build_errors_utf8.txt
+test.cs
