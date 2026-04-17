@@ -21,7 +21,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
           fetch-depth: 0
 
       - name: Setup .NET
@@ -34,14 +33,16 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Restore dependencies
-        run: dotnet restore
+      - name: Restore Server
+        run: dotnet restore Server/Server.csproj
 
-      - name: Build solution
-        run: dotnet build --no-restore --configuration Release
+      - name: Build Server
+        run: dotnet build Server/Server.csproj --no-restore --configuration Release
 
-      - name: Run tests
-        run: dotnet test --no-build --configuration Release --verbosity normal
+      - name: Restore and run tests
+        run: |
+          dotnet restore Tests/Server.Tests/Server.Tests.csproj
+          dotnet test Tests/Server.Tests/Server.Tests.csproj --configuration Release --verbosity normal
 
       - name: Publish Server (linux-x64)
         run: |
@@ -54,7 +55,7 @@ jobs:
             --self-contained \
             --configuration Release \
             --output ./Server/bin/publish \
-            ./Server/
+            ./Server/Server.csproj
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
