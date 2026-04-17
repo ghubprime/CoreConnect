@@ -85,8 +85,9 @@ public partial class AlertRulesPage : ComponentBase
         IsEditing = true;
     }
 
-    private async Task ToggleRule(AlertRule rule, bool isEnabled)
+    private async Task ToggleRule(AlertRule rule, object? value)
     {
+        bool isEnabled = value is bool b ? b : false;
         rule.IsEnabled = isEnabled;
         await DataService.UpdateAlertRule(rule);
         ToastService.ShowToast("Alert rule updated.", classString: "bg-success");

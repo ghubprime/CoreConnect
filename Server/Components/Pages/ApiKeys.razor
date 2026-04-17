@@ -58,7 +58,7 @@ else if (User is not null)
                            type="checkbox"
                            id="@($"newperm_{perm}")"
                            checked="@_newTokenPermissions.HasFlag(perm)"
-                           @onchange="@((e) => ToggleNewTokenPermission(perm, (bool)(e.Value ?? false)))" />
+                           @onchange="@((e) => ToggleNewTokenPermission(perm, e.Value))" />
                     <label class="form-check-label" for="@($"newperm_{perm}")">@perm</label>
                 </div>
             }
@@ -135,7 +135,7 @@ else if (User is not null)
                                        type="checkbox"
                                        id="@($"editperm_{perm}")"
                                        checked="@_editingPermissions.HasFlag(perm)"
-                                       @onchange="@((e) => ToggleEditPermission(perm, (bool)(e.Value ?? false)))" />
+                                       @onchange="@((e) => ToggleEditPermission(perm, e.Value))" />
                                 <label class="form-check-label" for="@($"editperm_{perm}")">@perm</label>
                             </div>
                         }
@@ -272,8 +272,9 @@ else if (User is not null)
         ToastService.ShowToast("Permissions updated.", classString: "bg-success");
     }
 
-    private void ToggleNewTokenPermission(ApiPermission perm, bool isChecked)
+    private void ToggleNewTokenPermission(ApiPermission perm, object? value)
     {
+        bool isChecked = value is bool b ? b : false;
         if (isChecked)
         {
             _newTokenPermissions |= perm;
@@ -284,8 +285,9 @@ else if (User is not null)
         }
     }
 
-    private void ToggleEditPermission(ApiPermission perm, bool isChecked)
+    private void ToggleEditPermission(ApiPermission perm, object? value)
     {
+        bool isChecked = value is bool b ? b : false;
         if (isChecked)
         {
             _editingPermissions |= perm;
