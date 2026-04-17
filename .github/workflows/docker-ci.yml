@@ -12,9 +12,129 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
-  build-and-test:
+  # ──────────────────────────────────────────────────────────────────
+  # Job 1: Build Windows-only client artifacts on a Windows runner
+  # ──────────────────────────────────────────────────────────────────
+  build-windows-clients:
+    name: Build Windows Clients
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Compute version
+        id: version
+        shell: pwsh
+        run: |
+          $VersionString = git show -s --format=%ci
+          $VersionDate = [DateTimeOffset]::Parse($VersionString)
+          $CurrentVersion = $VersionDate.ToString("yyyy.MM.dd.HHmm")
+          echo "VERSION=$CurrentVersion" >> $env:GITHUB_OUTPUT
+          Write-Host "Version: $CurrentVersion"
+
+      # ── Desktop.Win portable executables (single-file) ──────────
+      - name: Publish Desktop.Win x64 (portable)
+        run: >
+          dotnet publish
+          /p:Version=${{ steps.version.outputs.VERSION }}
+          /p:FileVersion=${{ steps.version.outputs.VERSION }}
+          -p:PublishProfile=desktop-win-x64
+          --configuration Release
+          ./Desktop.Win
+
+      - name: Publish Desktop.Win x86 (portable)
+        run: >
+          dotnet publish
+          /p:Version=${{ steps.version.outputs.VERSION }}
+          /p:FileVersion=${{ steps.version.outputs.VERSION }}
+          -p:PublishProfile=desktop-win-x86
+          --configuration Release
+          ./Desktop.Win
+
+      # ── Desktop.Win packaged builds (embedded in Agent zip) ─────
+      - name: Publish Desktop.Win x64 (packaged)
+        run: >
+          dotnet publish
+          /p:Version=${{ steps.version.outputs.VERSION }}
+          /p:FileVersion=${{ steps.version.outputs.VERSION }}
+          -p:PublishProfile=packaged-win-x64
+          --configuration Release
+          ./Desktop.Win
+
+      - name: Publish Desktop.Win x86 (packaged)
+        run: >
+          dotnet publish
+          /p:Version=${{ steps.version.outputs.VERSION }}
+          /p:FileVersion=${{ steps.version.outputs.VERSION }}
+          -p:PublishProfile=packaged-win-x86
+          --configuration Release
+          ./Desktop.Win
+
+      # ── Agent builds for Windows ────────────────────────────────
+      - name: Publish Agent win-x64
+        run: >
+          dotnet publish
+          /p:Version=${{ steps.version.outputs.VERSION }}
+          /p:FileVersion=${{ steps.version.outputs.VERSION }}
+          --runtime win-x64 --self-contained
+          --configuration Release
+          --output ./Agent/bin/publish/win-x64
+          ./Agent
+
+      - name: Publish Agent win-x86
+        run: >
+          dotnet publish
+          /p:Version=${{ steps.version.outputs.VERSION }}
+          /p:FileVersion=${{ steps.version.outputs.VERSION }}
+          --runtime win-x86 --self-contained
+          --configuration Release
+          --output ./Agent/bin/publish/win-x86
+          ./Agent
+
+      # ── Package Agent + Desktop into zips ───────────────────────
+      - name: Create Windows agent zips
+        shell: pwsh
+        run: |
+          # win-x64: Agent already has Desktop\ subfolder from packaged publish
+          Compress-Archive -Path "./Agent/bin/publish/win-x64/*" -DestinationPath "./CoreConnect-Win-x64.zip" -Force
+          # win-x86
+          Compress-Archive -Path "./Agent/bin/publish/win-x86/*" -DestinationPath "./CoreConnect-Win-x86.zip" -Force
+
+      # ── Upload artifacts for the Linux job ──────────────────────
+      - name: Upload Windows Desktop portables
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-desktop-portables
+          path: |
+            Server/wwwroot/Content/Win-x64/CoreConnect_Desktop.exe
+            Server/wwwroot/Content/Win-x86/CoreConnect_Desktop.exe
+          retention-days: 1
+
+      - name: Upload Windows agent zips
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-agent-zips
+          path: |
+            CoreConnect-Win-x64.zip
+            CoreConnect-Win-x86.zip
+          retention-days: 1
+
+  # ──────────────────────────────────────────────────────────────────
+  # Job 2: Build Linux/macOS clients, Server, Docker image, smoke test
+  # ──────────────────────────────────────────────────────────────────
+  build-test-docker:
     name: Build, Test & Docker
     runs-on: ubuntu-latest
+    needs: build-windows-clients
     timeout-minutes: 30
 
     steps:
@@ -33,30 +153,123 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Compute version
+        id: version
+        shell: bash
+        run: |
+          VERSION=$(date -u +"%Y.%m.%d.%H%M")
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Version: $VERSION"
+
+      # ── Server build & test ─────────────────────────────────────
       - name: Restore Server
         run: dotnet restore Server/Server.csproj
 
       - name: Build Server
         run: dotnet build Server/Server.csproj --no-restore --configuration Release
 
-      - name: Restore and run tests
+      - name: Run tests
         run: |
           dotnet restore Tests/Server.Tests/Server.Tests.csproj
           dotnet test Tests/Server.Tests/Server.Tests.csproj --configuration Release --verbosity normal
 
-      - name: Publish Server (linux-x64)
-        run: |
-          VERSION=$(date -u +"%Y.%m.%d.%H%M")
-          echo "Publishing CoreConnect Server v${VERSION} for linux-x64"
-          dotnet publish \
-            /p:Version=$VERSION \
-            /p:FileVersion=$VERSION \
-            --runtime linux-x64 \
-            --self-contained \
-            --configuration Release \
-            --output ./Server/bin/publish \
-            ./Server/Server.csproj
+      # ── Desktop.Linux builds ────────────────────────────────────
+      - name: Publish Desktop.Linux (portable → Content/Linux-x64/)
+        run: >
+          dotnet publish
+          /p:Version=${{ steps.version.outputs.VERSION }}
+          /p:FileVersion=${{ steps.version.outputs.VERSION }}
+          -p:PublishProfile=desktop-linux-x64
+          --configuration Release
+          ./Desktop.Linux
 
+      - name: Publish Desktop.Linux (packaged → Agent staging)
+        run: >
+          dotnet publish
+          /p:Version=${{ steps.version.outputs.VERSION }}
+          /p:FileVersion=${{ steps.version.outputs.VERSION }}
+          -p:PublishProfile=packaged-linux-x64
+          --configuration Release
+          ./Desktop.Linux
+
+      # ── Agent builds for Linux & macOS ──────────────────────────
+      - name: Publish Agent linux-x64
+        run: >
+          dotnet publish
+          /p:Version=${{ steps.version.outputs.VERSION }}
+          /p:FileVersion=${{ steps.version.outputs.VERSION }}
+          --runtime linux-x64 --self-contained
+          --configuration Release
+          --output ./Agent/bin/publish/linux-x64
+          ./Agent
+
+      - name: Publish Agent osx-x64
+        run: >
+          dotnet publish
+          /p:Version=${{ steps.version.outputs.VERSION }}
+          /p:FileVersion=${{ steps.version.outputs.VERSION }}
+          --runtime osx-x64 --self-contained
+          --configuration Release
+          --output ./Agent/bin/publish/osx-x64
+          ./Agent
+
+      - name: Publish Agent osx-arm64
+        run: >
+          dotnet publish
+          /p:Version=${{ steps.version.outputs.VERSION }}
+          /p:FileVersion=${{ steps.version.outputs.VERSION }}
+          --runtime osx-arm64 --self-contained
+          --configuration Release
+          --output ./Agent/bin/publish/osx-arm64
+          ./Agent
+
+      # ── Create zip archives ─────────────────────────────────────
+      - name: Create Linux & macOS agent zips
+        run: |
+          cd ./Agent/bin/publish/linux-x64 && zip -r ../../../../CoreConnect-Linux.zip . && cd ../../../..
+          cd ./Agent/bin/publish/osx-x64 && zip -r ../../../../CoreConnect-MacOS-x64.zip . && cd ../../../..
+          cd ./Agent/bin/publish/osx-arm64 && zip -r ../../../../CoreConnect-MacOS-arm64.zip . && cd ../../../..
+
+      # ── Download Windows artifacts from Job 1 ───────────────────
+      - name: Download Windows Desktop portables
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-desktop-portables
+          path: Server/wwwroot/Content/
+
+      - name: Download Windows agent zips
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-agent-zips
+          path: .
+
+      # ── Assemble Content directory ──────────────────────────────
+      - name: Assemble Content directory
+        run: |
+          CONTENT="Server/wwwroot/Content"
+
+          # Move zip archives into Content
+          mv CoreConnect-Win-x64.zip "$CONTENT/"
+          mv CoreConnect-Win-x86.zip "$CONTENT/"
+          mv CoreConnect-Linux.zip "$CONTENT/"
+          mv CoreConnect-MacOS-x64.zip "$CONTENT/"
+          mv CoreConnect-MacOS-arm64.zip "$CONTENT/"
+
+          echo "=== Content directory listing ==="
+          ls -lhR "$CONTENT/"
+
+      # ── Publish Server (includes all Content) ───────────────────
+      - name: Publish Server (linux-x64)
+        run: >
+          dotnet publish
+          /p:Version=${{ steps.version.outputs.VERSION }}
+          /p:FileVersion=${{ steps.version.outputs.VERSION }}
+          --runtime linux-x64 --self-contained
+          --configuration Release
+          --output ./Server/bin/publish
+          ./Server/Server.csproj
+
+      # ── Docker build & smoke test ───────────────────────────────
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -103,6 +316,9 @@ jobs:
             echo "Retry ${RETRY}/${MAX_RETRIES} - waiting 5s..."
             sleep 5
           done
+
+          echo "Verifying Content files exist in container..."
+          docker exec coreconnect-ci ls -lh /app/wwwroot/Content/ || true
 
           echo "✅ Health check passed!"
           docker stop coreconnect-ci
