@@ -297,3 +297,5 @@ Server.Installer/Properties/launchSettings.json
 !/.vscode/tasks.json
 /Server/appsettings.Development.json
 /Server/AppData
+build_check.txt
+build_output.txt
