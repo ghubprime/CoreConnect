@@ -72,8 +72,10 @@ jobs:
       - name: Smoke test Docker image
         run: |
           echo "Starting CoreConnect container for smoke test..."
+          mkdir -p /tmp/coreconnect-appdata
           docker run -d \
             --name coreconnect-ci \
+            -v /tmp/coreconnect-appdata:/app/AppData \
             -e ASPNETCORE_ENVIRONMENT=Production \
             -e ASPNETCORE_HTTP_PORTS=5000 \
             -e CoreConnect_ApplicationOptions__DbProvider=SQLite \
