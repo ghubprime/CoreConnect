@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using CoreConnect.Shared.Extensions;
 using CoreConnect.Shared.Interfaces;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoreConnect.Server.Tests;
