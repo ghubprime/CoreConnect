@@ -1,4 +1,4 @@
-﻿version: '3.4'
+version: '3.4'
 
 networks:
   coreconnect:
@@ -11,7 +11,7 @@ networks:
 
 services:
   coreconnect:
-    image: coreconnect:latest
+    image: ghcr.io/ghubprime/coreconnect:latest
     container_name: coreconnect
     volumes:
       - /var/www/coreconnect:/app/AppData

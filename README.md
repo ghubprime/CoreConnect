@@ -12,11 +12,14 @@ GitHub: https://github.com/ghubprime/CoreConnect
 
 ## Quickstart
 
-```
+```bash
 mkdir -p /var/www/coreconnect
 wget -q https://raw.githubusercontent.com/ghubprime/CoreConnect/master/docker-compose/docker-compose.yml
-docker-compose up -d
+docker compose pull
+docker compose up -d
 ```
+
+> **Note**: CoreConnect docker images are now published to the GitHub Container Registry (`ghcr.io`). If your repository is private, you must first authenticate your server by running `docker login ghcr.io -u ghubprime` and entering a Personal Access Token (PAT) with `read:packages` permissions.
 
 ## Important: HTTPS and Reverse Proxies
 
