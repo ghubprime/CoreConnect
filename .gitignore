@@ -313,3 +313,5 @@ server_build_errors_utf8.txt
 test.cs
 .agents/
 .agent/
+agents.md
+AGENTS.md
